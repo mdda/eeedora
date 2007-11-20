@@ -5,8 +5,8 @@ auth --useshadow --enablemd5
 network --device eth0 --bootproto dhcp
 
 # This isn't for the live version - just for the install
-clearpart --drives sda
-part / --fstype ext2 --size 1 --ondisk=sda --asprimary --grow
+#clearpart --drives sda
+#part / --fstype ext2 --size 1 --ondisk=sda --asprimary --grow
 #part swap --recommended
 
 
