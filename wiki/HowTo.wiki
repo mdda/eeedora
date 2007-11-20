@@ -9,6 +9,6 @@
   * This will build an ISO image of what you need
     * and will optionally install it onto the USB key
 
-= Longer Version =
+== Longer Version ==
 
 Coming soon...
