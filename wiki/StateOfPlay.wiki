@@ -1,6 +1,6 @@
 #summary Where the EeeDora setup stands now
 
-= What it Does Do =
+== What it Does Do ==
 
   * Boots Fedora 8 on a Live USB or Live CD, connected to the Eee PC USB ports
   * Goes into an XFCE windowing environment
@@ -8,7 +8,7 @@
     * _Thanks to the framework from [http://fedoraproject.org/wiki/RahulSundaram Rahul Sundaram] and [http://fedoraproject.org/wiki/ChristophWickert Christoph Wickert] at the Fedora project_
   * ...
 
-= What it Doesn't Do (yet) =
+== What it Doesn't Do (yet) ==
 
   * Sort out the /etc/fstab issues (to avoid over-using the Flash drive)
   * Bring up the wireless connection (Atheros)
@@ -17,7 +17,7 @@
   * Have a boot process optimized for speed
   * ...
 
-= What it Doesn't Do Generally =
+== What it Doesn't Do Generally ==
 
   * Include a lot of bloat (let the user choose what they need)
   * Anything half as nice as the default Xandros UI
