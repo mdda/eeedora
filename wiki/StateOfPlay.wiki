@@ -5,7 +5,7 @@
   * Boots Fedora 8 on a Live USB or Live CD, connected to the Eee PC USB ports
   * Goes into an XFCE windowing environment
   * Sets up a few defaults for the windowing environment 
-    * _Thanks to the framework from [http://fedoraproject.org/wiki/RahulSundaram Rahul Sundaram] at the Fedora project_
+    * _Thanks to the framework from [http://fedoraproject.org/wiki/RahulSundaram Rahul Sundaram] and [http://fedoraproject.org/wiki/ChristophWickert Christoph Wickert] at the Fedora project_
   * ...
 
 = What it Doesn't Do (yet) =
