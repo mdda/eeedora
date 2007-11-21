@@ -2,28 +2,29 @@ lang en_US.UTF-8
 keyboard us
 timezone US/Eastern
 auth --useshadow --enablemd5
-network --device eth0 --bootproto dhcp
-
-# This isn't for the live version - just for the install
-#clearpart --drives sda
-#part / --fstype ext2 --size 1 --ondisk=sda --asprimary --grow
-#part swap --recommended
-
 
 #selinux --enforcing
-#selinux --disabled
+selinux --disabled
+
+network --device eth0 --bootproto dhcp
 
 #firewall --disabled
 firewall --enabled --trust=eth0 --ssh
 
-#services --enabled=NetworkManager --disabled=network,sshd
-services --enabled=NetworkManager,network
-# services --enabled=NetworkManager,network,sshd  # Later
-
-rootpw eee
-
 #xconfig --card "VMWare" --videoram 16384 --hsync 31.5-37.9 --vsync 50-70 --resolution 800x600 --depth 16
 xconfig --startxonboot
+
+#Switch this over - not having sshd is more secure (until a non-public password is set)
+#services --enabled=NetworkManager --disabled=network,sshd
+services --enabled=NetworkManager,network,sshd 
+
+# This isn't for the live version - just for the install - Needs Fixing.
+#clearpart --drives sda
+#part / --fstype ext2 --size 1 --ondisk=sda --asprimary --grow
+#part swap --recommended
+
+# A default public root password - not the best idea.
+rootpw eee
 
 #If you installed *ubuntu the normal way with one big 4gb partition on the SSD, there only needs to be one line in your /etc/fstab file, the one mounting /
 #  UUID=[your-uuid-here]   /    ext2    defaults,errors=remount-ro,noatime  0     1
@@ -49,10 +50,10 @@ xconfig --startxonboot
 
 # Look for mirrors in : http://mirrors.fedoraproject.org/publiclist/Fedora/8/i386/
 
-#repo --name=everything --baseurl=http://download.fedora.redhat.com/pub/fedora/linux/releases/8/Everything/i386/os
+#repo --name=official --baseurl=http://download.fedora.redhat.com/pub/fedora/linux/releases/8/Everything/i386/os
 repo --name=facebook --baseurl=http://fedora.mirror.facebook.com/linux/releases/8/Everything/i386/os
 	
-#Reported un-matched : 
+#Revisor reported un-matched : 
 #iprutils
 #yaboot
 #ppc64-utils
@@ -66,6 +67,7 @@ repo --name=facebook --baseurl=http://fedora.mirror.facebook.com/linux/releases/
 # @ base-x
 # @ editors
 
+# This is how to get a hyper-slim install
 %packages --nobase
 @ Core
 kernel
@@ -90,7 +92,6 @@ openssh-server
 # @ printing
 # @ text-internet
 # @ graphical-internet
-
 
 # irssi
 # drivel
@@ -138,6 +139,9 @@ cvs
 @ base-x
 firstboot
 liberation-fonts
+-xorg-x11-apps
+-xorg-x11-twm
+-xorg-x11-utils
 
 # Kill unnecessary fonts
 -lohit*
@@ -155,15 +159,18 @@ liberation-fonts
 -cjkunifonts-uming
 -baekmuk-ttf-fonts-gulim
 
+# We'll autologin (and let the user 'eeedora' su to other ids)
 -gdm
+-rhgb
+
 -glx-utils
 -authconfig-gtk
 -paktype-fonts
 pirut
 openssh-askpass
 -policycoreutils-gui
--rhgb
 -smolt-firstboot
+
 system-config-date
 system-config-display
 system-config-network
@@ -171,9 +178,8 @@ system-config-printer
 -system-config-users
 -system-config-soundcard
 system-config-services  
--xorg-x11-apps
--xorg-x11-twm
--xorg-x11-utils
+
+# Not necessary once xcfe is reliable - we have 'Terminal'
 xterm
 
 # xfce packages
@@ -241,13 +247,12 @@ evince
 #dia
 #inkscape
 #planner
+
 # we _need_ xdg-user-dirs
 xdg-user-dirs
 
 # do not want
 -gimp-help
--gnome-user-docs
--gnome-backgrounds
 -scim-bridge-gtk
 -dvd+rw-tools
 -pidgin
@@ -287,36 +292,155 @@ xdg-user-dirs
 -evolution-webcal
 #-gnome-panel
 -gnome-desktop
+-gnome-user-docs
+-gnome-backgrounds
 -evolution-data-server
 
 # make sure debuginfo doesn't end up on the live image
 -*debuginfo
--debuginfo
 
 %post
+liveuser="eeedora"
 ShowProgress() {
  echo $"$1" >> /etc/eeedora.progress
 }
 
-ShowProgress("Creating /etc/sysconfig/desktop (needed for installation)")
+ShowProgress "Creating /etc/sysconfig/desktop (needed for installation)"
 cat > /etc/sysconfig/desktop <<EOF
 DESKTOP="XFCE"
 EOF
 
-#ShowProgress("Save a little bit of space at least...")
-#rm -f /boot/initrd*
+ShowProgress "Creating /etc/rc.d/init.d/fedora-live  (needed for live version)"
+# FIXME: it'd be better to get this installed from a package
+# All the below (up until chmod 700 /home/fedora) is going into this script
+cat > /etc/rc.d/init.d/fedora-live << EOF
+#!/bin/bash
+#
+# live: Init script for live image
+#
+# chkconfig: 345 00 99
+# description: Init script for live image.
+
+liveuser="eeedora"
+ShowProgress() {
+ echo \$"init.d.fedora-live : \$1" >> /etc/eeedora.progress
+}
+
+ShowProgress "Loading /etc/init.d/functions"
+. /etc/init.d/functions
+
+ShowProgress "Testing cmdline - go no further if not a live image"
+if ! strstr "\`cat /proc/cmdline\`" liveimg || [ "\$1" != "start" ] || [ -e /.liveimg-configured ] ; then
+ ShowProgress "Apparently this was not a live image"
+ exit 0
+fi
+
+exists() {
+ which \$1 >/dev/null 2>&1 || return
+ \$*
+}
+
+ShowProgress "Touching liveimg-configured"
+touch /.liveimg-configured
+
+ShowProgress "Mount live image"
+if [ -b /dev/live ]; then
+ mkdir -p /mnt/live
+ mount -o ro /dev/live /mnt/live
+fi
+
+if ! [ 1 ]; then # DISABLE CREATION OF SWAP PARTITION - SAVE FLASH RAM OVERWRITES
+ ShowProgress "Enable swaps unless requested otherwise"
+ # This is the list of current swap partitions
+ swaps=\`blkid -t TYPE=swap -o device\`
+ if ! strstr "\`cat /proc/cmdline\`" noswap -a [ -n "\$swaps" ] ; then
+  # Go through the list until we get a hit...
+  for s in \$swaps ; do
+    action "Enabling swap partition \$s" swapon \$s
+  done
+ fi
+else
+ ShowProgress "Eee has swap disabled"
+fi
+
+ShowProgress "Configure X, allowing user to override xdriver"
+for o in \`cat /proc/cmdline\` ; do
+	case \$o in
+	xdriver=*)
+		xdriver="--set-driver=\${o#xdriver=}"
+		;;
+	esac
+done
+
+ShowProgress "system-config-display (\$xdriver)"
+exists system-config-display --noui --reconfig --set-depth=24 \$xdriver
+
+ShowProgress "Unmute sound card"
+exists alsaunmute 0 2> /dev/null
+
+ShowProgress "Add '\${liveuser}' user with no passwd"
+useradd -c "Eeedora Live" \${liveuser}
+passwd -d \${liveuser} > /dev/null
+
+ShowProgress "Turn off firstboot for livecd boots"
+echo "RUN_FIRSTBOOT=NO" > /etc/sysconfig/firstboot
+
+#ShowProgress "Don't start yum-updatesd for livecd boots"
+#chkconfig --level 345 yum-updatesd off
+
+ShowProgress "Don't start cron/at as they tend to be painful in a Live context"
+# don't start cron/at as they tend to spawn things which are
+# disk intensive that are painful on a live image
+chkconfig --level 345 crond off
+chkconfig --level 345 atd off
+chkconfig --level 345 anacron off
+chkconfig --level 345 readahead_early off
+chkconfig --level 345 readahead_later off
+
+ShowProgress "Stopgap fix for RH #217966; should be fixed in HAL instead"
+touch /media/.hal-mtab
+
+# disable screensaver locking
+gconftool-2 --direct --config-source=xml:readwrite:/etc/gconf/gconf.xml.defaults -s -t bool /apps/gnome-screensaver/lock_enabled false >/dev/null
+
+# set up timed auto-login for after 20 seconds
+sed -i -e 's/\[daemon\]/[daemon]\nTimedLoginEnable=true\nTimedLogin=\${liveuser}\nTimedLoginDelay=20/' /etc/gdm/custom.conf
+if [ -e /usr/share/icons/hicolor/96x96/apps/fedora-logo-icon.png ] ; then
+	cp /usr/share/icons/hicolor/96x96/apps/fedora-logo-icon.png /home/\${liveuser}/.face
+	chown \${liveuser}:\${liveuser} /home/\${liveuser}/.face
+	# TODO: would be nice to get e-d-s to pick this one up too... but how?
+fi
+
+# Use sed to fix up /etc/fstab (like the gdm.conf above)
+# TODO
+				
+ShowProgress "Make '\${liveuser}' user use Xfce"
+echo "startxfce4" > /home/\${liveuser}/.xsession
+chmod a+x /home/\${liveuser}/.xsession
+chown \${liveuser}:\${liveuser} /home/\${liveuser}/.xsession
+
+ShowProgress "Set User permissions - Can be removed once the ui hacks have gone"
+chown -R \${liveuser}:\${liveuser} /home/\${liveuser}/
+chmod 700 /home/\${liveuser}/
+
+EOF
+# The above all went into the /etc/init.d/fedora-live script
+
+ShowProgress "Fixing init of fedora-live"
+chmod 755 /etc/rc.d/init.d/fedora-live
+/sbin/restorecon /etc/rc.d/init.d/fedora-live
+
+ShowProgress "Actually run /etc/init.d/fedora-live"
+/sbin/chkconfig --add fedora-live
+
+ShowProgress "Save a little bit of space at least..."
+rm -f /boot/initrd*
 
 # workaround avahi segfault (#279301)
 touch /etc/resolv.conf
 /sbin/restorecon /etc/resolv.conf
 
-liveuser="eeedora"
-
-ShowProgress("Add '${liveuser}' user with no passwd")
-useradd -c "Eeedora Live" ${liveuser}
-passwd -d ${liveuser} > /dev/null
-
-ShowProgress("Replace bluecurve with xfce to get the default Xfce look for '${liveuser}'")
+ShowProgress "Replace bluecurve with xfce to get the default Xfce look for '${liveuser}'"
 # FIXME: should be done in the xfce-mcs-plugins package
 mkdir -p /home/${liveuser}/.config/xfce4/mcs_settings
 cat > /home/${liveuser}/.config/xfce4/mcs_settings/gtk.xml <<EOF
@@ -340,7 +464,7 @@ cat > /home/${liveuser}/.config/xfce4/mcs_settings/gtk.xml <<EOF
 </mcs-option>
 EOF
 
-ShowProgress("Replace default.png with default.jpg to get the background image")
+ShowProgress "Replace default.png with default.jpg to get the background image"
 # FIXME: this is a bug in the xfdesktop package, already (partly) fixed in cvs
 cat > /home/${liveuser}/.config/xfce4/mcs_settings/desktop.xml <<EOF
 <?xml version="1.0" encoding="UTF-8"?>
@@ -361,122 +485,7 @@ cat > /home/${liveuser}/.config/xfce4/mcs_settings/desktop.xml <<EOF
 </mcs-option>
 EOF
 
-# set up timed auto-login for after 20 seconds
-sed -i -e 's/\[daemon\]/[daemon]\nTimedLoginEnable=true\nTimedLogin=${liveuser}\nTimedLoginDelay=20/' /etc/gdm/custom.conf
-if [ -e /usr/share/icons/hicolor/96x96/apps/fedora-logo-icon.png ] ; then
-    cp /usr/share/icons/hicolor/96x96/apps/fedora-logo-icon.png /home/${liveuser}/.face
-    chown ${liveuser}:${liveuser} /home/${liveuser}/.face
-    # TODO: would be nice to get e-d-s to pick this one up too... but how?
-fi
-
-ShowProgress("Make '${liveuser}' user use Xfce")
-echo "startxfce4" > /home/${liveuser}/.xsession
-chmod a+x /home/${liveuser}/.xsession
-chown ${liveuser}:${liveuser} /home/${liveuser}/.xsession
-
-ShowProgress("Set User permissions - Can be removed once the ui hacks have gone")
-chown -R ${liveuser}:${liveuser} /home/${liveuser}/
-chmod 700 /home/${liveuser}/
-
-ShowProgress("/sbin/restorecon for ${liveuser} home directory")
+ShowProgress "/sbin/restorecon for ${liveuser} home directory"
 /sbin/restorecon -R /home/${liveuser}/
 chmod 700 /home/${liveuser}/
-
-ShowProgress("Creating /etc/rc.d/init.d/fedora-live  (needed for live version)")
-# FIXME: it'd be better to get this installed from a package
-# All the below (up until chmod 700 /home/fedora) is going into this script
-cat > /etc/rc.d/init.d/fedora-live << EOF
-#!/bin/bash
-#
-# live: Init script for live image
-#
-# chkconfig: 345 00 99
-# description: Init script for live image.
-
-ShowProgress() {
- echo $"init.d.fedora-live : $1" >> /etc/eeedora.progress
-}
-
-ShowProgress("Loading /etc/init.d/functions")
-. /etc/init.d/functions
-
-ShowProgress("Testing cmdline - go no further if not a live image")
-if ! strstr "\`cat /proc/cmdline\`" liveimg || [ "\$1" != "start" ] || [ -e /.liveimg-configured ] ; then
- ShowProgress("Apparently this was not a live image")
- exit 0
-fi
-
-exists() {
- which \$1 >/dev/null 2>&1 || return
- \$*
-}
-
-ShowProgress("Touching liveimg-configured")
-touch /.liveimg-configured
-
-ShowProgress("Mount live image")
-if [ -b /dev/live ]; then
- mkdir -p /mnt/live
- mount -o ro /dev/live /mnt/live
-fi
-
-if ! [ 1 ]; then # DISABLE CREATION OF SWAP PARTITION - SAVE FLASH RAM OVERWRITES
- ShowProgress("Enable swaps unless requested otherwise")
- # This is the list of current swap partitions
- swaps=\`blkid -t TYPE=swap -o device\`
- if ! strstr "\`cat /proc/cmdline\`" noswap -a [ -n "\$swaps" ] ; then
-  # Go through the list until we get a hit...
-  for s in \$swaps ; do
-    action "Enabling swap partition \$s" swapon \$s
-  done
- fi
-else
- ShowProgress("Eee has swap disabled")
-fi
-
-ShowProgress("Configure X, allowing user to override xdriver")
-for o in \`cat /proc/cmdline\` ; do
-    case \$o in
-    xdriver=*)
-        xdriver="--set-driver=\${o#xdriver=}"
-        ;;
-    esac
-done
-
-ShowProgress("system-config-display ($xdriver)")
-exists system-config-display --noui --reconfig --set-depth=24 \$xdriver
-
-ShowProgress("Unmute sound card")
-exists alsaunmute 0 2> /dev/null
-
-ShowProgress("Turn off firstboot for livecd boots")
-echo "RUN_FIRSTBOOT=NO" > /etc/sysconfig/firstboot
-
-# echo "don't start yum-updatesd for livecd boots")
-#chkconfig --level 345 yum-updatesd off
-
-ShowProgress("Don't start cron/at as they tend to be painful in a Live context")
-# don't start cron/at as they tend to spawn things which are
-# disk intensive that are painful on a live image
-chkconfig --level 345 crond off
-chkconfig --level 345 atd off
-chkconfig --level 345 anacron off
-chkconfig --level 345 readahead_early off
-chkconfig --level 345 readahead_later off
-
-ShowProgress("Stopgap fix for RH #217966; should be fixed in HAL instead")
-touch /media/.hal-mtab
-
-# disable screensaver locking
-gconftool-2 --direct --config-source=xml:readwrite:/etc/gconf/gconf.xml.defaults -s -t bool /apps/gnome-screensaver/lock_enabled false >/dev/null
-EOF
-# The above all went into the /etc/init.d/fedora-live script
-
-ShowProgress("Fixing init of fedora-live")
-chmod 755 /etc/rc.d/init.d/fedora-live
-/sbin/restorecon /etc/rc.d/init.d/fedora-live
-
-ShowProgress("Last : Actually run init of fedora-live")
-/sbin/chkconfig --add fedora-live
-
 %end
