@@ -31,6 +31,19 @@ grep "Installing" livecd-creator.output | sort > packages.output
 # Switch the Harddisk to the USB drive (not the internal one)
 # Then, the machine will look to the USB first.
 
+# Booting a USB drive on the Eee : 
+#  Switch off machine
+#  Insert bootable USB drive in any socket
+#  Switch on machine
+#  Press F2 once for the BIOS Setup
+#  Right arrow across to Boot
+#  Set 'BootBooster' to disabled (gives you more time at start)
+#  Set 'Hard Disk Drives' to have the USB device as 1st Drive
+#  Set 'Boot Device Priority' to have the HDD (now the USB drive) at the top
+#  Save and Exit
+#  It should boot into the USB drive
+
+
 echo -n $"Write to USB drive on /dev/sdb1 ? [yes/NO] "
 read answer1
 if [ "$answer1" = "yes" ] ; then
@@ -47,6 +60,8 @@ if [ "$answer1" = "yes" ] ; then
  fi
 fi
 
+exit 0;
+
 ### Notes on USB Flash drives for 
 # http://www.redhat.com/archives/kickstart-list/2005-October/msg00062.html
 
@@ -60,6 +75,17 @@ fi
 # Create an empty partition on the USB : 
 #  FAT16 (vfat) Bootable (becomes /dev/sdb1), using :
 # /sbin/cfdisk /dev/sdb
+
+
+# Mounting the Live Image for checking...
+
+mkdir /media/eeedora-image
+mount -o loop -t squashfs /media/disk/LiveOS/squashfs.img  /media/eeedora-image
+ls -l /media/eeedora-image/
+
+mkdir /media/liveos-ext3
+mount -o loop -t ext3 /media/eeedora-image/LiveOS/ext3fs.img  /media/liveos-ext3
+ls -l /media/liveos-ext3/
 
 
 # revisor.conf information :
