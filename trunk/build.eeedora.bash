@@ -17,6 +17,14 @@ grep "Installing" livecd-creator.output | sort > packages.output
 
 #### TO DO : 
 # Check install works
+# Get the eth0 connection working : 
+#   atheros L2 100Mbit Ethernet adapter (PCI)
+#   driver : atl2 (i.e. ATL2)
+#   LOOK AT : http://forums.fedoraforum.org/showthread.php?t=162793&page=1&pp=15
+# Get the wlan0 connection working : 
+#   atheros AR5007EG 802.11 b/g wireless
+#   driver : ath_pci
+
 # Fix up /etc/fstab : 
 # noatime for the ext2 /dev/sda
 # Add a tmpfs for the logging, like in :
