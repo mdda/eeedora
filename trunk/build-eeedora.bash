@@ -7,7 +7,7 @@ eeedora=EeeDora-`date +%F.%T`
 
 # This is the drive to put the USB Live image on to
 usbdrive=/dev/sdb
-usbpart =/dev/sdb1
+usbpart=/dev/sdb1
 
 
 # Now for the code :
