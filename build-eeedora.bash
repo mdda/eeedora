@@ -2,9 +2,25 @@
 
 # EeeDora Announcement : http://forum.eeeuser.com/viewforum.php?id=10
 
+# This is the ISO name (and the name of the distribution)
+eeedora=EeeDora-`date +%F.%T`
+
+# This is the drive to put the USB Live image on to
+usbdrive=/dev/sdb
+usbpart =/dev/sdb1
+
+
+# Now for the code :
+
+# Create the repository of eee specific rpms (used in kickstart file)
+pushd .
+cd rpms-for-eee
+createrepo .
+popd .
+
 # See : http://fedoraproject.org/wiki/FedoraLiveCD/LiveCDHowTo
 
-eeedora="EeeDora-20071119"
+# This caches rpms locally (you should clean this out once you're done)
 mkdir yum-cache 
 
 livecd-creator \
@@ -24,6 +40,7 @@ grep "Installing" livecd-creator.output | sort > packages.output
 # Get the wlan0 connection working : 
 #   atheros AR5007EG 802.11 b/g wireless
 #   driver : ath_pci
+#   LOOK AT : http://wiki.eeeuser.com/ubuntu
 
 # Fix up /etc/fstab : 
 # noatime for the ext2 /dev/sda
@@ -52,18 +69,18 @@ grep "Installing" livecd-creator.output | sort > packages.output
 #  It should boot into the USB drive
 
 
-echo -n $"Write to USB drive on /dev/sdb1 ? [yes/NO] "
+echo -n $"Write to USB drive on ${usbpart} ? [yes/NO] "
 read answer1
 if [ "$answer1" = "yes" ] ; then
- echo -n $"Are you sure you want to put it on /dev/sdb1 ? [yes/NO] "
+ echo -n $"Are you sure you want to put it on ${usbpart} ? [yes/NO] "
  read answer2
  if [ "$answer2" = "yes" ] ; then
   # See : http://fedoraproject.org/wiki/FedoraLiveCD/USBHowTo
-  /usr/bin/livecd-iso-to-disk ${eeedora}.iso /dev/sdb1 
-  echo -n $"Run a QEMU session to test the USB Image on /dev/sdb1 ? [yes/NO] "
+  /usr/bin/livecd-iso-to-disk ${eeedora}.iso ${usbdrive}
+  echo -n $"Run a QEMU session to test the USB Image on ${usbdrive} ? [yes/NO] "
    read answer3
    if [ "$answer3" = "yes" ] ; then
-    qemu -hda /dev/sdb -m 256 -std-vga -no-kqemu
+    qemu -hda ${usbdrive} -m 256 -std-vga -no-kqemu
    fi
  fi
 fi

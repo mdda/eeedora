@@ -1,0 +1,17 @@
+#! /bin/bash
+
+# This takes the given atl2 source code tar and makes the kernel module
+
+driverver=1.0.40.4
+
+pushd .
+tar -xzf atl2-${driverver}.tar.gz
+cd atl2-${driverver}/src
+
+make clean
+make 
+
+popd 
+
+cp atl2-${driverver}/src/atl2.ko .
+rm -rI atl2-${driverver}

@@ -1,0 +1,13 @@
+#! /bin/bash
+
+driverver=1.0.40.4
+
+cp atl2-${driverver}.tar.gz /usr/src/redhat/SOURCES/
+tar -xzf atl2-${driverver}.tar.gz
+rpmbuild -ba atl2-${driverver}/atl2.spec
+
+cp /usr/src/redhat/SRPMS/atl2-${driverver}-1.src.rpm .
+cp /usr/src/redhat/RPMS/i386/atl2-${driverver}-1.i386.rpm .
+cp /usr/src/redhat/RPMS/i386/atl2-debuginfo-${driverver}-1.i386.rpm .
+
+rm -rI atl2-${driverver}
