@@ -76,7 +76,10 @@ if [ "$answer1" = "yes" ] ; then
  read answer2
  if [ "$answer2" = "yes" ] ; then
   # See : http://fedoraproject.org/wiki/FedoraLiveCD/USBHowTo
-  /usr/bin/livecd-iso-to-disk ${eeedora}.iso ${usbdrive}
+  /usr/bin/livecd-iso-to-disk ${eeedora}.iso ${usbpart}
+		mkdir ${usbpart}/drivers
+		cp drivers/atl2/atl2.ko ${usbpart}/drivers/
+		cp scripts/install-atl2 ${usbpart}/drivers/
   echo -n $"Run a QEMU session to test the USB Image on ${usbdrive} ? [yes/NO] "
    read answer3
    if [ "$answer3" = "yes" ] ; then

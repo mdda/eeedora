@@ -4,7 +4,7 @@
 # be in the same directory (which sucks - but it'll do until we've RPMed everything)
 
 mkdir /lib/modules/`uname -r`/kernel/drivers/net/atl2
-cp atl2.ko /lib/modules/`uname -r`/kernel/drivers/net/atl2/
+cp /mnt/live/drivers/atl2.ko /lib/modules/`uname -r`/kernel/drivers/net/atl2/
 /sbin/depmod -a
 
 # Do this as a force since the mirror repo in the ks 
