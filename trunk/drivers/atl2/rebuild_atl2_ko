@@ -1,6 +1,7 @@
 #! /bin/bash
 
-# This takes the given atl2 source code tar and makes the kernel module
+# This takes the given atl2 source code tarball; 
+# makes the kernel module and drops it here
 
 driverver=1.0.40.4
 
@@ -14,4 +15,5 @@ make
 popd 
 
 cp atl2-${driverver}/src/atl2.ko .
+echo "About to remove expanded atl2-${driverver} source code tree"
 rm -rI atl2-${driverver}
