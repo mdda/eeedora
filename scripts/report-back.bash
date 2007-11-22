@@ -21,4 +21,4 @@ cp /etc/X11/xorg.conf .
 cp /var/log/Xorg.0.log .
 history > history.txt
 
-popd .
+popd 

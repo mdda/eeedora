@@ -9,6 +9,9 @@ eeedora=EeeDora-`date +%F.%T`
 usbdrive=/dev/sdb
 usbpart=/dev/sdb1
 
+# This is just a temporary mount point
+usbmount=/media/temp-usb-mountpoint
+
 
 # Now for the code :
 
@@ -16,7 +19,7 @@ usbpart=/dev/sdb1
 pushd .
 cd rpms-for-eee
 createrepo .
-popd .
+popd
 
 # See : http://fedoraproject.org/wiki/FedoraLiveCD/LiveCDHowTo
 
@@ -77,9 +80,15 @@ if [ "$answer1" = "yes" ] ; then
  if [ "$answer2" = "yes" ] ; then
   # See : http://fedoraproject.org/wiki/FedoraLiveCD/USBHowTo
   /usr/bin/livecd-iso-to-disk ${eeedora}.iso ${usbpart}
-		mkdir ${usbpart}/drivers
-		cp drivers/atl2/atl2.ko ${usbpart}/drivers/
-		cp scripts/install-atl2 ${usbpart}/drivers/
+
+  # Remove this later - the drivers are going to go into RPMs anyway
+  mkdir ${usbmount}
+		mount ${usbpart} ${usbmount}
+		mkdir ${usbmount}/drivers
+		cp drivers/atl2/atl2.ko ${usbmount}/drivers/
+		cp scripts/install-atl2 ${usbmount}/drivers/
+		umount ${usbmount}
+
   echo -n $"Run a QEMU session to test the USB Image on ${usbdrive} ? [yes/NO] "
    read answer3
    if [ "$answer3" = "yes" ] ; then
