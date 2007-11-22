@@ -38,6 +38,6 @@ cp atl2.ko /lib/modules/`uname -r`/kernel/drivers/net/atl2/
 /sbin/modprobe -f atl2 
 }}}
 
-== ToDo ... ==
+== To Do ... ==
    * Upload the full (updated) source ASAP 
    * Email the Atheros tech guy (xiong.huang@atheros.com) to help him out
