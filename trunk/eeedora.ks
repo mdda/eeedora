@@ -146,6 +146,8 @@ liberation-fonts
 -xorg-x11-twm
 -xorg-x11-utils
 
+%include eeedora.ks.include-xorg-tidy
+
 # Kill unnecessary fonts
 -lohit-fonts-*
 #-lohit-fonts-bengali
@@ -201,7 +203,7 @@ xfce4-battery-plugin
 
 -xfce4-clipman-plugin
 # Use datetime instead
--xfce4-clock
+-xfce4-clock-plugin
 xfce4-cpugraph-plugin
 # This is better than the simple clock
 xfce4-datetime-plugin

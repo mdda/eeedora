@@ -1,9 +1,10 @@
 #! /bin/bash
 
 # EeeDora Announcement : http://forum.eeeuser.com/viewforum.php?id=10
+dt='date +%F.%T'
 
 # This is the ISO name (and the name of the distribution)
-eeedora=EeeDora-`date +%F.%T`
+eeedora=EeeDora-`${dt}`
 
 # This is the drive to put the USB Live image on to
 usbdrive=/dev/sdb
@@ -31,7 +32,7 @@ ln -s `pwd`/rpms-for-eee /mnt/eee-specific
 # This caches rpms locally (you should clean this out once you're done)
 mkdir yum-cache 
 
-creatingstart=`date +%F.%T`
+creatingstart=`${dt}`
 
 livecd-creator \
   --config=./eeedora.ks \
@@ -39,7 +40,7 @@ livecd-creator \
   --fslabel=${eeedora} \
   | tee livecd-creator.output
 
-grep "Installing" livecd-creator.output | sort > packages.output
+grep "Installing" livecd-creator.output | sort | sed 's|\r||'> packages.output
 
 rm -f /mnt/eee-specific
 
@@ -79,7 +80,7 @@ rm -f /mnt/eee-specific
 #  Save and Exit
 #  It should boot into the USB drive
 
-creatingend=`date +%F.%T`
+creatingend=`${dt}`
 
 usbcopystart='Not Done'
 usbcopyend='Not Done'
@@ -91,7 +92,7 @@ if [ "$answer1" = "yes" ] ; then
  read answer2
  if [ "$answer2" = "yes" ] ; then
   # See : http://fedoraproject.org/wiki/FedoraLiveCD/USBHowTo
-  usbcopystart=`date +%F.%T`
+  usbcopystart=`${dt}`
 
   /usr/bin/livecd-iso-to-disk ${eeedora}.iso ${usbpart}
 
@@ -110,7 +111,7 @@ if [ "$answer1" = "yes" ] ; then
 		umount ${usbmount}
   rmdir ${usbmount}
 		
-  usbcopyend=`date +%F.%T`
+  usbcopyend=`${dt}`
  
   echo -n $"Run a QEMU session to test the USB Image on ${usbdrive} ? [yes/NO] "
   read answer3
