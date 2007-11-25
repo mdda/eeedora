@@ -40,4 +40,4 @@ cp atl2.ko /lib/modules/`uname -r`/kernel/drivers/net/atl2/
 
 == To Do ... ==
    * Upload the full (updated) source ASAP 
-   * Email the Atheros tech guy (xiong.huang@atheros.com) to help him out
+   * Email the Atheros tech guy (xiong.huang *AT* atheros.com) to help him out
