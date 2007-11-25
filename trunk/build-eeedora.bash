@@ -161,3 +161,5 @@ ls -l /media/liveos-ext3/
 #	--debug \
 #	--gui \
 #	--model=f8-i386 \
+
+# Hmm : What is a PC-e mini slot ?
