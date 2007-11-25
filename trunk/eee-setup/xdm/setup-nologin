@@ -12,6 +12,12 @@ sed -i -e 's|^1:2345:respawn:/sbin/mingetty tty1$|& --autologin '${liveuser}'|' 
 
 # http://www.grymoire.com/Unix/Sed.html#uh-0
 
-# append to bash_profile:
+# append to bash_profile - this includes a powerdown, so that the 'liveuser' can logout=switch off
 cat ${tarball}/xdm/autologin-appendto-dot-bash_profile >> /home/${liveuser}/.bash_profile
 
+# into /etc/sudoers :
+# %users    localhost=NOPASSWD:/sbin/reboot, /sbin/poweroff
+# or :
+# %nopasswd ALL=(root) NOPASSWD: /usr/bin/conky, /sbin/halt, /sbin/reboot, /sbin/shutdown, /usr/sbin/xfsm-shutdown-helper, /usr/bin/thunar, /usr/bin/mousepad, /usr/sbin/synaptic
+#echo >> /etc/sudoers # This is just a newline
+#echo ${liveuser}' localhost=NOPASSWD:/sbin/reboot, /sbin/poweroff' >> /etc/sudoers

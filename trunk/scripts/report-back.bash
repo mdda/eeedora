@@ -3,7 +3,7 @@
 # This just dumps a complete state-of-play into a dated subdirectory 
 # of the current dir - useful for information gathering on the (tiny) Eee
 
-dated = eee-fedora.`date +%F.%T`
+dated=eee-fedora.`date +%F_%H-%M`
 
 mkdir ${dated}
 

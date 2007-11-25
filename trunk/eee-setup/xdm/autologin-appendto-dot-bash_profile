@@ -1,3 +1,5 @@
+# This is appended when there's no display-manager
+# Normally, gdm or xdm would take care of this
 
 #if [ `tty` = "/dev/tty1" ]; then
 # startx
@@ -5,5 +7,5 @@
 
 if [ -z "$DISPLAY" ] && [ $(tty) == /dev/tty1 ]; then
  startx; 
-	#sudo poweroff;
+	sudo /sbin/poweroff;
 fi

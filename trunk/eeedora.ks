@@ -1,3 +1,7 @@
+# Kickstart file for EeeDora - Fedora for the EeePC
+
+# Interesting : http://rhcelinuxguide.wordpress.com/2006/06/23/linux-install-options-in-fedora/
+
 lang en_US.UTF-8
 keyboard us
 timezone US/Eastern
@@ -149,18 +153,11 @@ liberation-fonts
 -xorg-x11-twm
 -xorg-x11-utils
 
-# %include eeedora.ks.include-xorg-tidy
+%include eeedora.ks.include-xorg-tidy
 
 # Kill unnecessary fonts
 -lohit-fonts-*
-#-lohit-fonts-bengali
-#-lohit-fonts-gujarati
-#-lohit-fonts-hindi
-#-lohit-fonts-kannada
-#-lohit-fonts-oriya
-#-lohit-fonts-punjabi
-#-lohit-fonts-tamil
-#-lohit-fonts-telugu
+-paktype-fonts
 -kacst-fonts
 -jomolhari-fonts
 -dejavu-lgc-fonts
@@ -176,8 +173,6 @@ liberation-fonts
 
 -glx-utils
 -authconfig-gtk
--paktype-fonts
--pirut
 -policycoreutils-gui
 -smolt-firstboot
 
@@ -199,7 +194,7 @@ xfwm4-themes
 gtk-xfce-engine
 
 # This is needed only for XFCE programs (like mousepad which we don't want) to print
--xfprint
+xfprint
 # But ...  xfce4-panel requires mousepad - which in turn requires xfprint - which pulls in the whole of tetex
 
 # Here are some of the pretty xfce4 plugins
@@ -230,7 +225,7 @@ xfce4-places-plugin
 # This may just be useful for now
 xfce4-screenshooter-plugin
 -xfce4-sensors-plugin
-# This may be manditory, though
+# This may be mandatory, though
 -xfce4-session
 -xfce4-smartbookmark-plugin
 # I like this 
@@ -314,16 +309,22 @@ xdg-user-dirs
 -zd1211-firmware
 -aspell*
 -setroubleshoot
--bluez*
--festival*
--gnome-bluetooth-libs
--gnome-speech
 -irda*
+
+# Bluetooth
+-bluez*
+-gnome-bluetooth-libs
+
+# Speech synthesis
+-festival*
+-gnome-speech
+
 
 # more things we don't need in Xfce
 -evolution
 -evolution-webcal
 -evolution-data-server
+
 -gnome-panel
 -gnome-desktop
 -gnome-user-docs

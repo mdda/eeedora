@@ -1,7 +1,7 @@
 #! /bin/bash
 
 # EeeDora Announcement : http://forum.eeeuser.com/viewforum.php?id=10
-dt='date +%F.%T'
+dt='date +%F_%H-%M'
 
 # This is the ISO name (and the name of the distribution)
 eeedora=EeeDora-`${dt}`
@@ -33,6 +33,8 @@ ln -s `pwd`/rpms-for-eee /mnt/eee-specific
 mkdir yum-cache 
 
 creatingstart=`${dt}`
+
+echo "Starting ISO creation at ${creatingstart}"
 
 livecd-creator \
   --config=./eeedora.ks \
