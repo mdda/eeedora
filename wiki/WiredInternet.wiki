@@ -33,8 +33,8 @@ mkdir /lib/modules/`uname -r`/kernel/drivers/net/atl2
 cp atl2.ko /lib/modules/`uname -r`/kernel/drivers/net/atl2/
 /sbin/depmod -a
 
-# Do this as a force since the mirror repo in the .ks 
-# may have a slightly dated kernel (no big deal)
+# Do this as a force since this was compiled against 2.6.23.1-49.fc8,
+# and your kernel may be different (should be no big deal, as long as it's Fedora 8)
 /sbin/modprobe -f atl2 
 }}}
 
