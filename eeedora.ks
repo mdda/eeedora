@@ -88,6 +88,7 @@ yum-skip-broken
 
 openssh-clients
 openssh-server
+openssh-askpass
 
 # No need on the Eee
 # @ hardware-support 
@@ -146,7 +147,7 @@ liberation-fonts
 -xorg-x11-twm
 -xorg-x11-utils
 
-%include eeedora.ks.include-xorg-tidy
+# %include eeedora.ks.include-xorg-tidy
 
 # Kill unnecessary fonts
 -lohit-fonts-*
@@ -174,8 +175,7 @@ liberation-fonts
 -glx-utils
 -authconfig-gtk
 -paktype-fonts
-pirut
-openssh-askpass
+-pirut
 -policycoreutils-gui
 -smolt-firstboot
 
@@ -196,11 +196,14 @@ system-config-soundcard
 xfwm4-themes
 gtk-xfce-engine
 
+# This is needed only for XFCE programs (like mousepad which we don't want) to print
+-xfprint
+# But ...  xfce4-panel requires mousepad - which in turn requires xfprint - which pulls in the whole of tetex
+
 # Here are some of the pretty xfce4 plugins
 
 # Good for the Eee
 xfce4-battery-plugin
-
 -xfce4-clipman-plugin
 # Use datetime instead
 -xfce4-clock-plugin
