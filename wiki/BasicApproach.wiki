@@ -1,6 +1,6 @@
 #summary How this whole thing works
 
-= Introduction =
+== Introduction ==
 
 Fedora includes a tool called kickstart that makes building distributions 'easy'.
 
@@ -10,7 +10,7 @@ Also, since the Eee has non-standard drivers required for the wired ethernet (at
 
 Rather than face RPM version hell (since each user will probably be building this on slightly different kernel versions), I decided to take the easy way out :  Build a since RPM that contains a tar-ball of everything that's needed on the Eee itself.
 
-= The RPM : eee_tarball =
+== The RPM : eee_tarball ==
 
 In the `eee-setup` directory, there's a script that builds an RPM of scripts and settings, ready to be untarred in the /root/ directory.
 
