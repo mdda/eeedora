@@ -10,4 +10,15 @@
 #If have not tried to feed it packages this way, but partitioning,
 #network, password, %post, etc work fine...
 
-/usr/bin/liveinst /root/eee_tarball/misc/eee-live-install.ks
+tarball=/root/eee_tarball
+
+. /etc/init.d/functions
+
+# Are we running this from a live image?  If not, then WTF!
+if ! strstr "`cat /proc/cmdline`" liveimg || [ "$1" != "start" ] || [ -e /.liveimg-configured ] ; then
+ echo "Apparently this is not a live image - please don't try to install on top of it!"
+ exit 0
+fi
+
+/usr/bin/liveinst ${tarball}/live_install/eee-live-install.ks
+# Wowza!

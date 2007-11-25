@@ -27,10 +27,35 @@ services --enabled=NetworkManager,network,sshd
 # This is for the real install
 clearpart --drives sda
 part / --fstype ext2 --size 1 --ondisk=sda --asprimary --grow
-
 #part swap --recommended DO NOT WANT
 
 # A default public root password - not the best idea.
 rootpw eee
 
 %post
+ShowProgress() {
+ echo $"LiveInstall : $1" >> /etc/eeedora.progress
+}
+# By this stage, this is already on the new machine, opened up
+tarball=/root/eee_tarball
+
+
+fedoranonlive=/etc/rc.d/init.d/fedora-nonlive
+
+ShowProgress "Creating ${fedoranonlive} (needed for post-install processing)"
+cp ${tarball}/services/fedora-nonlive ${fedoranonlive} 
+chmod 755 ${fedoranonlive}
+/sbin/restorecon ${fedoranonlive}
+
+ShowProgress "Set ${fedoranonlive} as the task after this script is done"
+/sbin/chkconfig --add fedora-nonlive
+
+#ShowProgress "Save a little bit of space at least..."
+#rm -f /boot/initrd*
+
+# workaround avahi segfault (#279301)
+#touch /etc/resolv.conf
+#/sbin/restorecon /etc/resolv.conf
+
+ShowProgress "End of Kickstart script"
+%end
