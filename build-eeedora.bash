@@ -16,15 +16,22 @@ usbmount=/media/temp-usb-mountpoint
 # Now for the code :
 
 # Create the repository of eee specific rpms (used in kickstart file)
-pushd .
-cd rpms-for-eee
-createrepo .
-popd
+mkdir -p rpms-for-eee/i386
+# There really needs to be rpms in there, though...
+# TODO : Add a check for decent RPM (eee_tarball-x.y.z.a.rpm)
+
+createrepo rpms-for-eee
+
+# set up a link for the repo 
+ln -s `pwd`/rpms-for-eee /mnt/eee-specific
+
 
 # See : http://fedoraproject.org/wiki/FedoraLiveCD/LiveCDHowTo
 
 # This caches rpms locally (you should clean this out once you're done)
 mkdir yum-cache 
+
+creatingstart=`date +%F.%T`
 
 livecd-creator \
   --config=./eeedora.ks \
@@ -33,6 +40,8 @@ livecd-creator \
   | tee livecd-creator.output
 
 grep "Installing" livecd-creator.output | sort > packages.output
+
+rm -f /mnt/eee-specific
 
 #### TO DO : 
 # Check install works
@@ -51,7 +60,6 @@ grep "Installing" livecd-creator.output | sort > packages.output
 #     http://forum.eeeuser.com/viewtopic.php?id=890
 
 # Make auto-login smooth, with desktop showing
-# Put in suitable xorg.conf
 
 
 ### NB : To boot of a flash drive, put it in the USB slot, and switch on the machine
@@ -71,6 +79,7 @@ grep "Installing" livecd-creator.output | sort > packages.output
 #  Save and Exit
 #  It should boot into the USB drive
 
+creatingend=`date +%F.%T`
 
 echo -n $"Write to USB drive on ${usbpart} ? [yes/NO] "
 read answer1
@@ -79,23 +88,37 @@ if [ "$answer1" = "yes" ] ; then
  read answer2
  if [ "$answer2" = "yes" ] ; then
   # See : http://fedoraproject.org/wiki/FedoraLiveCD/USBHowTo
+  usbcopystart=`date +%F.%T`
+
   /usr/bin/livecd-iso-to-disk ${eeedora}.iso ${usbpart}
 
-  # Remove this later - the drivers are going to go into RPMs anyway
   mkdir ${usbmount}
-		mount ${usbpart} ${usbmount}
-		mkdir ${usbmount}/drivers
-		cp drivers/atl2/atl2.ko ${usbmount}/drivers/
-		cp scripts/install-atl2 ${usbmount}/drivers/
-		umount ${usbmount}
 
+  # Remove this later - the drivers are going to go into RPMs anyway
+		mount ${usbpart} ${usbmount}
+#		mkdir ${usbmount}/drivers
+#		cp drivers/atl2/atl2.ko ${usbmount}/drivers/
+#  cp scripts/install-atl2 ${usbmount}/drivers/
+
+  # Actually, the scripts are a good thing for development...
+  mkdir ${usbmount}/scripts
+		cp scripts/report-back.bash ${usbmount}/drivers/
+		cp scripts/start-xfce ${usbmount}/drivers/
+		umount ${usbmount}
+  rmdir ${usbmount}
+		
+  usbcopyend=`date +%F.%T`
+ 
   echo -n $"Run a QEMU session to test the USB Image on ${usbdrive} ? [yes/NO] "
-   read answer3
-   if [ "$answer3" = "yes" ] ; then
-    qemu -hda ${usbdrive} -m 256 -std-vga -no-kqemu
-   fi
+  read answer3
+  if [ "$answer3" = "yes" ] ; then
+   qemu -hda ${usbdrive} -m 256 -std-vga -no-kqemu
+  fi
  fi
 fi
+
+echo "Created ISO       : ${creatingstart} to ${creatingend}"
+echo "Copied ISO to USB : ${usbcopystart} to ${usbcopyend}"
 
 exit 0;
 
