@@ -1,0 +1,15 @@
+The dot-config tarball is a set of comfortable settings for XFCE.
+
+You can create your own by getting an XFCE environment just like you like is
+and then running : 
+
+tar -czf SOMEONE-dot-config.tar.gz /home/SOMEONE/.config
+
+and storing the resulting file in this directory.
+
+It will then appear in the /root/eee_tarball/xfce directory once the RPM is
+rebuilt.
+
+You can then unzip it into the right place with:
+tar -xzf /root/eee_tarball/xfce/SOMETHING-dot-config.tar.gz -C /home/SOMEONE/
+

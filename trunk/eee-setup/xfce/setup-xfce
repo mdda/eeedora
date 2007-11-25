@@ -1,0 +1,66 @@
+#! /bin/bash
+
+tarball=$1
+liveuser=$2
+
+# ShowProgress "Make '${liveuser}' user use XFCE"
+xsession=/home/${liveuser}/.xsession
+cp ${tarball}/xfce/dot-xsession ${xsession}
+xinitrc=/home/${liveuser}/.xinitrc
+cp ${tarball}/xfce/dot-xinitrc ${xinitrc}
+chmod a+x ${xsession} ${xinitrc}
+chown ${lieuser}:${liveuser} ${xsession} ${xinitrc}
+
+# ShowProgress "Copy over my beautiful XFCE settings to ${liveuser}"
+tar -xzf ${tarball}/xfce/eeedora-dot-config.tar.gz -C ${tarball}/xfce/
+mkdir /home/${liveuser}/.config/
+cp -R ${tarball}/xfce/eeedora-dot-config/* /home/${liveuser}/.config/ 
+
+
+# This stuff has been replace by the above drop-in xfce configuration tar 
+# stored in the eee_tarball
+
+#ShowProgress "Replace bluecurve with xfce to get the default Xfce look for '${liveuser}'"
+## FIXME: should be done in the xfce-mcs-plugins package
+#mkdir -p /home/${liveuser}/.config/xfce4/mcs_settings
+#cat > /home/${liveuser}/.config/xfce4/mcs_settings/gtk.xml <<EOF
+#<?xml version="1.0" encoding="UTF-8"?>
+#<!DOCTYPE mcs-option SYSTEM "mcs-option.dtd">
+#
+#<mcs-option>
+#<option name="Gtk/FontName" type="string" value="Sans 9"/>
+#	<option name="Gtk/KeyThemeName" type="string" value="Default"/>
+#	<option name="Gtk/ToolbarStyle" type="string" value="icons"/>
+#	<option name="Net/CursorBlink" type="int" value="1"/>
+#	<option name="Net/CursorBlinkTime" type="int" value="500"/>
+#	<option name="Net/DndDragThreshold" type="int" value="8"/>
+#	<option name="Net/DoubleClickTime" type="int" value="300"/>
+#	<option name="Net/IconThemeName" type="string" value="Rodent"/>
+#	<option name="Net/ThemeName" type="string" value="Xfce"/>
+#	<option name="Xft/Antialias" type="int" value="1"/>
+#	<option name="Xft/HintStyle" type="string" value="hintfull"/>
+#	<option name="Xft/Hinting" type="int" value="1"/>
+#	<option name="Xft/RGBA" type="string" value="none"/>
+#</mcs-option>
+#EOF
+
+#ShowProgress "Replace default.png with default.jpg to get the background image"
+## FIXME: this is a bug in the xfdesktop package, already (partly) fixed in cvs
+#cat > /home/${liveuser}/.config/xfce4/mcs_settings/desktop.xml <<EOF
+#<?xml version="1.0" encoding="UTF-8"?>
+#<!DOCTYPE mcs-option SYSTEM "mcs-option.dtd">
+#
+#<mcs-option>
+#	<option name="brightness_0_0" type="int" value="0"/>
+#	<option name="color1_0_0" type="color" value="           15104,           23296,           35072,           65535"/>
+#	<option name="color2_0_0" type="color" value="           15872,           26624,           40448,           65535"/>
+#	<option name="colorstyle_0_0" type="int" value="0"/>
+#	<option name="desktopiconstyle" type="int" value="2"/>
+#	<option name="icons_use_system_font_size" type="int" value="1"/>
+#	<option name="imagepath_0_0" type="string" value="/usr/share/backgrounds/images/default.jpg"/>
+#	<option name="imagestyle_0_0" type="int" value="3"/>
+#	<option name="showdm" type="int" value="1"/>
+#	<option name="showimage_0_0" type="int" value="1"/>
+#	<option name="showwl" type="int" value="1"/>
+#</mcs-option>
+#EOF

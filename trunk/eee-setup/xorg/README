@@ -1,0 +1,5 @@
+The xandros default xorg.com is used as the 'known correct' one.
+
+The fedora one is just the one that anaconda generates by default (and
+doesn't take into account the extra potential display on the VGA port).
+

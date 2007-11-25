@@ -1,0 +1,16 @@
+#! /bin/bash
+
+tarball=$1
+liveuser=$2
+
+displaymanager=`rpm -qa *xdm gdm`
+
+# TODO : if *xdm or gdm is installed then don't do this...
+ShowProgress "Autologin ${liveuser} with no password screen"
+${tarball}/xdm/setup-nologin ${tarball} ${liveuser}
+
+# xdm alternative :
+# ${tarball}/xdm/setup-xdm ${tarball} ${liveuser}
+
+# gdm alternative :
+# ${tarball}/xdm/setup-gdm ${tarball} ${liveuser}

@@ -1,0 +1,12 @@
+#! /bin/bash
+
+# You've got to be root to do this -
+# it depends on the eee_tarball being located in /root/
+
+mkdir /lib/modules/`uname -r`/kernel/drivers/net/atl2
+cp /root/eee_tarball/atl2/atl2.ko /lib/modules/`uname -r`/kernel/drivers/net/atl2/
+/sbin/depmod -a
+
+# Do this as a force since the mirror repo in the ks 
+# may have a slightly dated kernel (no big deal)
+/sbin/modprobe -f atl2 
