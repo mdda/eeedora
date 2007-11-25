@@ -1,12 +1,12 @@
 #! /bin/bash
 
-tarball=$1
-liveuser=$2
-
-displaymanager=`rpm -qa *xdm gdm`
+tarball=${1:-/root/eee_tarball}
+liveuser=${2:-eeedora}
 
 # TODO : if *xdm or gdm is installed then don't do this...
-ShowProgress "Autologin ${liveuser} with no password screen"
+#displaymanager=`rpm -qa *xdm gdm`
+
+# ShowProgress "Autologin ${liveuser} with no password screen"
 ${tarball}/xdm/setup-nologin ${tarball} ${liveuser}
 
 # xdm alternative :

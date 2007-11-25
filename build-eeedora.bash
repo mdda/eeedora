@@ -81,6 +81,9 @@ rm -f /mnt/eee-specific
 
 creatingend=`date +%F.%T`
 
+usbcopystart='Not Done'
+usbcopyend='Not Done'
+
 echo -n $"Write to USB drive on ${usbpart} ? [yes/NO] "
 read answer1
 if [ "$answer1" = "yes" ] ; then

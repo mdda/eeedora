@@ -1,7 +1,7 @@
 #! /bin/bash
 
-tarball=$1
-liveuser=$2
+tarball=${1:-/root/eee_tarball}
+liveuser=${2:-eeedora}
 
 # TODO : if gdm installed then :
 # set up timed auto-login for after 20 seconds
