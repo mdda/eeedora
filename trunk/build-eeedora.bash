@@ -108,8 +108,9 @@ if [ "$answer1" = "yes" ] ; then
 
   # Actually, the scripts are a good thing for development...
   mkdir ${usbmount}/scripts
-		cp scripts/report-back.bash ${usbmount}/drivers/
-		cp scripts/start-xfce ${usbmount}/drivers/
+#  cp scripts/install-atl2 ${usbmount}/scripts/
+		cp scripts/report-back.bash ${usbmount}/scripts/
+#		cp scripts/start-xfce ${usbmount}/scripts/
 		umount ${usbmount}
   rmdir ${usbmount}
 		
