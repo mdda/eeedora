@@ -1,2 +1,18 @@
 #! /bin/bash
 
+version=1.0.40.4
+
+tarfile=atl2-${version}.tar.gz
+directory=atl2-${version}
+
+tar -xzf ${tarfile}
+pushd .
+
+cd ${directory}/src
+make clean
+make
+
+popd
+cp ${directory}/src/atl2.ko .
+
+rm -rf ${directory}
