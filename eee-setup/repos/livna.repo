@@ -1,0 +1,14 @@
+[livna]
+name=Livna for Fedora Core $releasever - $basearch - Base
+baseurl=
+        http://rpm.livna.org/fedora/$releasever/$basearch/
+        http://livna.cat.pdx.edu/fedora/$releasever/$basearch/
+        http://wftp.tu-chemnitz.de/pub/linux/livna/fedora/$releasever/$basearch/
+        http://ftp-stud.fht-esslingen.de/pub/Mirrors/rpm.livna.org/fedora/$releasever/$basearch/
+        http://mirror.atrpms.net/livna/fedora/$releasever/$basearch/
+        ftp://mirrors.tummy.com/pub/rpm.livna.org/fedora/$releasever/$basearch/
+failovermethod=priority
+#mirrorlist=http://rpm.livna.org/mirrorlist-7
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-livna
+gpgcheck=1
+enabled=1

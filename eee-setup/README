@@ -1,0 +1,5 @@
+For the moment, I'm doing without xdm.
+
+In the fedora-live script, I add options to /etc/inittab to do a single-user
+autologin with no xDM required.
+

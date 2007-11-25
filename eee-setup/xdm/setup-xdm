@@ -1,0 +1,8 @@
+#! /bin/bash
+
+tarball=$1
+liveuser=$2
+
+# TODO : if xdm installed then :
+
+# ???

@@ -1,0 +1,19 @@
+#! /bin/bash
+
+tarball=$1
+liveuser=$2
+
+# http://www.linux.org/docs/ldp/howto/Bash-Prog-Intro-HOWTO-12.html#ss12.2
+# if [ ${liveuser} = ]; then liveruser=eeedora; fi;
+# if [ ${tarball} = ]; then tarball=/root/eee_tarball; fi;
+
+#  See : http://ubuntuforums.org/showthread.php?t=152274&page=3
+# In /etc/inittab : Replace line : #1:2345:respawn:/sbin/mingetty tty1
+# with #1:2345:respawn:/sbin/mingetty tty1 --autologin user
+sed -i -e 's|1:2345:respawn:/sbin/mingetty tty1|1:2345:respawn:/sbin/mingetty tty1 --autologin '"${liveuser}"'|' /etc/inittab
+
+# http://www.grymoire.com/Unix/Sed.html#uh-0
+
+# append to bash_profile:
+cat ${tarball}/xdm/autologin-appendto-dot-bash_profile >> /home/${liveuser}/.bash_profile
+

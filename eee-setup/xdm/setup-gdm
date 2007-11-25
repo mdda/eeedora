@@ -1,0 +1,13 @@
+#! /bin/bash
+
+tarball=$1
+liveuser=$2
+
+# TODO : if gdm installed then :
+# set up timed auto-login for after 20 seconds
+sed -i -e 's/\[daemon\]/[daemon]\nTimedLoginEnable=true\nTimedLogin='"${liveuser}"'\nTimedLoginDelay=20/' /etc/gdm/custom.conf
+if [ -e /usr/share/icons/hicolor/96x96/apps/fedora-logo-icon.png ] ; then
+	cp /usr/share/icons/hicolor/96x96/apps/fedora-logo-icon.png /home/${liveuser}/.face
+	chown ${liveuser}:${liveuser} /home/${liveuser}/.face
+	# TODO: would be nice to get e-d-s to pick this one up too... but how?
+fi
