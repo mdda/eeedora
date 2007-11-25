@@ -45,6 +45,11 @@ cp -R xfce ${rpmname}/
 cp -R xdm ${rpmname}/
 
 
+# ...
+
+
+# These are misc scripts... (fstab for instance)
+cp -R misc ${rpmname}/
 
 
 # ...
@@ -60,6 +65,10 @@ for svn in `find  ${rpmname} | grep "\.svn\$"`; do rm -rf $svn ;done
 # Too late - it's going to get built...
 # Now tar it up - and put the tar in the RPM directory
 tar -czf ${rpmname}-${rpmver}/eee-setup.tar.gz ${rpmname}/
+# List it all out for debugging purposes
+echo "---GOING INTO THE TARBALL ----  START"
+tar -tzf ${rpmname}-${rpmver}/eee-setup.tar.gz ${rpmname}/ | sort
+echo "---GOING INTO THE TARBALL ----  END"
 rm -rf ${rpmname}
 
 # Make the RPM build directory into an RPM

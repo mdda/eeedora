@@ -12,10 +12,12 @@ chmod a+x ${xsession} ${xinitrc}
 chown ${lieuser}:${liveuser} ${xsession} ${xinitrc}
 
 # ShowProgress "Copy over my beautiful XFCE settings to ${liveuser}"
-tar -xzf ${tarball}/xfce/eeedora-dot-config.tar.gz -C ${tarball}/xfce/
-mkdir /home/${liveuser}/.config/
-cp -R ${tarball}/xfce/eeedora-dot-config/* /home/${liveuser}/.config/ 
+tar -xzf ${tarball}/xfce/eeedora-dot-config.tar.gz -C /home/${liveuser}/
+#tar -xzf ${tarball}/xfce/eeedora-dot-config.tar.gz -C ${tarball}/xfce/
+#mkdir /home/${liveuser}/.config
+#cp -R ${tarball}/xfce/eeedora-dot-config/* /home/${liveuser}/.config/ 
 
+chown -R ${liveuser}:${liveuser} /home/${liveuser}/
 
 # This stuff has been replace by the above drop-in xfce configuration tar 
 # stored in the eee_tarball
