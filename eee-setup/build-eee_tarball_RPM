@@ -30,6 +30,10 @@ cp ./atl2/install-atl2 ${rpmname}/atl2/
 # Run using script /root/${rpmname}/atl2/install-atl2
 
 # These are related to services to fix-up the system on the live machine
+mkdir ${rpmname}/ath
+cp ./ath/README ${rpmname}/ath/
+
+# These are related to services (eg: fix-up the system on the live machine)
 cp -R services ${rpmname}/
 
 # These are useful repos to have
@@ -47,6 +51,9 @@ cp -R xdm ${rpmname}/
 
 # ...
 
+
+# This is for the live-install stuff - and to fix up the machine after the live install
+cp -R live-install ${rpmname}/
 
 # These are misc scripts... (fstab for instance)
 cp -R misc ${rpmname}/
@@ -67,7 +74,7 @@ for svn in `find  ${rpmname} | grep "\.svn\$"`; do rm -rf $svn ;done
 tar -czf ${rpmname}-${rpmver}/eee-setup.tar.gz ${rpmname}/
 # List it all out for debugging purposes
 echo "---GOING INTO THE TARBALL ----  START"
-tar -tzf ${rpmname}-${rpmver}/eee-setup.tar.gz ${rpmname}/ | sort
+tar -tzf ${rpmname}-${rpmver}/eee-setup.tar.gz ${rpmname}/ | sort | tee eee_tarball.listing
 echo "---GOING INTO THE TARBALL ----  END"
 rm -rf ${rpmname}
 
