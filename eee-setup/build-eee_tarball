@@ -1,6 +1,6 @@
 #! /bin/bash
 
-# This builds all the components if the tar ball for eee
+# This builds all the components if the tar ball RPM for eee
 # ready to be deposited at /root/eee-setup.tar.gz
 
 # Later (when one the target machine, this can be 
