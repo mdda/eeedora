@@ -1,0 +1,13 @@
+#! /bin/bash
+
+# This launches an installation of the current Live system to the Eee
+
+#You can actually feed liveinst a kickstart by adding a $1 to the end of
+#the line in liveinst where it invokes anaconda... then you can do
+#liveinst --kickstart=somefile.cfg and it passes the --kickstart= part to
+#anaconda.. 
+
+#If have not tried to feed it packages this way, but partitioning,
+#network, password, %post, etc work fine...
+
+/usr/bin/liveinst /root/eee_tarball/misc/eee-live-install.ks
