@@ -64,6 +64,8 @@ rootpw eee
 repo --name=releases --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?repo=fedora-8&arch=i386
 repo --name=updates --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?repo=updates-released-f8&arch=i386
 
+#repo --name=atrpms --baseurl=http://dl.atrpms.net/f$releasever-$basearch/atrpms/stable
+
 repo --name=eee-specific --baseurl=file:///mnt/eee-specific
 	
 # %packages
