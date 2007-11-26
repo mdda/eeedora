@@ -194,8 +194,19 @@ xfwm4-themes
 gtk-xfce-engine
 
 # This is needed only for XFCE programs (like mousepad which we don't want) to print
-xfprint
+-xfprint
 # But ...  xfce4-panel requires mousepad - which in turn requires xfprint - which pulls in the whole of tetex
+
+# New stuff to compensate for xfprint's strange login-disabling behaviour :
+libpciaccess
+libgomp
+dialog
+libgsf
+tmpwatch
+libcroco
+gdbm
+# End of xfprint antidote
+
 
 # Here are some of the pretty xfce4 plugins
 

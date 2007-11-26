@@ -42,7 +42,7 @@ livecd-creator \
   --fslabel=${eeedora} \
   | tee livecd-creator.output
 
-grep "Installing" livecd-creator.output | sort | sed 's|\r||'> packages.output
+grep "Installing" livecd-creator.output | sort | sed 's|\r||' > packages.output
 
 rm -f /mnt/eee-specific
 
