@@ -56,19 +56,21 @@ rootpw eee
 
 # Look for mirrors in : http://mirrors.fedoraproject.org/publiclist/Fedora/8/i386/
 
-#repo --name=official --baseurl=http://download.fedora.redhat.com/pub/fedora/linux/releases/8/Everything/i386/os
-#repo --name=official-updates --baseurl=http://download.fedora.redhat.com/pub/fedora/linux/updates/8/i386
+#repo --name=releases --baseurl=http://download.fedora.redhat.com/pub/fedora/linux/releases/8/Everything/i386/os
+#repo --name=updates  --baseurl=http://download.fedora.redhat.com/pub/fedora/linux/updates/8/i386
 
-#repo --name=facebook --baseurl=http://fedora.mirror.facebook.com/linux/releases/8/Everything/i386/os
-#repo --name=facebook-updates --baseurl=http://fedora.mirror.facebook.com/linux/updates/8/i386
+#repo --name=releases --baseurl=http://fedora.mirror.facebook.com/linux/releases/$releasever/Everything/$basearch/os/
+#repo --name=updates  --baseurl=http://fedora.mirror.facebook.com/linux/updates/$releasever/$basearch/
 
-#repo --name=tummy-releases --baseurl=http://mirrors.tummy.com/pub/fedora.redhat.com/fedora/linux/releases/8/Everything/i386/os
-#repo --name=tummy-updates --baseurl=http://mirrors.tummy.com/pub/fedora.redhat.com/fedora/linux/updates/8/i386
+#repo --name=releases --baseurl=http://mirrors.tummy.com/pub/fedora.redhat.com/fedora/linux/releases/$releasever/Everything/$basearch/os/
+#repo --name=updates  --baseurl=http://mirrors.tummy.com/pub/fedora.redhat.com/fedora/linux/updates/$releasever/$basearch/
 
-repo --name=releases --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?repo=fedora-8&arch=i386
-repo --name=updates --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?repo=updates-released-f8&arch=i386
+#repo --name=releases  --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?arch=$basearch&repo=fedora-$releasever
+#repo --name=updates   --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?arch=$basearch&repo=updates-released-f$releasever
+repo --name=releases  --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?arch=i386&repo=fedora-8
+repo --name=updates   --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?arch=i386&repo=updates-released-f8
 
-#repo --name=atrpms --baseurl=http://dl.atrpms.net/f$releasever-$basearch/atrpms/stable
+#repo --name=atrpms   --baseurl=http://dl.atrpms.net/f$releasever-$basearch/atrpms/stable
 
 repo --name=eee-specific --baseurl=file:///mnt/eee-specific
 	
@@ -83,6 +85,7 @@ repo --name=eee-specific --baseurl=file:///mnt/eee-specific
 kernel
 
 bash
+sudo
 anaconda
 anaconda-runtime
 syslinux
@@ -165,11 +168,14 @@ liberation-fonts
 -sazanami-fonts-gothic
 -cjkunifonts*
 
-# Use xdm as the login/password X session manager
+# Select a login/password X session manager
 -gdm
--rhgb
 # This is the lightest-weight one, but I'm looking for /no/ login screen
--xorg-x11-xdm
+#xorg-x11-xdm
+# But if there's none installed, then the 'setup-nologin' script should be tuned to autologin the single user on this system
+
+# The graphical boot is a bit of a timewaster...
+-rhgb
 
 -glx-utils
 -authconfig-gtk
@@ -198,12 +204,12 @@ gtk-xfce-engine
 # But ...  xfce4-panel requires mousepad - which in turn requires xfprint - which pulls in the whole of tetex
 
 # New stuff to compensate for xfprint's strange login-disabling behaviour :
-libpciaccess
-libgomp
-dialog
-libgsf
-tmpwatch
-libcroco
+#libpciaccess
+#libgomp
+#dialog
+#libgsf
+#tmpwatch
+#libcroco
 gdbm
 # End of xfprint antidote
 

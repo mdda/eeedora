@@ -6,11 +6,16 @@ liveuser=${2:-eeedora}
 # TODO : if *xdm or gdm is installed then don't do this...
 #displaymanager=`rpm -qa *xdm gdm`
 
-# ShowProgress "Autologin ${liveuser} with no password screen"
-${tarball}/xdm/setup-nologin ${tarball} ${liveuser}
+# Here's a better way of doing it...
 
-# xdm alternative :
-# ${tarball}/xdm/setup-xdm ${tarball} ${liveuser}
-
-# gdm alternative :
+#if `which gdm 2>/dev/null`; then 
+# gdm alternative : 
 # ${tarball}/xdm/setup-gdm ${tarball} ${liveuser}
+#else 
+if `which xdm 2>/dev/null`; then 
+ # xdm alternative :
+  ${tarball}/xdm/setup-xdm ${tarball} ${liveuser}
+else
+ # ShowProgress "Autologin ${liveuser} with no password screen"
+ ${tarball}/xdm/setup-nologin ${tarball} ${liveuser}
+fi
