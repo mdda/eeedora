@@ -36,13 +36,14 @@ creatingstart=`${dt}`
 
 echo "Starting ISO creation at ${creatingstart}"
 
+# http://www-128.ibm.com/developerworks/linux/library/l-fedora-livecd/
 livecd-creator \
   --config=./eeedora.ks \
   --cache=`pwd` \
   --fslabel=${eeedora} \
-  | tee livecd-creator.output
+  | tee livecd-creator-output.${creatingstart}
 
-grep "Installing" livecd-creator.output | sort | sed 's|\r||' > packages.output
+grep "Installing" livecd-creator-output.${creatingstart} | sort | sed 's|\r||' > packages-output.${creatingstart}
 
 rm -f /mnt/eee-specific
 

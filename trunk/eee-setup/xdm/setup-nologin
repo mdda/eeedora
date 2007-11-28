@@ -5,19 +5,37 @@
 tarball=${1:-/root/eee_tarball}
 liveuser=${2:-eeedora}
 
-#  See : http://ubuntuforums.org/showthread.php?t=152274&page=3
-# In /etc/inittab : Replace line : #1:2345:respawn:/sbin/mingetty tty1
-# with #1:2345:respawn:/sbin/mingetty tty1 --autologin user
-sed -i -e 's|^1:2345:respawn:/sbin/mingetty tty1$|& --autologin '${liveuser}'|' /etc/inittab
-
-# http://www.grymoire.com/Unix/Sed.html#uh-0
+# there's no selected display-manager - we must improvise...
+# TODO - this doesn't work yet...
 
 # append to bash_profile - this includes a powerdown, so that the 'liveuser' can logout=switch off
 cat ${tarball}/xdm/autologin-appendto-dot-bash_profile >> /home/${liveuser}/.bash_profile
 
-# into /etc/sudoers :
+# http://www.mythtv.org/wiki/index.php/Frontend_Auto_Login
+# http://www.grymoire.com/Unix/Sed.html#uh-0
+
+# Comment out 2 unnecessary mingettys
+sed -i -e 's|^[345]:2345:respawn:/sbin/mingetty tty[345]$|#&|' /etc/inittab
+
+# Change last one ... according to 
+sed -i -e 's|^6:2345:respawn:/sbin/mingetty tty6$|6:2345:respawn:/usr/bin/openvt -fwc 2 -- /bin/su - '${liveuser}' -c /usr/bin/startx >\& /dev/null|' /etc/inittab
+
+# Since there is no other display manager available, leave the last line alone :
+# x:5:respawn:/etc/X11/prefdm -nodaemon
+
+# Reinitialize inittab without rebooting : 
+/sbin/init q
+
+# To make the powerdown stuff work, we must enable /sbin/poweroff 
+# On ubuntu : Into /etc/sudoers :
 # %users    localhost=NOPASSWD:/sbin/reboot, /sbin/poweroff
 # or :
 # %nopasswd ALL=(root) NOPASSWD: /usr/bin/conky, /sbin/halt, /sbin/reboot, /sbin/shutdown, /usr/sbin/xfsm-shutdown-helper, /usr/bin/thunar, /usr/bin/mousepad, /usr/sbin/synaptic
 #echo >> /etc/sudoers # This is just a newline
 #echo ${liveuser}' localhost=NOPASSWD:/sbin/reboot, /sbin/poweroff' >> /etc/sudoers
+
+# But fedora is different (visudo... in /usr/sbin/visudo, if installed)
+echo '' >> /etc/sudoers
+#echo ${liveuser}'	localhost=/sbin/shutdown NOPASSWD:ALL' >> /etc/sudoers
+echo ${liveuser}'	localhost=/sbin/shutdown' >> /etc/sudoers
+echo '' >> /etc/sudoers
