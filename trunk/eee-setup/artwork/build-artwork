@@ -1,0 +1,16 @@
+#! /bin/bash
+
+# Source artwork :
+#http://fedoraproject.org/wiki/Artwork/F8Themes/Infinity/Round3Final#head-8302d21a33d6f60a43f54da05aa423b14a327131
+
+# Conversion information also see :
+# http://sipx-wiki.calivia.com/index.php/A_Kickstart_CD_for_sipX_on_CentOS
+
+# This is for Anaconda
+#convert -colors 65536 -depth 16 eeedora-splash.png syslinux-vesa-splash.jpg
+# ... going into : /usr/lib/anaconda-runtime/syslinux-vesa-splash.jpg
+
+# This is for Grub
+convert -colors 14 eeedora-splash.png splash.xpm
+gzip splash.xpm
+# ... going into : /boot/grub/

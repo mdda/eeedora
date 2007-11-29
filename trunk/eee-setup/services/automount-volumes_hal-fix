@@ -1,0 +1,28 @@
+#! /bin/bash
+
+tarball=${1:-/root/eee_tarball}
+liveuser=${2:-eeedora}
+
+# See : 
+# http://www.jefferyfernandez.id.au/2007/07/26/a-security-policy-in-place-prevents-mounting-of-volumes/
+
+config=/etc/dbus-1/system.d/hal.conf
+
+# Create a new group that's going to be able to automount etc
+groupadd plugdev
+useradd --groups plugdev ${liveuser} 
+
+#policy=$(echo ${policy} | sed 's|a|A|')
+
+# Remove the end of the file
+sed -i 's|</busconfig>||' ${config}
+
+cat >>${config} <<POLICY 
+  <policy group="plugdev">
+    <allow send_interface="org.freedesktop.Hal.Device.SystemPowerManagement"/>
+    <allow send_interface="org.freedesktop.Hal.Device.LaptopPanel"/>
+    <allow send_interface="org.freedesktop.Hal.Device.Volume"/>
+    <allow send_interface="org.freedesktop.Hal.Device.Volume.Crypto"/>
+  </policy>
+</busconfig>
+POLICY

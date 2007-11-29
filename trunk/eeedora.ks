@@ -371,6 +371,9 @@ tarball=/root/eee_tarball
 ShowProgress "Install the atl2 kernel module"
 ${tarball}/atl2/install-atl2
 
+ShowProgress "Copy over the boot artwork"
+cp ${tarball}/artwork/splash.xpm.gz /boot/grub/
+
 ShowProgress "Copy over known-good xorg.conf"
 cp ${tarball}/xorg/xorg.conf /etc/X11/
 
