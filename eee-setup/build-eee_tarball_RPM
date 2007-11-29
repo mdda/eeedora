@@ -48,6 +48,10 @@ cp -R xfce ${rpmname}/
 # This is to set up the defaults for XDM 
 cp -R xdm ${rpmname}/
 
+# This is to set up the defaults for XDM 
+mkdir ${rpmname}/artwork
+cp ./artwork/splash.xpm.gz ${rpmname}/artwork/
+
 
 # ...
 
