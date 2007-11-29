@@ -11,14 +11,19 @@ liveuser=${2:-eeedora}
 # append to bash_profile - this includes a powerdown, so that the 'liveuser' can logout=switch off
 cat ${tarball}/xdm/autologin-appendto-dot-bash_profile >> /home/${liveuser}/.bash_profile
 
-# http://www.mythtv.org/wiki/index.php/Frontend_Auto_Login
-# http://www.grymoire.com/Unix/Sed.html#uh-0
+# create a special script in the home directory - this includes a "shutdown -h now", so that the 'liveuser' can logout=switch off
+eee_startx=/home/${liveuser}/.eee_startx
+cp ${tarball}/xdm/autologin-dot-eee_startx ${eee_startx}
+chmod 755 ${eee_startx}
+
+# sed tutorial :  http://www.grymoire.com/Unix/Sed.html#uh-0
 
 # Comment out 2 unnecessary mingettys
 sed -i -e 's|^[345]:2345:respawn:/sbin/mingetty tty[345]$|#&|' /etc/inittab
 
 # Change last one ... according to 
-sed -i -e 's|^6:2345:respawn:/sbin/mingetty tty6$|6:2345:respawn:/usr/bin/openvt -fwc 2 -- /bin/su - '${liveuser}' -c /usr/bin/startx >\& /dev/null|' /etc/inittab
+# http://www.mythtv.org/wiki/index.php/Frontend_Auto_Login
+sed -i -e 's|^6:2345:respawn:/sbin/mingetty tty6$|6:2345:respawn:/usr/bin/openvt -fwc 2 -- /bin/su - '${liveuser}' -c '${eee_startx}' >\& /dev/null|' /etc/inittab
 
 # Since there is no other display manager available, leave the last line alone :
 # x:5:respawn:/etc/X11/prefdm -nodaemon
