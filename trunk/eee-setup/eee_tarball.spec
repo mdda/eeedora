@@ -29,13 +29,12 @@ Requires: unzip
 
 %install
 rm -rf %{buildroot}
-mkdir -p %{buildroot}
-
-# Can we assume that this is done?  Probably
-mkdir %{buildroot}/root/  
 
 # Let's add the stuff to the buildroot now
+mkdir -p %{buildroot}/root/  
 install eee-setup.tar.gz %{buildroot}/root/
+
+
 
 %clean
 
