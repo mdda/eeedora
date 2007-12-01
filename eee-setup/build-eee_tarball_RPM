@@ -90,10 +90,8 @@ spec=${rpmname}-${rpmver}/${rpmname}.spec
 sed -i \
   -e 's|^Version\:.*$|Version: '${rpmver}'|' \
 		-e 's|^Release\:.*$|Release: '${rpmrelease}'|' \
+		-e 's|^Source0\:.*$|Source0: '${rpmname}'-'${rpmver}'.tar.gz|' \
   ${spec}
-
-exit 0;
-
 
 # Make the RPM build directory into an RPM
 tar -czf ${rpmname}-${rpmver}.tar.gz ${rpmname}-${rpmver}
