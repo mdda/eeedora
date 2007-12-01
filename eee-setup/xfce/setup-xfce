@@ -1,21 +1,21 @@
 #! /bin/bash
 
-tarball=${1:-/root/eee_tarball}
+setup=${1:-/root/eee-setup}
 liveuser=${2:-eeedora}
 
 # ShowProgress "Make '${liveuser}' user use XFCE"
 xsession=/home/${liveuser}/.xsession
-cp ${tarball}/xfce/dot-xsession ${xsession}
+cp ${setup}/xfce/dot-xsession ${xsession}
 xinitrc=/home/${liveuser}/.xinitrc
-cp ${tarball}/xfce/dot-xinitrc ${xinitrc}
+cp ${setup}/xfce/dot-xinitrc ${xinitrc}
 chmod a+x ${xsession} ${xinitrc}
 chown ${lieuser}:${liveuser} ${xsession} ${xinitrc}
 
 # ShowProgress "Copy over my beautiful XFCE settings to ${liveuser}"
-tar -xzf ${tarball}/xfce/eeedora-dot-config.tar.gz -C /home/${liveuser}/
-#tar -xzf ${tarball}/xfce/eeedora-dot-config.tar.gz -C ${tarball}/xfce/
+tar -xzf ${setup}/xfce/eeedora-dot-config.tar.gz -C /home/${liveuser}/
+#tar -xzf ${setup}/xfce/eeedora-dot-config.tar.gz -C ${setup}/xfce/
 #mkdir /home/${liveuser}/.config
-#cp -R ${tarball}/xfce/eeedora-dot-config/* /home/${liveuser}/.config/ 
+#cp -R ${setup}/xfce/eeedora-dot-config/* /home/${liveuser}/.config/ 
 
 # No need for this - it's transferred in the .config already
 # echo "" > /home/${liveuser}/Desktop/Autostart
@@ -23,7 +23,7 @@ tar -xzf ${tarball}/xfce/eeedora-dot-config.tar.gz -C /home/${liveuser}/
 chown -R ${liveuser}:${liveuser} /home/${liveuser}/
 
 # This stuff has been replace by the above drop-in xfce configuration tar 
-# stored in the eee_tarball
+# stored in the eee-setup
 
 #ShowProgress "Replace bluecurve with xfce to get the default Xfce look for '${liveuser}'"
 ## FIXME: should be done in the xfce-mcs-plugins package

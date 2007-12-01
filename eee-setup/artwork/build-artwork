@@ -7,10 +7,12 @@
 # http://sipx-wiki.calivia.com/index.php/A_Kickstart_CD_for_sipX_on_CentOS
 
 # This is for Anaconda
-#convert -colors 65536 -depth 16 eeedora-splash.png syslinux-vesa-splash.jpg
+convert -colors 65536 -depth 16 eeedora-splash.png splash.jpg
 # ... going into : /usr/lib/anaconda-runtime/syslinux-vesa-splash.jpg
+# and, maybe later, ... going into : /usr/lib/syslinux/
 
 # This is for Grub
 convert -colors 14 eeedora-splash.png splash.xpm
+rm splash.xpm.gz 
 gzip splash.xpm
 # ... going into : /boot/grub/

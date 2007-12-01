@@ -1,6 +1,6 @@
 #! /bin/bash
 
-tarball=${1:-/root/eee_tarball}
+setup=${1:-/root/eee-setup}
 liveuser=${2:-eeedora}
 
 # gdm is the display-manager of choice

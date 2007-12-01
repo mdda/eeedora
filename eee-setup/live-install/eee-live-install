@@ -10,7 +10,7 @@
 #If have not tried to feed it packages this way, but partitioning,
 #network, password, %post, etc work fine...
 
-tarball=/root/eee_tarball
+setup=/root/eee-setup
 
 . /etc/init.d/functions
 
@@ -20,5 +20,5 @@ if ! strstr "`cat /proc/cmdline`" liveimg || [ "$1" != "start" ] || [ -e /.livei
  exit 0
 fi
 
-/usr/bin/liveinst ${tarball}/live_install/eee-live-install.ks
+/usr/bin/liveinst ${setup}/live_install/eee-live-install.ks
 # Wowza!

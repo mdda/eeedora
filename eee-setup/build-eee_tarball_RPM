@@ -5,11 +5,13 @@
 
 # Later (when one the target machine, this can be 
 # unwrapped using tar -xzf /root/eee-setup.tar.gz -C /root/
-# and all the files will appear in /root/eee_tarball/
+# and all the files will appear in /root/eee-setup/
 
-rpmver=0.1.0.0
+rpmver=0.1.0.1
+rpmrelease=0 
+
 rpmname=eee_tarball
-rpmrelease=2 # This must match the release number in the .spec file
+rpmdir=eee-setup
 
 # Build the build directory for the RPM directly
 mkdir ${rpmname}-${rpmver}/
@@ -19,48 +21,49 @@ cp ./${rpmname}.spec ${rpmname}-${rpmver}/
 #
 # Now, gather up all the stuff we would like to have 'on the other side'
 #
-mkdir ${rpmname}/
+mkdir ${rpmdir}/
 
 ###   Add more files to the tar archive here....
 
 # Here's the wired ethernet driver 'atl2.ko'
-mkdir ${rpmname}/atl2
-cp ./atl2/atl2.ko ${rpmname}/atl2/
-cp ./atl2/install-atl2 ${rpmname}/atl2/
-# Run using script /root/${rpmname}/atl2/install-atl2
+mkdir ${rpmdir}/atl2
+cp ./atl2/atl2.ko ${rpmdir}/atl2/
+cp ./atl2/install-atl2 ${rpmdir}/atl2/
+# Run using script /root/${rpmdir}/atl2/install-atl2
 
 # These are related to services to fix-up the system on the live machine
-mkdir ${rpmname}/ath
-cp ./ath/README ${rpmname}/ath/
+mkdir ${rpmdir}/ath
+cp ./ath/README ${rpmdir}/ath/
 
 # These are related to services (eg: fix-up the system on the live machine)
-cp -R services ${rpmname}/
+cp -R services ${rpmdir}/
 
 # These are useful repos to have
-cp -R repos ${rpmname}/
+cp -R repos ${rpmdir}/
 
 # This is the stuff to get X11 fixed up right
-cp -R xorg ${rpmname}/
+cp -R xorg ${rpmdir}/
 
 # This is to get the user defaults for XFCE how I like them
-cp -R xfce ${rpmname}/
+cp -R xfce ${rpmdir}/
 
 # This is to set up the defaults for XDM 
-cp -R xdm ${rpmname}/
+cp -R xdm ${rpmdir}/
 
 # This is to set up the defaults for XDM 
-mkdir ${rpmname}/artwork
-cp ./artwork/splash.xpm.gz ${rpmname}/artwork/
+mkdir ${rpmdir}/artwork
+cp ./artwork/splash.xpm.gz ${rpmdir}/artwork/
+cp ./artwork/splash.jpg ${rpmdir}/artwork/
 
 
 # ...
 
 
 # This is for the live-install stuff - and to fix up the machine after the live install
-cp -R live-install ${rpmname}/
+cp -R live-install ${rpmdir}/
 
 # These are misc scripts... (fstab for instance)
-cp -R misc ${rpmname}/
+cp -R misc ${rpmdir}/
 
 
 # ...
@@ -71,16 +74,26 @@ cp -R misc ${rpmname}/
 
 # Clean out the .svn directories 
 # ( see:   http://www.linux.org/docs/ldp/howto/Bash-Prog-Intro-HOWTO-12.html#ss12.2 )
-for svn in `find  ${rpmname} | grep "\.svn\$"`; do rm -rf $svn ;done
+for svn in `find  ${rpmdir} | grep "\.svn\$"`; do rm -rf $svn ;done
 
 # Too late - it's going to get built...
 # Now tar it up - and put the tar in the RPM directory
-tar -czf ${rpmname}-${rpmver}/eee-setup.tar.gz ${rpmname}/
+tar -czf ${rpmname}-${rpmver}/eee-setup.tar.gz ${rpmdir}/
 # List it all out for debugging purposes
 echo "---GOING INTO THE TARBALL ----  START"
-tar -tzf ${rpmname}-${rpmver}/eee-setup.tar.gz ${rpmname}/ | sort | tee eee_tarball.listing
+tar -tzf ${rpmname}-${rpmver}/eee-setup.tar.gz | sort | tee eee_tarball.listing
 echo "---GOING INTO THE TARBALL ----  END"
-rm -rf ${rpmname}
+rm -rf ${rpmdir}
+
+# Now adjust the spec file to match the version numbers :
+spec=${rpmname}-${rpmver}/${rpmname}.spec
+sed -i \
+  -e 's|^Version\:.*$|Version: '${rpmver}'|' \
+		-e 's|^Release\:.*$|Release: '${rpmrelease}'|' \
+  ${spec}
+
+exit 0;
+
 
 # Make the RPM build directory into an RPM
 tar -czf ${rpmname}-${rpmver}.tar.gz ${rpmname}-${rpmver}

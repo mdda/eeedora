@@ -1,7 +1,7 @@
 Summary: Brings over the EeeDora tarball
 Name: eee_tarball
-Version: 0.1.0.0
-Release: 2
+Version: 0.0.0.0
+Release: 0
 License: GPL
 Group: Development/Build Tools
 BuildRoot: /var/tmp/%{name}-buildroot

@@ -37,13 +37,13 @@ ShowProgress() {
  echo $"LiveInstall : $1" >> /etc/eeedora.progress
 }
 # By this stage, this is already on the new machine, opened up
-tarball=/root/eee_tarball
+setup=/root/eee-setup
 
 
 fedoranonlive=/etc/rc.d/init.d/fedora-nonlive
 
 ShowProgress "Creating ${fedoranonlive} (needed for post-install processing)"
-cp ${tarball}/services/fedora-nonlive ${fedoranonlive} 
+cp ${setup}/services/fedora-nonlive ${fedoranonlive} 
 chmod 755 ${fedoranonlive}
 /sbin/restorecon ${fedoranonlive}
 
