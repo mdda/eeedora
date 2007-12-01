@@ -360,30 +360,26 @@ ShowProgress() {
 }
 
 # This is on the machine that's doing the ISO image building...
-# However, the eee_tarball rpm has been installed, so there's 
+# However, the eee_setup rpm has been installed, so there's 
 # stuff worth doing/manipulating in the chroot environment 
 # even before we get over to the target machine.
 
 # open up the tarball
 tar -xzf /root/eee-setup.tar.gz -C /root/
-tarball=/root/eee_tarball
+setup=/root/eee-setup
 
 ShowProgress "Install the atl2 kernel module"
-${tarball}/atl2/install-atl2
+${setup}/atl2/install-atl2
 
-ShowProgress "Copy over the boot artwork"
-cp ${tarball}/artwork/splash.xpm.gz /boot/grub/
-
-ShowProgress "Copy over known-good xorg.conf"
-cp ${tarball}/xorg/xorg.conf /etc/X11/
-
-ShowProgress "Create /etc/sysconfig/desktop (needed for installation)"
-cp ${tarball}/xfce/sysconfig-desktop /etc/sysconfig/desktop 
+#ShowProgress "Copy over the boot artwork"
+#cp ${setup}/artwork/splash.xpm.gz /boot/grub/
+##cp ${setup}/artwork/splash.jpg /usr/lib/syslinux/
+#cp ${setup}/artwork/splash.jpg /usr/lib/anaconda-runtime/syslinux-vesa-splash.jpg
 
 fedoralive=/etc/rc.d/init.d/fedora-live
 
 ShowProgress "Creating ${fedoralive} (needed for live version)"
-cp ${tarball}/services/fedora-live ${fedoralive} 
+cp ${setup}/services/fedora-live ${fedoralive} 
 chmod 755 ${fedoralive}
 /sbin/restorecon ${fedoralive}
 

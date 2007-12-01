@@ -6,14 +6,6 @@ dt='date +%F_%H-%M'
 # This is the ISO name (and the name of the distribution)
 eeedora=EeeDora-`${dt}`
 
-# This is the drive to put the USB Live image on to
-usbdrive=/dev/sdb
-usbpart=/dev/sdb1
-
-# This is just a temporary mount point
-usbmount=/media/temp-usb-mountpoint
-
-
 # Now for the code :
 
 # Create the repository of eee specific rpms (used in kickstart file)
