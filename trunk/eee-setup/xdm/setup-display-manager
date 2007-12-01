@@ -1,6 +1,6 @@
 #! /bin/bash
 
-tarball=${1:-/root/eee_tarball}
+setup=${1:-/root/eee-setup}
 liveuser=${2:-eeedora}
 
 # TODO : if *xdm or gdm is installed then don't do this...
@@ -10,12 +10,12 @@ liveuser=${2:-eeedora}
 
 #if `which gdm 2>/dev/null`; then 
 # gdm alternative : 
-# ${tarball}/xdm/setup-gdm ${tarball} ${liveuser}
+# ${setup}/xdm/setup-gdm ${setup} ${liveuser}
 #else 
 if `which xdm 2>/dev/null`; then 
  # xdm alternative :
-  ${tarball}/xdm/setup-xdm ${tarball} ${liveuser}
+  ${setup}/xdm/setup-xdm ${setup} ${liveuser}
 else
  # ShowProgress "Autologin ${liveuser} with no password screen"
- ${tarball}/xdm/setup-nologin ${tarball} ${liveuser}
+ ${setup}/xdm/setup-nologin ${setup} ${liveuser}
 fi

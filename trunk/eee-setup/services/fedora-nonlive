@@ -8,7 +8,7 @@
 liveuser="eeedora"
 
 # This has already been unwrapped (in the ISO kickstart code)
-tarball=/root/eee_tarball
+setup=/root/eee-setup
 
 ShowProgress() {
  echo $"init.d.fedora-nonlive : $1" >> /etc/eeedora.progress
@@ -84,7 +84,7 @@ fi
 #echo "RUN_FIRSTBOOT=NO" > /etc/sysconfig/firstboot
 
 #ShowProgress "Add useful repos"
-#cp ${tarball}/repos/* /etc/yum.repos.d/
+#cp ${setup}/repos/* /etc/yum.repos.d/
 
 #ShowProgress "Don't start yum-updatesd for livecd boots"
 chkconfig --level 345 yum-updatesd off
@@ -113,13 +113,13 @@ chkconfig --level 345 yum-updatesd off
 #passwd -d ${liveuser} > /dev/null
 
 #ShowProgress "Process display manager options"
-#${tarball}/xdm/setup-display-manager ${tarball} ${liveuser}
+#${setup}/xdm/setup-display-manager ${setup} ${liveuser}
 
 #ShowProgress "Set up XFCE for '${liveuser}'"
-#${tarball}/xfce/setup-xfce ${tarball} ${liveuser}
+#${setup}/xfce/setup-xfce ${setup} ${liveuser}
 
 #ShowProgress "Add a desktop link to install the live image for '${liveuser}'"
-#ln -s ${tarball}/live-install/eee-live-install /home/andrewsm/Desktop/Install-Live-Image
+#ln -s ${setup}/live-install/eee-live-install /home/andrewsm/Desktop/Install-Live-Image
 
 # Remove Desktop link to this file the live installation
 rm -f ${liveuser}/Desktop/Install-Live-Image

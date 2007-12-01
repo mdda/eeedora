@@ -2,18 +2,18 @@
 
 # http://www.linux.org/docs/ldp/howto/Bash-Prog-Intro-HOWTO-12.html#ss12.2
 # http://books.google.com/books?id=Qu6H8fnAvGoC&pg=PA99&lpg=PA99&dq=bash+default+values+%241&source=web&ots=CfmTbjtL5-&sig=3M-tjZACH6NhV97sudbLAmkUAN0#PPA99,M1
-tarball=${1:-/root/eee_tarball}
+setup=${1:-/root/eee-setup}
 liveuser=${2:-eeedora}
 
 # there's no selected display-manager - we must improvise...
 # TODO - this doesn't work yet...
 
 # append to bash_profile - this includes a powerdown, so that the 'liveuser' can logout=switch off
-cat ${tarball}/xdm/autologin-appendto-dot-bash_profile >> /home/${liveuser}/.bash_profile
+cat ${setup}/xdm/autologin-appendto-dot-bash_profile >> /home/${liveuser}/.bash_profile
 
 # create a special script in the home directory - this includes a "shutdown -h now", so that the 'liveuser' can logout=switch off
 eee_startx=/home/${liveuser}/.eee_startx
-cp ${tarball}/xdm/autologin-dot-eee_startx ${eee_startx}
+cp ${setup}/xdm/autologin-dot-eee_startx ${eee_startx}
 chmod 755 ${eee_startx}
 
 # sed tutorial :  http://www.grymoire.com/Unix/Sed.html#uh-0
