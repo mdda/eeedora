@@ -61,7 +61,9 @@ if [ "$answer1" = "yes" ] ; then
 #		cp scripts/start-xfce ${usbmount}/scripts/
 
 	# http://fedoraproject.org/wiki/Artwork/F8Themes/Infinity/Round3Final#head-8302d21a33d6f60a43f54da05aa423b14a327131
-	convert -colors 65536 -depth 16 eee-setup/artwork/eeedora-splash.png ${usbmount}/syslinux/splash.jpg
+
+# The next line works - but I'd like to see whether it actually comes from /boot/grub/
+#	convert -colors 65536 -depth 16 eee-setup/artwork/eeedora-splash.png ${usbmount}/syslinux/splash.jpg
 #		mv ${usbmount}/syslinux/syslinux-vesa-splash.png ${usbmount}/syslinux/splash.jpg
 
 	umount ${usbmount}
