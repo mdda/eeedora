@@ -1,0 +1,39 @@
+#! /bin/bash
+
+# This builds all the components if the tar ball RPM for eee
+# ready to be deposited at /root/eee-setup.tar.gz
+
+# Later (when one the target machine, this can be 
+# unwrapped using tar -xzf /root/eee-setup.tar.gz -C /root/
+# and all the files will appear in /root/eee-setup/
+
+rpmver=0.1.0.1
+rpmrelease=0 
+
+rpmname=eee_splash
+
+# Build the build directory for the RPM directly
+mkdir ${rpmname}-${rpmver}/
+cp ./${rpmname}.spec ${rpmname}-${rpmver}/
+
+# Get the artwork into the RPM
+cp ./artwork/splash.jpg ${rpmname}-${rpmver}/syslinux-vesa-splash.jpg
+cp ./artwork/splash.xpm.gz ${rpmname}-${rpmver}/
+
+# Now adjust the spec file to match the version numbers :
+spec=${rpmname}-${rpmver}/${rpmname}.spec
+sed -i \
+  -e 's|^Version\:.*$|Version: '${rpmver}'|' \
+		-e 's|^Release\:.*$|Release: '${rpmrelease}'|' \
+		-e 's|^Source0\:.*$|Source0: '${rpmname}'-'${rpmver}'.tar.gz|' \
+  ${spec}
+
+# Make the RPM build directory into an RPM
+tar -czf ${rpmname}-${rpmver}.tar.gz ${rpmname}-${rpmver}
+rpmbuild -tb ${rpmname}-${rpmver}.tar.gz 
+rm -f ${rpmname}-${rpmver}.tar.gz
+rm -rf ${rpmname}-${rpmver}
+
+cp /usr/src/redhat/RPMS/i386/${rpmname}-${rpmver}-${rpmrelease}.i386.rpm .
+cp /usr/src/redhat/RPMS/i386/${rpmname}-${rpmver}-${rpmrelease}.i386.rpm ../rpms-for-eee/i386/
+#rm -f ../yum-cache/  # actually, no need, since it doesn't seem to cache already-local files
