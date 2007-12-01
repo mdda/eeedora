@@ -353,6 +353,7 @@ xdg-user-dirs
 
 # Now all the Eee specific stuff - from the eee-specific repo
 eee_tarball
+eee_splash
 
 %post
 ShowProgress() {
@@ -370,11 +371,6 @@ setup=/root/eee-setup
 
 ShowProgress "Install the atl2 kernel module"
 ${setup}/atl2/install-atl2
-
-#ShowProgress "Copy over the boot artwork"
-#cp ${setup}/artwork/splash.xpm.gz /boot/grub/
-##cp ${setup}/artwork/splash.jpg /usr/lib/syslinux/
-#cp ${setup}/artwork/splash.jpg /usr/lib/anaconda-runtime/syslinux-vesa-splash.jpg
 
 fedoralive=/etc/rc.d/init.d/fedora-live
 
