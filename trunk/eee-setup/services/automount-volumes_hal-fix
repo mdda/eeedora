@@ -10,7 +10,7 @@ config=/etc/dbus-1/system.d/hal.conf
 
 # Create a new group that's going to be able to automount etc
 groupadd plugdev
-useradd --groups plugdev ${liveuser} 
+usermod --append --groups plugdev ${liveuser} 
 
 #policy=$(echo ${policy} | sed 's|a|A|')
 

@@ -24,6 +24,9 @@ skipx
 #services --enabled=NetworkManager --disabled=network,sshd
 services --enabled=NetworkManager,network,sshd 
 
+# Force the kickstart to recognize the atl2 driver ASAP
+device atl2
+
 # This isn't for the live version - just for the install - Needs Fixing.
 #clearpart --drives sda
 #part / --fstype ext2 --size 1 --ondisk=sda --asprimary --grow
@@ -99,6 +102,10 @@ openssh-clients
 openssh-server
 openssh-askpass
 
+pam
+# Prompt for root password if needed
+usermode-gtk
+
 # No need on the Eee
 # @ hardware-support 
 
@@ -139,7 +146,7 @@ Zim
 curl
 
 # mdda dev tools
-cvs
+#cvs
 samba-client
 
 # Take these out for the Eee - We know we don't need them

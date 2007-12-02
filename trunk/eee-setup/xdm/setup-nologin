@@ -8,22 +8,30 @@ liveuser=${2:-eeedora}
 # there's no selected display-manager - we must improvise...
 # TODO - this doesn't work yet...
 
-# append to bash_profile - this includes a powerdown, so that the 'liveuser' can logout=switch off
-cat ${setup}/xdm/autologin-appendto-dot-bash_profile >> /home/${liveuser}/.bash_profile
-
-# create a special script in the home directory - this includes a "shutdown -h now", so that the 'liveuser' can logout=switch off
-eee_startx=/home/${liveuser}/.eee_startx
-cp ${setup}/xdm/autologin-dot-eee_startx ${eee_startx}
-chmod 755 ${eee_startx}
 
 # sed tutorial :  http://www.grymoire.com/Unix/Sed.html#uh-0
 
-# Comment out 2 unnecessary mingettys
+# Comment out unnecessary mingettys - leave 1,2 and 6
 sed -i -e 's|^[345]:2345:respawn:/sbin/mingetty tty[345]$|#&|' /etc/inittab
 
 # Change last one ... according to 
 # http://www.mythtv.org/wiki/index.php/Frontend_Auto_Login
-sed -i -e 's|^6:2345:respawn:/sbin/mingetty tty6$|6:2345:respawn:/usr/bin/openvt -fwc 2 -- /bin/su - '${liveuser}' -c '${eee_startx}' >\& /dev/null|' /etc/inittab
+
+if ! [ 1 ]; then 
+	# create a special script in the home directory - this includes a "shutdown -h now", so that the 'liveuser' can logout=switch off
+	eee_startx=/home/${liveuser}/.eee_startx
+	cp ${setup}/xdm/autologin-dot-eee_startx ${eee_startx}
+	chmod 755 ${eee_startx}
+
+	# This one uses openvt (and not .bash_profile)
+	sed -i -e 's|^6:2345:respawn:/sbin/mingetty tty6$|6:2345:respawn:/usr/bin/openvt -fwc 2 -- /bin/su - '${liveuser}' -c '${eee_startx}' >\& /dev/null|' /etc/inittab
+else
+	# append to bash_profile - this includes a powerdown, so that the 'liveuser' can logout=switch off
+	cat ${setup}/xdm/autologin-appendto-dot-bash_profile >> /home/${liveuser}/.bash_profile
+
+	# This one uses .bash_profile
+	sed -i -e 's|^6:2345:respawn:/sbin/mingetty tty6$|c7:12345:respawn:/sbin/mingetty --autologin='${liveuser}' tty7|' /etc/inittab
+fi
 
 # Since there is no other display manager available, leave the last line alone :
 # x:5:respawn:/etc/X11/prefdm -nodaemon
@@ -31,16 +39,15 @@ sed -i -e 's|^6:2345:respawn:/sbin/mingetty tty6$|6:2345:respawn:/usr/bin/openvt
 # Reinitialize inittab without rebooting : 
 /sbin/init q
 
-# To make the powerdown stuff work, we must enable /sbin/poweroff 
+# To make the powerdown stuff work, we must enable /sbin/shutdown
 # On ubuntu : Into /etc/sudoers :
-# %users    localhost=NOPASSWD:/sbin/reboot, /sbin/poweroff
+# %users    localhost=NOPASSWD:/sbin/reboot, /sbin/shutdown
 # or :
 # %nopasswd ALL=(root) NOPASSWD: /usr/bin/conky, /sbin/halt, /sbin/reboot, /sbin/shutdown, /usr/sbin/xfsm-shutdown-helper, /usr/bin/thunar, /usr/bin/mousepad, /usr/sbin/synaptic
-#echo >> /etc/sudoers # This is just a newline
-#echo ${liveuser}' localhost=NOPASSWD:/sbin/reboot, /sbin/poweroff' >> /etc/sudoers
 
 # But fedora is different (visudo... in /usr/sbin/visudo, if installed)
 echo '' >> /etc/sudoers
 #echo ${liveuser}'	localhost=/sbin/shutdown NOPASSWD:ALL' >> /etc/sudoers
-echo ${liveuser}'	localhost=/sbin/shutdown' >> /etc/sudoers
+echo ${liveuser}'	localhost=NOPASSWD:/sbin/reboot,/sbin/poweroff,/sbin/shutdown' >> /etc/sudoers
+echo ${liveuser}'	localhost=NOPASSWD:/usr/bin/thunar' >> /etc/sudoers
 echo '' >> /etc/sudoers

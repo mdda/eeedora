@@ -7,7 +7,7 @@ setup=${1:-/root/eee-setup}
 
 moddir=/lib/modules/`uname -r`/kernel/drivers/net/atl2
 mkdir -p ${moddir}
-cp ${setup}/atl2/atl2.ko $moddir}/
+cp ${setup}/atl2/atl2.ko ${moddir}/
 /sbin/depmod -a
 
 # Do this as a force since the mirror repo in the ks 
