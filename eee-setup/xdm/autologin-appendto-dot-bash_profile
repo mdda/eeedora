@@ -5,7 +5,10 @@
 # startx
 #fi
 
-if [ -z "$DISPLAY" ] && [ `tty` = "/dev/tty1" ]; then
- startx
+if [ -z "$DISPLAY" ] && [ $(tty) == /dev/tty7 ]; then
+ # This definitely works...
+# startx
+ # This seems to use fewer resources
+ startxfce4
  sudo /sbin/shutdown -h now
 fi
