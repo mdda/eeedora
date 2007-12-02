@@ -370,12 +370,12 @@ tar -xzf /root/eee-setup.tar.gz -C /root/
 setup=/root/eee-setup
 
 ShowProgress "Install the atl2 kernel module"
-${setup}/atl2/install-atl2
+${setup}/atl2/install-atl2 ${setup}
 
 fedoralive=/etc/rc.d/init.d/fedora-live
 
 ShowProgress "Creating ${fedoralive} (needed for live version)"
-cp ${setup}/services/fedora-live ${fedoralive} 
+cp ${setup}/services/fedora-live ${fedoralive}
 chmod 755 ${fedoralive}
 /sbin/restorecon ${fedoralive}
 

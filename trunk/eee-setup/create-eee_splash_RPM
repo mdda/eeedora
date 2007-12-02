@@ -17,8 +17,8 @@ mkdir ${rpmname}-${rpmver}/
 cp ./${rpmname}.spec ${rpmname}-${rpmver}/
 
 # Get the artwork into the RPM
-cp ./artwork/splash.jpg ${rpmname}-${rpmver}/syslinux-vesa-splash.jpg
-cp ./artwork/splash.xpm.gz ${rpmname}-${rpmver}/
+cp ./artwork/splash.jpg ${rpmname}-${rpmver}/syslinux-vesa-splash.jpg.eee
+cp ./artwork/splash.xpm.gz ${rpmname}-${rpmver}/splash.xpm.gz.eee
 
 # Now adjust the spec file to match the version numbers :
 spec=${rpmname}-${rpmver}/${rpmname}.spec
@@ -28,8 +28,11 @@ sed -i \
 		-e 's|^Source0\:.*$|Source0: '${rpmname}'-'${rpmver}'.tar.gz|' \
   ${spec}
 
+#exit 0;
+
 # Make the RPM build directory into an RPM
 tar -czf ${rpmname}-${rpmver}.tar.gz ${rpmname}-${rpmver}
+# tar -tzf ${rpmname}-${rpmver}.tar.gz
 rpmbuild -tb ${rpmname}-${rpmver}.tar.gz 
 rm -f ${rpmname}-${rpmver}.tar.gz
 rm -rf ${rpmname}-${rpmver}

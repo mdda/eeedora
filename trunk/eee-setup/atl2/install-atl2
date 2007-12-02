@@ -3,8 +3,11 @@
 # You've got to be root to do this -
 # it depends on the eee_tarball being located in /root/
 
-mkdir /lib/modules/`uname -r`/kernel/drivers/net/atl2
-cp /root/eee_tarball/atl2/atl2.ko /lib/modules/`uname -r`/kernel/drivers/net/atl2/
+setup=${1:-/root/eee-setup}
+
+moddir=/lib/modules/`uname -r`/kernel/drivers/net/atl2
+mkdir -p ${moddir}
+cp ${setup}/atl2/atl2.ko $moddir}/
 /sbin/depmod -a
 
 # Do this as a force since the mirror repo in the ks 
