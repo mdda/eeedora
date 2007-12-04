@@ -1,3 +1,33 @@
+##################
+Original patch announcement :
+
+http://madwifi.org/ticket/1679
+##################
+
+# Using the patch downloaded...
+
+sudo apt-get install build-essential
+wget 'http://www.kisslog.com/tmp/patch'
+wget http://snapshots.madwifi.org/madwifi-ng/madwifi-ng-r2756-20071018.tar.gz
+tar zxvf madwifi-ng-r2756-20071018.tar.gz
+cd madwifi-ng-r2756-20071018
+patch -p0 < ../patch
+make clean
+make
+sudo make install
+reboot
+
+##################
+I tested the patch file with svn version r2992 in Fedora 8. It work, but just want to inform that I have to blacklist ath5k module. It installed/load by default in Fedora 8.
+
+nbd, I don't understand why this patch can't be committed to madwifi. The patch did submitted by atheros, right? Maybe I should google about ABI breakage. Thanks.
+##################
+
+
+
+
+
+
 yum install madwifi
 
 

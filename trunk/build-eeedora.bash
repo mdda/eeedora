@@ -29,6 +29,8 @@ creatingstart=`${dt}`
 echo "Starting ISO creation at ${creatingstart}"
 
 # http://www-128.ibm.com/developerworks/linux/library/l-fedora-livecd/
+# See http://www.redhat.com/archives/anaconda-devel-list/2007-July/msg00054.html to understand (important --turbo-liveinst)
+#  --turbo-liveinst 
 livecd-creator \
   --config=./eeedora.ks \
   --cache=`pwd` \

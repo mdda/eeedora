@@ -1,0 +1,18 @@
+#! /bin/bash
+
+# ${setup}/live-install/fix-liveinst-script ${setup}
+
+# Not necessary 
+setup=${1:-/root/eee-setup}
+
+script=/usr/sbin/liveinst
+
+cp ${script} ${script}.orig
+
+# Fix up the liveinst script to allow a parameter to be passed through to anaconda...
+sed -i \
+	-e 's|^if \[ -z \"\$LIVE|# Added for EeeDora\nparams=\$1\n\n&|' \
+ -e 's|^\(ANACONDA=.*\)"$|# Updated for Eeedora\n\1 \${params}"|' \
+ ${script}
+	
+	# Done
