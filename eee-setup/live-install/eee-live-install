@@ -14,11 +14,15 @@ setup=/root/eee-setup
 
 . /etc/init.d/functions
 
-# Are we running this from a live image?  If not, then WTF!
-if ! strstr "`cat /proc/cmdline`" liveimg || [ "$1" != "start" ] || [ -e /.liveimg-configured ] ; then
- echo "Apparently this is not a live image - please don't try to install on top of it!"
- exit 0
-fi
+# This actually gets checked in the liveinst script anyway
 
-/usr/bin/liveinst ${setup}/live_install/eee-live-install.ks
+# Are we running this from a live image?  If not, then WTF!
+#if ! strstr "`cat /proc/cmdline`" liveimg || [ "$1" != "start" ] || [ -e /.liveimg-configured ] ; then
+# echo "Apparently this is not a live image - please don't try to install on top of it!"
+# exit 0
+#fi
+
+# The clever bit here is that /usr/bin/liveinst gets the root password (if needed)
+# before executing the /usr/sbin/liveinst script
+/usr/bin/liveinst "--kickstart=file:${setup}/live-install/eee-live-install.ks"
 # Wowza!

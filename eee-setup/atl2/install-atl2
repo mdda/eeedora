@@ -8,6 +8,15 @@ setup=${1:-/root/eee-setup}
 moddir=/lib/modules/`uname -r`/kernel/drivers/net/atl2
 mkdir -p ${moddir}
 cp ${setup}/atl2/atl2.ko ${moddir}/
+
+# Now add this as an alias to /etc/modprobe.conf
+#    ... add to the file alias eth0 atl2 
+mp=/etc/modprobe.conf
+echo "" >> ${mp}
+echo "# Added for EeeDora setup" >> ${mp}
+#echo "alias eth0 atl2" >> ${mp}
+echo "" >> ${mp}
+
 /sbin/depmod -a
 
 # Do this as a force since the mirror repo in the ks 

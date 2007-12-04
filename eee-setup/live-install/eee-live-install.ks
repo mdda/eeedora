@@ -10,7 +10,8 @@ auth --useshadow --enablemd5
 #selinux --enforcing
 selinux --disabled
 
-network --device eth0 --bootproto dhcp
+# Not sure whether this is present...
+#network --device eth0 --bootproto dhcp
 
 #firewall --disabled
 firewall --enabled --trust=eth0 --ssh
@@ -25,9 +26,13 @@ skipx
 services --enabled=NetworkManager,network,sshd 
 
 # This is for the real install
+#clearpart --all --drives sda
 clearpart --drives sda
-part / --fstype ext2 --size 1 --ondisk=sda --asprimary --grow
-#part swap --recommended DO NOT WANT
+bootloader --location=none
+#bootloader --location=mbr
+#zerombr yes
+part / --fstype ext2 --ondisk=sda --asprimary --size 1 --grow --fsoptions="noatime"
+#part swap --recommended DO. NOT. WANT.
 
 # A default public root password - not the best idea.
 rootpw eee
@@ -36,9 +41,10 @@ rootpw eee
 ShowProgress() {
  echo $"LiveInstall : $1" >> /etc/eeedora.progress
 }
+ShowProgress "Start of LiveInstall Kickstart script"
+
 # By this stage, this is already on the new machine, opened up
 setup=/root/eee-setup
-
 
 fedoranonlive=/etc/rc.d/init.d/fedora-nonlive
 
@@ -57,5 +63,5 @@ ShowProgress "Set ${fedoranonlive} as the task after this script is done"
 #touch /etc/resolv.conf
 #/sbin/restorecon /etc/resolv.conf
 
-ShowProgress "End of Kickstart script"
+ShowProgress "End of LiveInstall Kickstart script"
 %end

@@ -144,10 +144,10 @@ joe
 scite
 Zim
 curl
+samba-client
 
 # mdda dev tools
 #cvs
-samba-client
 
 # Take these out for the Eee - We know we don't need them
 #-*firmware  # if @hardware-support is included above
