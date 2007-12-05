@@ -1,0 +1,197 @@
+#!/bin/bash
+#
+# live: Init script for eeedora - live and non-live
+#
+# chkconfig: 345 00 99
+# description: Init script for live image.
+
+liveuser="eeedora"
+
+# This has already been unwrapped (in the ISO kickstart code)
+setup=/root/eee-setup
+
+ShowProgress() {
+ echo $"eeedora-init :"`date +%F_%H-%M`" : $1" >> /etc/eeedora.progress
+}
+
+ShowProgress "Loading /etc/init.d/functions"
+. /etc/init.d/functions
+
+exists() {
+ which $1 >/dev/null 2>&1 || return
+ $*
+}
+
+# This tests whether we're repeating something we've already done.
+configured=/.eeedora-configured
+
+ShowProgress "Test whether this has been run - if so, abort"
+if [ -e  ${configured} ] ; then
+ ShowProgress "Apparently this has already happened"
+ exit 0
+fi
+
+ShowProgress "Touching ${configured}"
+touch ${configured}
+
+# Ok, so this is certainly the first time run here 
+# Is this is a live install ?
+
+#if ! strstr "`cat /proc/cmdline`" liveimg || [ "$1" != "start" ] || [ -e /.liveimg-configured ] ; then
+
+live=false
+ShowProgress "Testing cmdline - are we a live image ?"
+# This is the kernel command line - a pretty good indicator
+if strstr "`cat /proc/cmdline`" liveimg ; then
+ ShowProgress "Apparently this is a live image"
+ live=true
+fi
+
+#if ! ${live}; then 
+# ShowProgress "Installing the atl2 kernel module - again..."
+# ${setup}/atl2/install-atl2 ${setup}
+#fi
+
+#ShowProgress "TODO : Fix up /etc/fstab (not done)"
+# Use sed to fix up /etc/fstab (like the gdm.conf below)
+
+if ${live}; then 
+	ShowProgress "Try to Mount live image"
+	if [ -b /dev/live ]; then
+ 	ShowProgress "Actually Mount live image"
+		mkdir -p /mnt/live
+		mount -o ro /dev/live /mnt/live
+	fi
+fi
+
+#if ! [ 1 ]; then # DISABLE CREATION OF SWAP PARTITION - SAVE FLASH RAM OVERWRITES
+# ShowProgress "Enable swaps unless requested otherwise"
+# # This is the list of current swap partitions
+# swaps=`blkid -t TYPE=swap -o device`
+# if ! strstr "`cat /proc/cmdline`" noswap -a [ -n "$swaps" ] ; then
+#  # Go through the list until we get a hit...
+#  for s in $swaps ; do
+#    action "Enabling swap partition $s" swapon $s
+#  done
+# fi
+#else
+# ShowProgress "Eee has swap disabled"
+#fi
+
+# TODO : cpu scaling : This would increase battery time
+# echo ondemand > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+# Default state for Eee :
+# echo performance > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+
+
+#ShowProgress "Configure X, allowing user to override xdriver"
+#for o in `cat /proc/cmdline` ; do
+#	case $o in
+#	xdriver=*)
+#		xdriver="--set-driver=${o#xdriver=}"
+#		;;
+#	esac
+#done
+
+#ShowProgress "system-config-display ($xdriver)"
+#exists system-config-display --noui --reconfig --set-depth=24 $xdriver
+
+ShowProgress "Unmute sound card"
+exists alsaunmute 0 2> /dev/null
+
+if ${live}; then 
+ ShowProgress "Turn off firstboot"
+ echo "RUN_FIRSTBOOT=NO" > /etc/sysconfig/firstboot
+else 
+ ShowProgress "Turn off firstboot"
+ echo "RUN_FIRSTBOOT=NO" > /etc/sysconfig/firstboot
+fi
+
+ShowProgress "Add useful repos"
+cp ${setup}/repos/* /etc/yum.repos.d/
+
+#ShowProgress "Don't start yum-updatesd"
+chkconfig --level 345 yum-updatesd off
+
+ShowProgress "Don't start cron/at as they tend to be painful in a Live context"
+# don't start cron/at as they tend to spawn things which are
+# disk intensive that are painful on a live image
+chkconfig --level 345 crond off
+chkconfig --level 345 atd off
+chkconfig --level 345 anacron off
+if ${live}; then 
+ chkconfig --level 345 readahead_early off
+ chkconfig --level 345 readahead_later off
+fi
+
+ShowProgress "Stopgap fix for RH #217966; should be fixed in HAL instead"
+touch /media/.hal-mtab
+
+ShowProgress "Copy over known-good xorg.conf"
+cp ${setup}/xorg/xorg.conf /etc/X11/
+
+ShowProgress "Create /etc/sysconfig/desktop (needed for installation)"
+cp ${setup}/xfce/sysconfig-desktop /etc/sysconfig/desktop 
+
+# disable screensaver locking
+gconftool-2 --direct --config-source=xml:readwrite:/etc/gconf/gconf.xml.defaults -s -t bool /apps/gnome-screensaver/lock_enabled false >/dev/null
+
+#
+# Now do all the stuff for the special new eeedora user
+#
+
+# This group is going to be able to plug and unplug devices
+
+ShowProgress "Add '${liveuser}' user with no passwd"
+useradd -c "Eeedora Live" ${liveuser} 
+passwd -d ${liveuser} > /dev/null
+
+livehome=/home/${liveuser}
+
+ShowProgress "Process display manager options"
+${setup}/xdm/setup-display-manager ${setup} ${liveuser}
+
+ShowProgress "Set up XFCE for '${liveuser}'"
+${setup}/xfce/setup-xfce ${setup} ${liveuser}
+
+# Only do this for the live user - since it only makes sense to have a liveinstall icon on that desktop
+if ${live}; then 
+ ShowProgress "Fix up the /usr/sbin/liveinst script - it needs to accept command line params"
+ ${setup}/live-install/fix-liveinst-script ${setup}
+
+ ShowProgress "Add a desktop link to install the live image for '${liveuser}'"
+ mkdir /home/${liveuser}/Desktop
+ #ln -s ${setup}/live-install/eee-live-install ${livehome}/Desktop/Install-Live-Image
+ cp ${setup}/live-install/eee-live-install ${livehome}/Desktop/Install-Live-Image
+ # May have to mess around with su privileges for this one, though
+fi
+
+ShowProgress "Set up firefox for '${liveuser}' (this is a personal thing)"
+#mkdir ${livehome}/.mozilla
+tar -xzf ${setup}/misc/firefox.tar.gz -C ${livehome}/
+
+ShowProgress "Allow '${liveuser}' to automount USB plugin drives"
+${setup}/services/automount-volumes_hal-fix ${setup} ${liveuser}
+
+
+
+# Do this permission setting last - 
+
+ShowProgress "Set User permissions - Can be removed once the ui hacks have gone"
+chown -R ${liveuser}:${liveuser} ${livehome}/
+chmod 700 ${livehome}/
+
+ShowProgress "/sbin/restorecon for ${liveuser} home directory"
+/sbin/restorecon -R ${livehome}/
+chmod 700 ${livehome}/
+
+#more /etc/eeedora.progress
+#read enter
+
+# Enable this line if the login process has problems : 
+#   it allows command line interaction before any services start up...
+#if ${live}; then
+# ${setup}/misc/insecure-prelogin-shell.bash
+#fi
+
+# Finished
