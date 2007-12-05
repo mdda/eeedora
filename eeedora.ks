@@ -364,8 +364,10 @@ eee_splash
 
 %post
 ShowProgress() {
- echo $"$1" >> /etc/eeedora.progress
+# echo $"$1" >> /etc/eeedora.progress
+ echo $"live-kickstart :"`date +%F_%H-%M`" : $1" >> /etc/eeedora.progress
 }
+ShowProgress "Start of Live Kickstart script"
 
 # This is on the machine that's doing the ISO image building...
 # However, the eee_setup rpm has been installed, so there's 
@@ -379,22 +381,25 @@ setup=/root/eee-setup
 ShowProgress "Install the atl2 kernel module"
 ${setup}/atl2/install-atl2 ${setup}
 
-fedoralive=/etc/rc.d/init.d/fedora-live
+fb=eeedora-firstboot
+init=/etc/rc.d/init.d
 
-ShowProgress "Creating ${fedoralive} (needed for live version)"
-cp ${setup}/services/fedora-live ${fedoralive}
-chmod 755 ${fedoralive}
-/sbin/restorecon ${fedoralive}
+ShowProgress "Creating ${init}/${fb} (needed for live version)"
+cp ${setup}/services/${fb} ${init}/${fb}
+chmod 755 ${init}/${fb}
+/sbin/restorecon ${init}/${fb}
 
-ShowProgress "Set ${fedoralive} as the task after this script is done"
-/sbin/chkconfig --add fedora-live
+ShowProgress "Set ${init}/${fb} as the task after this script is done"
+/sbin/chkconfig --add ${fb}
 
-#ShowProgress "Save a little bit of space at least..."
-#rm -f /boot/initrd*
+# We can do this, since it only affects the RW live image 
+# (not the underlying RO source for the later live install)
+ShowProgress "Save a little bit of space in live memory at least..."
+rm -f /boot/initrd*
 
 # workaround avahi segfault (#279301)
 touch /etc/resolv.conf
 /sbin/restorecon /etc/resolv.conf
 
-ShowProgress "End of Kickstart script"
+ShowProgress "End of Live Kickstart script"
 %end
