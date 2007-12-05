@@ -26,42 +26,46 @@ skipx
 services --enabled=NetworkManager,network,sshd 
 
 # This is for the real install
+zerombr yes
+
 #clearpart --all --drives sda
 clearpart --drives sda
-bootloader --location=none
-#bootloader --location=mbr
-#zerombr yes
 part / --fstype ext2 --ondisk=sda --asprimary --size 1 --grow --fsoptions="noatime"
-#part swap --recommended DO. NOT. WANT.
+#part swap --recommended DO.NOT.WANT.
+
+#bootloader --location=none
+bootloader --location=mbr
 
 # A default public root password - not the best idea.
 rootpw eee
 
 %post
 ShowProgress() {
- echo $"LiveInstall : $1" >> /etc/eeedora.progress
+# echo $"LiveInstall : $1" >> /etc/eeedora.progress
+ echo $"real-kickstart :"`date +%F_%H-%M`" : $1" >> /etc/eeedora.progress
 }
-ShowProgress "Start of LiveInstall Kickstart script"
+ShowProgress "Start of RealInstall Kickstart script"
 
 # By this stage, this is already on the new machine, opened up
 setup=/root/eee-setup
 
-fedoranonlive=/etc/rc.d/init.d/fedora-nonlive
+ShowProgress "Install the atl2 kernel module"
+${setup}/atl2/install-atl2 ${setup}
 
-ShowProgress "Creating ${fedoranonlive} (needed for post-install processing)"
-cp ${setup}/services/fedora-nonlive ${fedoranonlive} 
-chmod 755 ${fedoranonlive}
-/sbin/restorecon ${fedoranonlive}
+fb=eeedora-firstboot
+init=/etc/rc.d/init.d
 
-ShowProgress "Set ${fedoranonlive} as the task after this script is done"
-/sbin/chkconfig --add fedora-nonlive
+ShowProgress "Creating  ${init}/${fb} (needed for post-install processing)"
+cp ${setup}/services/${fb} ${init}/${fb}
+chmod 755 ${init}/${fb}
+/sbin/restorecon ${init}/${fb}
 
-#ShowProgress "Save a little bit of space at least..."
-#rm -f /boot/initrd*
+ShowProgress "Set ${init}/${fb} as the task after this script is done"
+/sbin/chkconfig --add ${fb}
 
 # workaround avahi segfault (#279301)
-#touch /etc/resolv.conf
-#/sbin/restorecon /etc/resolv.conf
+touch /etc/resolv.conf
+/sbin/restorecon /etc/resolv.conf
 
-ShowProgress "End of LiveInstall Kickstart script"
+ShowProgress "End of RealInstall Kickstart script"
 %end

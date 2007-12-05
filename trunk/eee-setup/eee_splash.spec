@@ -74,7 +74,7 @@ p=/usr/lib/anaconda-runtime/
 mv ${p}/syslinux-vesa-splash.jpg.eee ${p}/syslinux-vesa-splash.jpg
 
 p=/boot/grub
-mv ${p}/splash.xpm.gz.eee ${p}/splash.xpm.gz.rpmsave
+mv ${p}/splash.xpm.gz.eee ${p}/splash.xpm.gz
 
 
 
