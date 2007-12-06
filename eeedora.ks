@@ -31,7 +31,7 @@ device atl2
 #part / --fstype ext2 --size 1 --ondisk=sda --asprimary --grow
 
 # A default public root password - not the best idea.
-rootpw eee
+rootpw eeedora
 
 #If you installed *ubuntu the normal way with one big 4gb partition on the SSD, there only needs to be one line in your /etc/fstab file, the one mounting /
 #  UUID=[your-uuid-here]   /    ext2    defaults,errors=remount-ro,noatime  0     1
