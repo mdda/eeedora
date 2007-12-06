@@ -28,6 +28,20 @@ creatingstart=`${dt}`
 
 echo "Starting ISO creation at ${creatingstart}"
 
+livecdcreator=/usr/bin/livecd-creator
+if [ -f ${livecdcreator} ]; then 
+	# Fix up /usr/bin/livecd-creator, because the default size of the image is 4096, which is too large to 
+	# transfer onto the internal drive of the Eee
+	#         self.image_size = 2048 # in megabytes
+	# NB : I know that this is a REALLY HORRIBLE thing to do.
+	grep image_size ${livecdcreator}
+
+	cp ${livecdcreator} ${livecdcreator}-orig
+	sed -i 's|^\([ ]*self.image_size =\).*$|\1 2048 # Updated for Eee Internal Drive|' ${livecdcreator}
+
+	grep image_size ${livecdcreator}
+fi
+
 # http://www-128.ibm.com/developerworks/linux/library/l-fedora-livecd/
 # See http://www.redhat.com/archives/anaconda-devel-list/2007-July/msg00054.html to understand (important --turbo-liveinst)
 #  --turbo-liveinst 
@@ -36,6 +50,10 @@ livecd-creator \
   --cache=`pwd` \
   --fslabel=${eeedora} \
   | tee livecd-creator-output.${creatingstart}
+
+# Undo the alteration
+mv ${livecdcreator}-orig ${livecdcreator}
+grep image_size ${livecdcreator}
 
 grep "Installing" livecd-creator-output.${creatingstart} | sort | sed 's|\r||' > packages-output.${creatingstart}
 

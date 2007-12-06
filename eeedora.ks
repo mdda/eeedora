@@ -13,11 +13,10 @@ selinux --disabled
 network --device eth0 --bootproto dhcp
 
 #firewall --disabled
-firewall --enabled --trust=eth0 --ssh
+#firewall --enabled --trust=eth0 --ssh
+firewall --enabled --ssh
 
-#xconfig --card "VMWare" --videoram 16384 --hsync 31.5-37.9 --vsync 50-70 --resolution 800x600 --depth 16
-#xconfig --startxonboot --defaultdesktop=XFCE
-# This is an idea... since we know the correct configuration...
+# This is since we know the correct configuration...
 skipx 
 
 #Switch this over - not having sshd is more secure (until a non-public password is set)
@@ -27,10 +26,9 @@ services --enabled=NetworkManager,network,sshd
 # Force the kickstart to recognize the atl2 driver ASAP
 device atl2
 
-# This isn't for the live version - just for the install - Needs Fixing.
+# No Partition information required to build the ISO 
 #clearpart --drives sda
 #part / --fstype ext2 --size 1 --ondisk=sda --asprimary --grow
-#part swap --recommended
 
 # A default public root password - not the best idea.
 rootpw eee
@@ -42,7 +40,6 @@ rootpw eee
 # xrandr --output VGA --right-of LVDS --mode 1024x768
 # xrandr --auto
 
-#At least this is working for me.  (Use xorg.conf in eee_files/)
 #Don't forget to install the  libgl1-mesa-dri , libgl1-mesa-glx , libglu1-mesa libraries for full 3D graphics.  
 
 #And use the xxmc video option in xine (or whatever).
