@@ -41,7 +41,7 @@ part / --fstype ext2 --ondisk=sda --asprimary --size 1 --grow --fsoptions="noati
 bootloader --location=mbr --timeout=3
 
 # A default public root password - not the best idea.
-rootpw eee
+rootpw eeedora
 
 # Problem in anaconda :
 #03:46:35 INFO    : moving (1) to step installpackages

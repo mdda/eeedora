@@ -34,12 +34,14 @@ if [ -f ${livecdcreator} ]; then
 	# transfer onto the internal drive of the Eee
 	#         self.image_size = 2048 # in megabytes
 	# NB : I know that this is a REALLY HORRIBLE thing to do.
-	grep image_size ${livecdcreator}
+ echo "Before ${livecdcreator} Replace"
+ grep "self.image_size = " ${livecdcreator}
 
 	cp ${livecdcreator} ${livecdcreator}-orig
-	sed -i 's|^\([ ]*self.image_size =\).*$|\1 2048 # Updated for Eee Internal Drive|' ${livecdcreator}
+	sed -i 's|^\([ ]*self.image_size =\) 4096 .*$|\1 2048 # Updated for Eee Internal Drive|' ${livecdcreator}
 
-	grep image_size ${livecdcreator}
+ echo "After ${livecdcreator} Replace"
+	grep "self.image_size = " ${livecdcreator}
 fi
 
 # http://www-128.ibm.com/developerworks/linux/library/l-fedora-livecd/
@@ -53,7 +55,9 @@ livecd-creator \
 
 # Undo the alteration
 mv ${livecdcreator}-orig ${livecdcreator}
-grep image_size ${livecdcreator}
+
+echo "After ${livecdcreator} Finished"
+	grep "self.image_size = " ${livecdcreator}
 
 grep "Installing" livecd-creator-output.${creatingstart} | sort | sed 's|\r||' > packages-output.${creatingstart}
 
