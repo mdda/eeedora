@@ -15,6 +15,7 @@ mp=/etc/modprobe.conf
 echo "" >> ${mp}
 echo "# Added for EeeDora setup" >> ${mp}
 #echo "alias eth0 atl2" >> ${mp}
+echo "alias eth1 atl2" >> ${mp}
 echo "" >> ${mp}
 
 /sbin/depmod -a
