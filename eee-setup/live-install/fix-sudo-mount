@@ -1,0 +1,14 @@
+#! /bin/bash
+
+# ${setup}/live-install/fix-liveinst-script ${setup}
+
+# Not necessary 
+setup=${1:-/root/eee-setup}
+
+script=/usr/sbin/liveinst
+
+# Fix up mount and umount so that I can sudo them...	
+echo '' >> /etc/sudoers
+echo ${liveuser}'	localhost=NOPASSWD:mount,umount' >> /etc/sudoers
+echo '' >> /etc/sudoers
+# Done

@@ -19,6 +19,9 @@ cp ./${rpmname}.spec ${rpmname}-${rpmver}/
 # Get the artwork into the RPM
 cp ./artwork/splash.jpg ${rpmname}-${rpmver}/syslinux-vesa-splash.jpg.eee
 cp ./artwork/splash.xpm.gz ${rpmname}-${rpmver}/splash.xpm.gz.eee
+#cp ./artwork/progress_first-lowres.png ${rpmname}-${rpmver}/progress_first-lowres.png.eee
+cp ./artwork/progress_first.png ${rpmname}-${rpmver}/progress_first.png.eee
+cp ./artwork/anaconda-splash.png ${rpmname}-${rpmver}/splash.png.eee
 
 # Now adjust the spec file to match the version numbers :
 spec=${rpmname}-${rpmver}/${rpmname}.spec

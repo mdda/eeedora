@@ -6,7 +6,8 @@ liveuser=${2:-eeedora}
 # See : 
 # http://www.jefferyfernandez.id.au/2007/07/26/a-security-policy-in-place-prevents-mounting-of-volumes/
 
-config=/etc/dbus-1/system.d/hal.conf
+#config=/etc/dbus-1/system.d/hal.conf
+config=/etc/PolicyKit/PolicyKit.conf
 
 # Create a new group that's going to be able to automount etc
 groupadd plugdev
@@ -15,14 +16,11 @@ usermod --append --groups plugdev ${liveuser}
 #policy=$(echo ${policy} | sed 's|a|A|')
 
 # Remove the end of the file
-sed -i 's|</busconfig>||' ${config}
+#sed -i 's|</busconfig>||' ${config}
+sed -i 's|</config>||' ${config}
 
 cat >>${config} <<POLICY 
-  <policy group="plugdev">
-    <allow send_interface="org.freedesktop.Hal.Device.SystemPowerManagement"/>
-    <allow send_interface="org.freedesktop.Hal.Device.LaptopPanel"/>
-    <allow send_interface="org.freedesktop.Hal.Device.Volume"/>
-    <allow send_interface="org.freedesktop.Hal.Device.Volume.Crypto"/>
-  </policy>
-</busconfig>
+ <match action="org.freedesktop.hal.storage.mount-removable">
+  <return result="yes" />
+ </match>
 POLICY

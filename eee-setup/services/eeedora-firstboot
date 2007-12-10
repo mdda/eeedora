@@ -160,10 +160,13 @@ if ${live}; then
  ${setup}/live-install/fix-liveinst-script ${setup}
 
  ShowProgress "Add a desktop link to install the live image for '${liveuser}'"
+ ${setup}/live-install/fix-sudo-mount ${setup}
+
+ShowProgress "Add a desktop link to install the live image for '${liveuser}'"
  mkdir /home/${liveuser}/Desktop
- #ln -s ${setup}/live-install/eee-live-install ${livehome}/Desktop/Install-Live-Image
+ # This script calls /usr/bin/liveinst, which gets the root password before invoking /usr/sbin/liveinst
  cp ${setup}/live-install/eee-live-install ${livehome}/Desktop/Install-Live-Image
- # May have to mess around with su privileges for this one, though
+ cp ${setup}/live-install/eee-live-install-fix ${livehome}/Desktop/Install-Live-Image-Fix
 fi
 
 ShowProgress "Set up firefox for '${liveuser}' (this is a personal thing)"

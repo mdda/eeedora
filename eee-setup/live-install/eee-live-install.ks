@@ -29,11 +29,11 @@ services --enabled=NetworkManager,network,sshd
 
 # This is for the real install
 # zerombr yes # Now options for zerombr are deprecated
-zerombr yes
+zerombr
 
 ignoredisk --drives=sdb,sdc,sdd
 clearpart --all --drives sda
-part / --fstype ext2 --ondisk=sda --asprimary --size 1 --grow --fsoptions="noatime"
+part / --fstype ext2 --ondisk=sda --asprimary --size 1 --grow --fsoptions="noatime" --label=Eee
 #part swap --recommended DO.NOT.WANT.
 
 #bootloader --location=none
@@ -57,7 +57,8 @@ rootpw eeedora
 #03:48:53 DEBUG   : isys.py:mount()- going to mount /dev on /mnt/sysimage/dev
 
 # Got to line 1202 of livecd.py...  But the root filesystem isn't mounted in the right place, so there is no /etc
-
+# Why isn't line mountFilesystems in fsset.py line 1608 mounting root?
+# Add a logging message (like line 1619) before the if...continue construct
 
 
 

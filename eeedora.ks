@@ -91,6 +91,9 @@ anaconda-runtime
 syslinux
 isomd5sum
 
+# New for fixing up anaconda
+patch
+
 yum
 yum-fastestmirror
 yum-skip-broken
@@ -223,8 +226,8 @@ gdbm
 # Good for the Eee
 xfce4-battery-plugin
 -xfce4-clipman-plugin
-# Use datetime instead
--xfce4-clock-plugin
+# Use datetime instead - but maybe this is built in, since I can't remove it
+# -xfce4-clock-plugin
 xfce4-cpugraph-plugin
 # This is better than the simple clock
 xfce4-datetime-plugin
@@ -265,8 +268,8 @@ xfce4-weather-plugin
 -xfce4-websearch-plugin
 # No need to switch keyboard layouts constantly
 -xfce4-xkb-plugin
-# Needed to use gnome panel applets
-xfce4-xfapplet-plugin
+# Needed to use gnome panel applets - but why do I care?
+-xfce4-xfapplet-plugin
 
 # some more stuff for xfce
 #orage
@@ -351,6 +354,9 @@ xdg-user-dirs
 -gnome-user-docs
 -gnome-backgrounds
 -gnome-games
+-gnome-netstatus
+-gnome-python2-applet
+-gnome-applets
 
 # make sure no debuginfo doesn't end up on the live image
 -*debuginfo
@@ -374,6 +380,9 @@ ShowProgress "Start of Live Kickstart script"
 # open up the tarball
 tar -xzf /root/eee-setup.tar.gz -C /root/
 setup=/root/eee-setup
+
+ShowProgress "Blacklist the ath5k kernel module"
+${setup}/ath/blacklist-ath5k ${setup}
 
 ShowProgress "Install the atl2 kernel module"
 ${setup}/atl2/install-atl2 ${setup}

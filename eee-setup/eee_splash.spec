@@ -41,9 +41,10 @@ install syslinux-vesa-splash.jpg.eee %{buildroot}/usr/lib/anaconda-runtime/
 mkdir -p %{buildroot}/boot/grub/
 install splash.xpm.gz.eee %{buildroot}/boot/grub/
 
-#cp ${setup}/artwork/splash.xpm.gz /boot/grub/
-##cp ${setup}/artwork/splash.jpg /usr/lib/syslinux/
-#cp ${setup}/artwork/splash.jpg /usr/lib/anaconda-runtime/syslinux-vesa-splash.jpg
+mkdir -p %{buildroot}/usr/share/anaconda/pixmaps/
+install progress_first.png.eee %{buildroot}/usr/share/anaconda/pixmaps/
+install splash.png.eee %{buildroot}/usr/share/anaconda/pixmaps/
+#install progress_first-lowres.png.eee %{buildroot}/usr/share/anaconda/pixmaps/
 
 %clean
 
@@ -52,11 +53,11 @@ install splash.xpm.gz.eee %{buildroot}/boot/grub/
 # Since this will conflicts ... what to do ?
 /usr/lib/anaconda-runtime/syslinux-vesa-splash.jpg.eee
 /boot/grub/splash.xpm.gz.eee
+/usr/share/anaconda/pixmaps/progress_first.png.eee
+/usr/share/anaconda/pixmaps/splash.png.eee
+#/usr/share/anaconda/pixmaps/progress_first-lowres.png.eee
 
 %pre
-#mv %{buildroot}/usr/lib/anaconda-runtime/syslinux-vesa-splash.jpg %{buildroot}/usr/lib/anaconda-runtime/syslinux-vesa-splash.jpg.orig
-#mv %{buildroot}/boot/grub/splash.xpm.gz %{buildroot}/boot/grub/splash.xpm.gz.orig
-
 p=/usr/lib/anaconda-runtime/
 mkdir -p ${p}  # Must be there already
 if [ -f ${p}/syslinux-vesa-splash.jpg ]; then 
@@ -69,13 +70,23 @@ if [ -f ${p}/splash.xpm.gz ]; then
  mv ${p}/splash.xpm.gz ${p}/splash.xpm.gz.rpmsave
 fi
 
+p=/usr/share/anaconda/pixmaps
+mkdir -p ${p}
+if [ -f ${p}/progress_first.png ]; then 
+ mv ${p}/progress_first.png ${p}/progress_first.png.rpmsave
+ mv ${p}/splash.png.png ${p}/splash.png.rpmsave
+fi
+
 %post
-p=/usr/lib/anaconda-runtime/
+p=/usr/lib/anaconda-runtime
 mv ${p}/syslinux-vesa-splash.jpg.eee ${p}/syslinux-vesa-splash.jpg
 
 p=/boot/grub
 mv ${p}/splash.xpm.gz.eee ${p}/splash.xpm.gz
 
+p=/usr/share/anaconda/pixmaps
+mv ${p}/progress_first.png.eee ${p}/progress_first.png
+mv ${p}/splash.png.eee ${p}/splash.png
 
 
 %changelog
