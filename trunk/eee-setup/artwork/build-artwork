@@ -6,13 +6,36 @@
 # Conversion information also see :
 # http://sipx-wiki.calivia.com/index.php/A_Kickstart_CD_for_sipX_on_CentOS
 
-# This is for Anaconda
+# This is for Anaconda - used for the Live Boot Splash screen
 convert -colors 65536 -depth 16 eeedora-splash.png splash.jpg
 # ... going into : /usr/lib/anaconda-runtime/syslinux-vesa-splash.jpg
 # and, maybe later, ... going into : /usr/lib/syslinux/
 
 # This is for Grub
-convert -colors 14 eeedora-splash.png splash.xpm
+# specs: 640x480px PNG file with 16-color indexed palette. 
+# 2 of the 16 colors are required, so you've got only 14 to play with. 
+# The required colors (and slot #s in the color map) are: 0 = #000000 (black), 1 = #ffffff (white))
+#convert -colors 14 eeedora-splash.png splash.xpm
+
+# I'm not sure I beleive the above 14 colour restriction...
+#convert eeedora-splash.png splash.xpm
+# This is a wild idea ...
+#cp eeedora-splash.png splash.xpm
+#mv splash.png splash.xpm
+
+# Ok - load up the PNG and SaveAs .XPM
+# Then Transform it to an Indexed Color Map - 14 colours, with dithering
 rm splash.xpm.gz 
 gzip splash.xpm
 # ... going into : /boot/grub/
+
+
+#Anaconda Small Splash Image PNG
+#* final filename: progress_first-lowres.png (shown while packages install.)
+#* package: fedora-logos, anaconda/progress_first-lowres.png
+# /usr/share/anaconda/pixmaps/progress_first-lowres.png
+#* specs: 350x225px full-color + alpha PNG file.
+#* workflow: inkscape (line art) => gimp (cropping). 
+# Be sure not to just 'scale down' your larger image - make sure any graphics with fine line artwork 
+# such as icons are properly aligned to the pixel grid. (In this case, the full size icon bar and copyright 
+#text were pasted into the scaled-down copy of the larger one.

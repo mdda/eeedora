@@ -34,6 +34,8 @@ cp ./atl2/install-atl2 ${rpmdir}/atl2/
 # These are related to services to fix-up the system on the live machine
 mkdir ${rpmdir}/ath
 cp ./ath/README ${rpmdir}/ath/
+cp ./ath/blacklist-ath5k ${rpmdir}/ath/
+cp ./ath/*.ko ${rpmdir}/ath/
 
 # These are related to services (eg: fix-up the system on the live machine)
 cp -R services ${rpmdir}/

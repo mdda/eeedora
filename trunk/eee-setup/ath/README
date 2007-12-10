@@ -1,3 +1,19 @@
+Installing the Madwifi modules
+
+      Madwifi.net madwifi.modules.sh
+    * modprobe ath_pci
+          o insmod wlan.o
+          o insmod wlan_wep.o
+          o insmod ath_hal.o
+          o insmod ath_rate_onoe.o
+          o insmod ath_pci.o 
+    * lsmod
+    * device names
+          o obsolete SourceForge madwifi drivers uses ath0
+          o new madwifi-ng drivers uses wifi0 
+
+
+
 yum install madwifi
 
 
@@ -50,7 +66,7 @@ $ cd ..
 $ sudo make
 $ sudo make install
 $ sudo modprobe ath_pci
-$sudo modprobe wlan_scan_sta
+$ sudo modprobe wlan_scan_sta
 $ sudo ifconfig ath0 up
 System - administration - networking: My wireless device is now listed in here
 
