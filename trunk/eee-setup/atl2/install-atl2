@@ -5,6 +5,11 @@
 
 setup=${1:-/root/eee-setup}
 
+# Get the eth0 connection working : 
+#   atheros L2 100Mbit Ethernet adapter (PCI)
+#   driver : atl2 (i.e. ATL2)
+#   LOOK AT : http://forums.fedoraforum.org/showthread.php?t=162793&page=1&pp=15
+
 moddir=/lib/modules/`uname -r`/kernel/drivers/net/atl2
 mkdir -p ${moddir}
 cp ${setup}/atl2/atl2.ko ${moddir}/

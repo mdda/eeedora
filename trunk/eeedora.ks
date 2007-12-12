@@ -65,10 +65,10 @@ rootpw eeedora
 #repo --name=releases --baseurl=http://mirrors.tummy.com/pub/fedora.redhat.com/fedora/linux/releases/$releasever/Everything/$basearch/os/
 #repo --name=updates  --baseurl=http://mirrors.tummy.com/pub/fedora.redhat.com/fedora/linux/updates/$releasever/$basearch/
 
-#repo --name=releases  --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?arch=$basearch&repo=fedora-$releasever
-#repo --name=updates   --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?arch=$basearch&repo=updates-released-f$releasever
 repo --name=releases  --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?arch=i386&repo=fedora-8
 repo --name=updates   --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?arch=i386&repo=updates-released-f8
+#repo --name=releases  --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?arch=$basearch&repo=fedora-$releasever
+#repo --name=updates   --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?arch=$basearch&repo=updates-released-f$releasever
 
 #repo --name=atrpms   --baseurl=http://dl.atrpms.net/f$releasever-$basearch/atrpms/stable
 

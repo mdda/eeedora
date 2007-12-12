@@ -17,9 +17,11 @@ Installing the Madwifi modules
 yum install madwifi
 
 
-
-
-
+#### TO DO : 
+# Get the wlan0 connection working : 
+#   atheros AR5007EG 802.11 b/g wireless
+#   driver : ath_pci
+#   LOOK AT : http://wiki.eeeuser.com/ubuntu
 
 new_ath_pci 98340 0
 new_ath_rate_sample 14080 1 new_ath_pci
