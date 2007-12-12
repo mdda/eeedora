@@ -23,4 +23,5 @@ cat >>${config} <<POLICY
  <match action="org.freedesktop.hal.storage.mount-removable">
   <return result="yes" />
  </match>
+</config>
 POLICY

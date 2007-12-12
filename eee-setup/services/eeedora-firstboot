@@ -159,14 +159,13 @@ if ${live}; then
  ShowProgress "Fix up the /usr/sbin/liveinst script - it needs to accept command line params"
  ${setup}/live-install/fix-liveinst-script ${setup}
 
- ShowProgress "Add a desktop link to install the live image for '${liveuser}'"
- ${setup}/live-install/fix-sudo-mount ${setup}
+ # ShowProgress "Add a desktop link to install the live image for '${liveuser}'"
+ # ${setup}/live-install/fix-sudo-mount ${setup}
 
-ShowProgress "Add a desktop link to install the live image for '${liveuser}'"
+ ShowProgress "Add a desktop link to install the live image for '${liveuser}'"
  mkdir /home/${liveuser}/Desktop
  # This script calls /usr/bin/liveinst, which gets the root password before invoking /usr/sbin/liveinst
  cp ${setup}/live-install/eee-live-install ${livehome}/Desktop/Install-Live-Image
- cp ${setup}/live-install/eee-live-install-fix ${livehome}/Desktop/Install-Live-Image-Fix
 fi
 
 ShowProgress "Set up firefox for '${liveuser}' (this is a personal thing)"

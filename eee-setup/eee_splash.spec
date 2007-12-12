@@ -74,7 +74,7 @@ p=/usr/share/anaconda/pixmaps
 mkdir -p ${p}
 if [ -f ${p}/progress_first.png ]; then 
  mv ${p}/progress_first.png ${p}/progress_first.png.rpmsave
- mv ${p}/splash.png.png ${p}/splash.png.rpmsave
+ mv ${p}/splash.png ${p}/splash.png.rpmsave
 fi
 
 %post
