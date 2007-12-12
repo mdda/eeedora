@@ -13,7 +13,7 @@ usbdrive=$( echo ${usbpart} | sed 's|[1234]$||')
 echo "Drive: ${usbdrive}, Partition: ${usbpart}, ISO: ${eeedora_iso}"
 
 # EeeDora Announcement : http://forum.eeeuser.com/viewforum.php?id=10
-dt='date +%F_%H-%M'
+dt='date +%F_%Hh%Mm'
 
 # This is just a temporary mount point
 usbmount=/media/temp-usb-mountpoint
@@ -71,11 +71,11 @@ if [ "$answer1" = "yes" ] ; then
 	
 	usbcopyend=`${dt}`
 
-	echo -n $"Run a QEMU session to test the USB Image on ${usbdrive} ? [yes/NO] "
-	read answer3
-	if [ "$answer3" = "yes" ] ; then
-		qemu -hda ${usbdrive} -m 256 -std-vga -no-kqemu
-	fi
+	#echo -n $"Run a QEMU session to test the USB Image on ${usbdrive} ? [yes/NO] "
+	#read answer3
+	#if [ "$answer3" = "yes" ] ; then
+	#	qemu -hda ${usbdrive} -m 256 -std-vga -no-kqemu
+	#fi
 fi
 
 echo "Copied ISO to USB : ${usbcopystart} to ${usbcopyend}"
@@ -103,9 +103,12 @@ mkdir /media/eeedora-image
 mount -o loop -t squashfs /media/disk/LiveOS/squashfs.img  /media/eeedora-image
 ls -l /media/eeedora-image/
 
-mkdir /media/liveos-ext3
-mount -o loop -t ext3 /media/eeedora-image/LiveOS/ext3fs.img  /media/liveos-ext3
-ls -l /media/liveos-ext3/
+#mkdir /media/liveos-ext3
+#mount -o loop -t ext3 /media/eeedora-image/LiveOS/ext3fs.img  /media/liveos-ext3
+#s -l /media/liveos-ext3/
+mkdir /media/liveos-ext2
+mount -o loop -t ext3 /media/eeedora-image/LiveOS/ext2fs.img  /media/liveos-ext2
+ls -l /media/liveos-ext2/
 
 
 # revisor.conf information :
