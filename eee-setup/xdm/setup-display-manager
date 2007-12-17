@@ -14,7 +14,8 @@ liveuser=${2:-eeedora}
 #else 
 if `which xdm 2>/dev/null`; then 
  # xdm alternative :
-  ${setup}/xdm/setup-xdm ${setup} ${liveuser}
+	${setup}/xdm/setup-xdm ${setup} ${liveuser}
+	# NB for pulseaudio to work, need to kick off puslseaudio -D for this user...
 else
  # ShowProgress "Autologin ${liveuser} with no password screen"
  ${setup}/xdm/setup-nologin ${setup} ${liveuser}

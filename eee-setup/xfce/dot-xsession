@@ -1,1 +1,5 @@
+#!/bin/bash
+
+xsetroot -solid steelblue
+pulseaudio -D
 startxfce4

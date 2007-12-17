@@ -5,4 +5,6 @@
 #
 # Executed by startx (run your window manager from here)
 #
+xsetroot -solid steelblue
+pulseaudio -D
 exec startxfce4

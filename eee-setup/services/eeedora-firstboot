@@ -64,6 +64,18 @@ if ${live}; then
 	fi
 fi
 
+# TODO :
+ShowProgress "Fix up fstab to log to RAM"
+# Adding the following to /etc/fstab        tmpfs /var/log tmpfs defaults,noatime 0 0
+# Repeat for /tmp, /var/lock, /var/run and /var/tmp
+#for i in /var/log /tmp /var/lock /var/run /var/tmp; do 
+#	echo "tmpfs $i tmpfs defaults,noatime 0 0" >> /etc/fstab
+#done
+for i in /var/log /tmp; do 
+	echo "tmpfs $i tmpfs defaults,noatime 0 0" >> /etc/fstab
+#	echo "tmpfs $i tmpfs defaults	0 0" >> /etc/fstab
+done
+
 #if ! [ 1 ]; then # DISABLE CREATION OF SWAP PARTITION - SAVE FLASH RAM OVERWRITES
 # ShowProgress "Enable swaps unless requested otherwise"
 # # This is the list of current swap partitions
@@ -108,21 +120,28 @@ else
 fi
 
 ShowProgress "Add useful repos"
-cp ${setup}/repos/* /etc/yum.repos.d/
+cp ${setup}/repos/atrpms.repo /etc/yum.repos.d/
+rpm --import ${setup}/repos/RPM-GPG-KEY.atrpms
 
-#ShowProgress "Don't start yum-updatesd"
+rpm -ivh ${setup}/repos/livna-release-8.rpm
+rpm --import ${setup}/repos/RPM-LIVNA-GPG-KEY
+
+ShowProgress "Don't start yum-updatesd"
 chkconfig --level 345 yum-updatesd off
 
 ShowProgress "Don't start cron/at as they tend to be painful in a Live context"
 # don't start cron/at as they tend to spawn things which are
 # disk intensive that are painful on a live image
-chkconfig --level 345 crond off
-chkconfig --level 345 atd off
-chkconfig --level 345 anacron off
 if ${live}; then 
+ chkconfig --level 345 crond off
+ chkconfig --level 345 atd off
+ chkconfig --level 345 anacron off
  chkconfig --level 345 readahead_early off
  chkconfig --level 345 readahead_later off
 fi
+# This one screws up wifi-radar - which is better at managing the wifi
+ShowProgress "Don't start NetworkManager"
+chkconfig --level 345 NetworkManager off
 
 ShowProgress "Stopgap fix for RH #217966; should be fixed in HAL instead"
 touch /media/.hal-mtab
@@ -134,7 +153,11 @@ ShowProgress "Create /etc/sysconfig/desktop (needed for installation)"
 cp ${setup}/xfce/sysconfig-desktop /etc/sysconfig/desktop 
 
 # disable screensaver locking
+ShowProgress "Disable screensaver locking"
 gconftool-2 --direct --config-source=xml:readwrite:/etc/gconf/gconf.xml.defaults -s -t bool /apps/gnome-screensaver/lock_enabled false >/dev/null
+
+ShowProgress "Fix sound devices for pulseaudio"
+echo "chmod -R a+rwx /dev/snd" >> /etc/rc.local 
 
 #
 # Now do all the stuff for the special new eeedora user
@@ -154,6 +177,12 @@ ${setup}/xdm/setup-display-manager ${setup} ${liveuser}
 ShowProgress "Set up XFCE for '${liveuser}'"
 ${setup}/xfce/setup-xfce ${setup} ${liveuser}
 
+ShowProgress "Start up pulseaudio for '${liveuser}'"
+${setup}/misc/fix-pulseaudio ${setup} ${liveuser}
+
+ShowProgress "Set up monospaced fonts for '${liveuser}'"
+cat ${setup}/misc/scite.monospaced >> ${livehome}/.SciTEUser.properties
+
 # Only do this for the live user - since it only makes sense to have a liveinstall icon on that desktop
 if ${live}; then 
  ShowProgress "Fix up the /usr/sbin/liveinst script - it needs to accept command line params"
@@ -171,6 +200,8 @@ fi
 ShowProgress "Set up firefox for '${liveuser}' (this is a personal thing)"
 #mkdir ${livehome}/.mozilla
 tar -xzf ${setup}/misc/firefox.tar.gz -C ${livehome}/
+# TODO : 
+# Installed the ‘Littlefox’ theme into FireFox (takes up much less screen real-estate)
 
 ShowProgress "Allow '${liveuser}' to automount USB plugin drives"
 ${setup}/services/automount-volumes_hal-fix ${setup} ${liveuser}

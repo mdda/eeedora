@@ -10,7 +10,9 @@ auth --useshadow --enablemd5
 #selinux --enforcing
 selinux --disabled
 
-network --device eth0 --bootproto dhcp
+# This needs a --device command
+#network --device eth0 --bootproto dhcp --hostname=Eee
+network --device eth1 --bootproto dhcp --hostname=Eee
 
 #firewall --disabled
 #firewall --enabled --trust=eth0 --ssh
@@ -21,14 +23,13 @@ skipx
 
 #Switch this over - not having sshd is more secure (until a non-public password is set)
 #services --enabled=NetworkManager --disabled=network,sshd
-services --enabled=NetworkManager,network,sshd 
+#services --enabled=NetworkManager,network,sshd 
+services --enabled=network --disabled=NetworkManager,sshd
 
 # Force the kickstart to recognize the atl2 driver ASAP
-device atl2
+#device atl2
 
 # No Partition information required to build the ISO 
-#clearpart --drives sda
-#part / --fstype ext2 --size 1 --ondisk=sda --asprimary --grow
 
 # A default public root password - not the best idea.
 rootpw eeedora
@@ -67,9 +68,11 @@ rootpw eeedora
 
 repo --name=releases  --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?arch=i386&repo=fedora-8
 repo --name=updates   --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?arch=i386&repo=updates-released-f8
+
 #repo --name=releases  --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?arch=$basearch&repo=fedora-$releasever
 #repo --name=updates   --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?arch=$basearch&repo=updates-released-f$releasever
 
+#repo --name=atrpms   --baseurl=http://dl.atrpms.net/f$releasever-$basearch/atrpms/stable
 #repo --name=atrpms   --baseurl=http://dl.atrpms.net/f$releasever-$basearch/atrpms/stable
 
 repo --name=eee-specific --baseurl=file:///mnt/eee-specific
@@ -145,6 +148,7 @@ scite
 Zim
 curl
 samba-client
+wifi-radar
 
 # mdda dev tools
 #cvs
@@ -193,9 +197,25 @@ system-config-date
 system-config-display
 system-config-network
 system-config-printer
+-system-config-firewall
 -system-config-users
 system-config-soundcard
 -system-config-services  
+
+# Audio (new style = pulseaudio) - must fix up /dev/snd devices on every boot...
+# chmod -R a+rwx /dev/snd (into /etc/rc.local)
+# also start on startup (as user) : pulseaudio -D (into ~/.bash_profile - and remove ~/.xinit)
+pulseaudio
+
+# Look important, but not needed, somehow
+#padevchooser
+#paman
+#paprefs
+
+
+# This seems to focus on networking...
+#paprefs
+
 
 # Not necessary once xcfe is reliable - we have 'Terminal'
 -xterm
@@ -383,6 +403,13 @@ setup=/root/eee-setup
 
 ShowProgress "Blacklist the ath5k kernel module"
 ${setup}/ath/blacklist-ath5k ${setup}
+
+ShowProgress "Install the ath kernel module"
+${setup}/ath/install-ath ${setup}
+
+ShowProgress "Fix up wifi-radar config"
+mkdir -p /etc/wifi-radar/
+cp ${setup}/ath/wifi-radar-ath /etc/wifi-radar/wifi-radar.conf
 
 ShowProgress "Install the atl2 kernel module"
 ${setup}/atl2/install-atl2 ${setup}

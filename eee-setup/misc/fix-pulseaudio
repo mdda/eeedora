@@ -1,0 +1,10 @@
+#! /bin/bash
+
+setup=${1:-/root/eee-setup}
+liveuser=${2:-eeedora}
+
+# This must be done AFTER the xfce4 setup has been added to bash_profile
+
+sed -i \
+ -e 's|^ 	#AT CONSOLE BEFORE XFCE4$|&\n #Start pulseaudio as daemon for this user\n pulseaudio -D|' \
+	/home/${liveuser}/.bash_profile

@@ -1,0 +1,13 @@
+
+
+bunzip2 madwifi-eee.tar.bz2 
+tar -xf madwifi-eee.tar 
+cd madwifi
+tar -xzf madwifi-ng-r2756-20071018.tar.gz 
+cd madwifi-ng-r2756-20071018
+
+# Skip the OPTIONAL injection patch
+# patch -Np1 -i ../madwifi-ng-r2277.patch 
+
+# This is the important one
+patch -Np0 -i ../madwifi-eee.patch 
