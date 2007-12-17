@@ -7,4 +7,6 @@ liveuser=${2:-eeedora}
 
 # ???
 
+# Need to add a hook for pulseaudio somewhere in the startup process for this user...
+
 

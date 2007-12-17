@@ -5,10 +5,18 @@
 # startx
 #fi
 
+#AT CONSOLE
+
 if [ -z "$DISPLAY" ] && [ $(tty) == /dev/tty7 ]; then
+	#AT CONSOLE BEFORE XFCE4
+
  # This definitely works...
-# startx
+ #startx
+
  # This seems to use fewer resources
  startxfce4
+
+ #AT CONSOLE AFTER XFCE4
+
  sudo /sbin/shutdown -h now
 fi

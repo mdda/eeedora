@@ -6,7 +6,7 @@ setup=${1:-/root/eee-setup}
 liveuser=${2:-eeedora}
 
 # there's no selected display-manager - we must improvise...
-# TODO - this doesn't work yet...
+
 
 
 # sed tutorial :  http://www.grymoire.com/Unix/Sed.html#uh-0
@@ -48,6 +48,8 @@ fi
 # But fedora is different (visudo... in /usr/sbin/visudo, if installed)
 echo '' >> /etc/sudoers
 #echo ${liveuser}'	localhost=/sbin/shutdown NOPASSWD:ALL' >> /etc/sudoers
-echo ${liveuser}'	localhost=NOPASSWD:/sbin/reboot,/sbin/poweroff,/sbin/shutdown' >> /etc/sudoers
-echo ${liveuser}'	localhost=NOPASSWD:/usr/bin/thunar' >> /etc/sudoers
+#echo ${liveuser}'	localhost=NOPASSWD:/sbin/reboot,/sbin/poweroff,/sbin/shutdown' >> /etc/sudoers
+#echo ${liveuser}'	localhost=NOPASSWD:/usr/bin/thunar' >> /etc/sudoers
+echo ${liveuser}'	ALL=NOPASSWD:/sbin/reboot,/sbin/poweroff,/sbin/shutdown' >> /etc/sudoers
+echo ${liveuser}'	ALL=NOPASSWD:/usr/bin/thunar' >> /etc/sudoers
 echo '' >> /etc/sudoers

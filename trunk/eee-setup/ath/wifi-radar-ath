@@ -1,0 +1,7 @@
+[DEFAULT]
+ifup_required = True
+auto_profile_order = 
+speak_up = False
+scan_timeout = 5
+interface = ath0
+commit_required = False

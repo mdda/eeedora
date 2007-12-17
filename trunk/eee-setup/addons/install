@@ -1,0 +1,41 @@
+#! /bin/bash
+
+liveuser=${1:-eeedora}
+
+# This must be done as root
+yumlist=''
+
+function ask {
+ echo -n $1
+ read ans
+ response=false
+ if [ "${ans:0:1}" == "y" ] || [ "${ans:0:1}" == "Y" ] ; then
+	 response=true
+ fi 
+}  
+
+ask "Install OpenOffice Calc ? [yes/NO]"
+if ${response}; then
+	yumlist="${yumlist} openoffice.org-calc"
+fi
+
+ask "Install OpenOffice Writer ? [yes/NO]"
+if ${response}; then
+	yumlist="${yumlist} openoffice.org-writer"
+fi
+
+ask "Install Password Manager 'KeePass' ? [yes/NO]"
+if ${response}; then
+	yumlist="${yumlist} keepassx"
+fi
+
+ask "Install IcedTea Java plugin for Firefox ? [yes/NO]"
+if ${response}; then
+	yumlist="${yumlist} java-1.7.0-icedtea-plugin"
+fi
+
+echo $"yumlist = '${yumlist}'"
+
+yum install -y ${yumlist}
+
+# Now do various clean-ups - to fix pulseaudio, for instance

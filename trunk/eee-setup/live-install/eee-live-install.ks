@@ -11,8 +11,9 @@ auth --useshadow --enablemd5
 #selinux --enforcing
 selinux --disabled
 
-# Not sure whether this is present...
+# Not sure which of these is present...
 #network --device eth0 --bootproto dhcp
+network --device eth1 --bootproto dhcp --hostname=Eee
 
 #firewall --disabled
 #firewall --enabled --trust=eth0 --ssh
@@ -25,7 +26,8 @@ skipx
 
 #Switch this over - not having sshd is more secure (until a non-public password is set)
 #services --enabled=NetworkManager --disabled=network,sshd
-services --enabled=NetworkManager,network,sshd 
+#services --enabled=NetworkManager,network,sshd 
+services --enabled=network --disabled=NetworkManager,sshd
 
 # This is for the real install
 # zerombr yes # Now options for zerombr are deprecated
@@ -33,35 +35,15 @@ zerombr
 
 ignoredisk --drives=sdb,sdc,sdd
 clearpart --all --drives sda
-part / --fstype ext2 --ondisk=sda --asprimary --size 1 --grow --fsoptions="noatime" --label=Eee
+part / --fstype ext2 --ondisk=sda --asprimary --size 1 --grow --fsoptions="noatime"
+#part / --fstype ext2 --ondisk=sda --asprimary --size 1 --grow --fsoptions="noatime" --label=/EeeDora
 #part swap --recommended DO.NOT.WANT.
 
 #bootloader --location=none
-#bootloader --location=mbr
 bootloader --location=mbr --timeout=3
 
 # A default public root password - not the best idea.
 rootpw eeedora
-
-# Problem in anaconda :
-#03:46:35 INFO    : moving (1) to step installpackages
-#03:46:35 INFO    : Preparing to install packages
-#03:48:49 INFO    : moving (1) to step postinstallconfig
-#03:48:49 INFO    : doing post-install fs mangling
-#03:48:49 INFO    : going to do resize
-#03:48:53 INFO    : trying to mount sys on /sys
-#03:48:53 INFO    : set SELinux context for mountpoint /sys to False
-#03:48:53 DEBUG   : isys.py:mount()- going to mount sys on /mnt/sysimage/sys
-#03:48:53 DEBUG   : isys.py:mount()- going to mount /selinux on /mnt/sysimage/selinux
-#03:48:53 ERROR   : error mounting selinuxfs: (19, 'No such device')
-#03:48:53 DEBUG   : isys.py:mount()- going to mount /dev on /mnt/sysimage/dev
-
-# Got to line 1202 of livecd.py...  But the root filesystem isn't mounted in the right place, so there is no /etc
-# Why isn't line mountFilesystems in fsset.py line 1608 mounting root?
-# Add a logging message (like line 1619) before the if...continue construct
-
-
-
 
 %post
 ShowProgress() {
@@ -73,8 +55,16 @@ ShowProgress "Start of RealInstall Kickstart script"
 # By this stage, this is already on the new machine, opened up
 setup=/root/eee-setup
 
-ShowProgress "Install the atl2 kernel module"
-${setup}/atl2/install-atl2 ${setup}
+# We are able to comment these out - done by eedora.ks when building the original ISO image
+#
+# ShowProgress "Blacklist the ath5k kernel module"
+# ${setup}/ath/blacklist-ath5k ${setup}
+#
+# ShowProgress "Install the ath kernel module"
+# ${setup}/ath/install-ath ${setup}
+#
+# ShowProgress "Install the atl2 kernel module"
+# ${setup}/atl2/install-atl2 ${setup}
 
 fb=eeedora-firstboot
 init=/etc/rc.d/init.d

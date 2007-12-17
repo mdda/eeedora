@@ -35,7 +35,10 @@ cp ./atl2/install-atl2 ${rpmdir}/atl2/
 mkdir ${rpmdir}/ath
 cp ./ath/README ${rpmdir}/ath/
 cp ./ath/blacklist-ath5k ${rpmdir}/ath/
+cp ./ath/install-ath ${rpmdir}/ath/
+cp ./ath/wifi-radar-ath ${rpmdir}/ath/
 cp ./ath/*.ko ${rpmdir}/ath/
+#cp ./ath/madwifi/madwifi-patched.tar.gz ${rpmdir}/ath/
 
 # These are related to services (eg: fix-up the system on the live machine)
 cp -R services ${rpmdir}/
@@ -51,6 +54,9 @@ cp -R xfce ${rpmdir}/
 
 # This is to set up the defaults for XDM 
 cp -R xdm ${rpmdir}/
+
+# This contains scripts to simplify adding extra software
+cp -R addons ${rpmdir}/
 
 # This is to set up the defaults for XDM 
 mkdir ${rpmdir}/artwork
