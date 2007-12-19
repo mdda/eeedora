@@ -73,6 +73,7 @@ mkdir ${rpmdir}/truecrypt
 cp ./truecrypt/*.ko ${rpmdir}/truecrypt/
 cp ./truecrypt/truecrypt ${rpmdir}/truecrypt/
 cp ./truecrypt/install-truecrypt ${rpmdir}/truecrypt/
+cp ./truecrypt/sudo-truecrypt-fix ${rpmdir}/truecrypt/
 
 # ...
 
