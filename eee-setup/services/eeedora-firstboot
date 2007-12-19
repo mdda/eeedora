@@ -180,6 +180,9 @@ ${setup}/xfce/setup-xfce ${setup} ${liveuser}
 ShowProgress "Start up pulseaudio for '${liveuser}'"
 ${setup}/misc/fix-pulseaudio ${setup} ${liveuser}
 
+ShowProgress "Fix up truecrypt sudo for '${liveuser}'"
+${setup}/truecrypt/sudo-truecrypt-fix ${setup} ${liveuser}
+
 ShowProgress "Set up monospaced fonts for '${liveuser}'"
 cat ${setup}/misc/scite.monospaced >> ${livehome}/.SciTEUser.properties
 cat ${setup}/misc/scite.filesearch >> ${livehome}/.SciTEUser.properties
