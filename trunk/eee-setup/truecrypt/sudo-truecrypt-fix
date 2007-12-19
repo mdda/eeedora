@@ -3,7 +3,9 @@
 setup=${1:-/root/eee-setup}
 liveuser=${2:-eeedora}
 
+TCBIN=/usr/bin/truecrypt 
+
 # Need to be able to 'sudo truecrypt --user-mount ... ...'
-echo '' >> /etc/sudoers
+echo '# So that a user can : sudo truecrypt --user-mount ... ...' >> /etc/sudoers
 echo "${liveuser}	ALL=NOPASSWD:${TCBIN}" >> /etc/sudoers
 echo '' >> /etc/sudoers
