@@ -1,0 +1,19 @@
+#! /bin/bash
+
+setup=${1:-/root/eee-setup}
+
+moddir=/lib/modules/`uname -r`/extra/
+mkdir -p ${moddir}
+cp ${setup}/truecrypt/truecrypt.ko ${moddir}/
+
+TCBIN=/usr/bin/truecrypt 
+
+cp ${setup}/truecrypt/truecrypt ${TCBIN}
+chown root:root ${TCBIN}
+chmod 755 ${TCBIN}
+
+/sbin/depmod -a
+
+# Do this as a force since the mirror repo in the ks 
+# may have a slightly dated kernel (no big deal)
+/sbin/modprobe -f truecrypt
