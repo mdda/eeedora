@@ -1,5 +1,18 @@
 #! /bin/bash
 
+svn checkout svn://svn.berlios.de/linux-uvc/linux-uvc/trunk
+
+pushd .
+
+cd trunk/
+make
+popd
+
+cp trunk/uvcvideo.ko .
+
+
+exit
+# This stuff installs from the Asus source - may not cooperate with Fedora much though
 pushd .
 
 # this rar file is what Asus released
