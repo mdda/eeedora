@@ -1,6 +1,6 @@
 #! /bin/bash
 
-version=1.0.40.4
+version=2.0.3
 
 tarfile=atl2-${version}.tar.gz
 directory=atl2-${version}
@@ -8,11 +8,13 @@ directory=atl2-${version}
 tar -xzf ${tarfile}
 pushd .
 
-cd ${directory}/src
-make clean
+#cd ${directory}/src
+#make clean
+cd ${directory}
 make
 
 popd
-cp ${directory}/src/atl2.ko .
+#cp ${directory}/src/atl2.ko .
+cp ${directory}/atl2.ko .
 
 rm -rf ${directory}

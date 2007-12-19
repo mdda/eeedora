@@ -182,6 +182,7 @@ ${setup}/misc/fix-pulseaudio ${setup} ${liveuser}
 
 ShowProgress "Set up monospaced fonts for '${liveuser}'"
 cat ${setup}/misc/scite.monospaced >> ${livehome}/.SciTEUser.properties
+cat ${setup}/misc/scite.filesearch >> ${livehome}/.SciTEUser.properties
 
 # Only do this for the live user - since it only makes sense to have a liveinstall icon on that desktop
 if ${live}; then 

@@ -1,0 +1,18 @@
+#! /bin/bash
+
+pushd .
+
+# this rar file is what Asus released
+unrar x Uvcvideo_Source_071127.rar 
+tar -xzf uvcvideo_20070706-4.tar.gz 
+
+# This is the meat of it
+cd uvcvideo
+tar -xzf uvcvideo.tar.gz 
+cd uvcvideo
+make
+cp *.ko ../../
+popd
+
+# Clean up
+rm -rf uvcvideo uvcvideo_20070706-4.*
