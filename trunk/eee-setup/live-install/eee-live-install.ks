@@ -12,8 +12,8 @@ auth --useshadow --enablemd5
 selinux --disabled
 
 # Not sure which of these is present...
-#network --device eth0 --bootproto dhcp
-network --device eth1 --bootproto dhcp --hostname=Eee
+network --device eth0 --bootproto dhcp --hostname=Eee
+#network --device eth1 --bootproto dhcp --hostname=Eee
 
 #firewall --disabled
 #firewall --enabled --trust=eth0 --ssh

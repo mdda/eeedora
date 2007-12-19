@@ -8,7 +8,9 @@
 #AT CONSOLE
 
 if [ -z "$DISPLAY" ] && [ $(tty) == /dev/tty7 ]; then
-	#AT CONSOLE BEFORE XFCE4
+ #AT CONSOLE BEFORE XFCE4
+
+ xsetroot -solid steelblue
 
  # This definitely works...
  #startx

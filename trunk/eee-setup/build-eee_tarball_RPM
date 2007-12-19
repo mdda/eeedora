@@ -27,18 +27,23 @@ mkdir ${rpmdir}/
 
 # Here's the wired ethernet driver 'atl2.ko'
 mkdir ${rpmdir}/atl2
-cp ./atl2/atl2.ko ${rpmdir}/atl2/
+cp ./atl2/*.ko ${rpmdir}/atl2/
 cp ./atl2/install-atl2 ${rpmdir}/atl2/
 # Run using script /root/${rpmdir}/atl2/install-atl2
 
-# These are related to services to fix-up the system on the live machine
+# These are the wireless internet kernel modules and fixes
 mkdir ${rpmdir}/ath
-cp ./ath/README ${rpmdir}/ath/
-cp ./ath/blacklist-ath5k ${rpmdir}/ath/
-cp ./ath/install-ath ${rpmdir}/ath/
-cp ./ath/wifi-radar-ath ${rpmdir}/ath/
 cp ./ath/*.ko ${rpmdir}/ath/
+cp ./ath/install-ath ${rpmdir}/ath/
+#cp ./ath/README ${rpmdir}/ath/
+cp ./ath/blacklist-ath5k ${rpmdir}/ath/
+cp ./ath/wifi-radar-ath ${rpmdir}/ath/
 #cp ./ath/madwifi/madwifi-patched.tar.gz ${rpmdir}/ath/
+
+# This is the webcam kernel module
+mkdir ${rpmdir}/uvc
+cp ./uvc/*.ko ${rpmdir}/uvc/
+cp ./uvc/install-uvc ${rpmdir}/uvc/
 
 # These are related to services (eg: fix-up the system on the live machine)
 cp -R services ${rpmdir}/
@@ -63,6 +68,11 @@ mkdir ${rpmdir}/artwork
 cp ./artwork/splash.xpm.gz ${rpmdir}/artwork/
 cp ./artwork/splash.jpg ${rpmdir}/artwork/
 
+# This is to set up the defaults for XDM 
+mkdir ${rpmdir}/truecrypt
+cp ./truecrypt/*.ko ${rpmdir}/truecrypt/
+cp ./truecrypt/truecrypt ${rpmdir}/truecrypt/
+cp ./truecrypt/install-truecrypt ${rpmdir}/truecrypt/
 
 # ...
 

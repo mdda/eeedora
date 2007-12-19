@@ -14,14 +14,16 @@ function ask {
  fi 
 }  
 
-ask "Install OpenOffice Calc ? [yes/NO]"
+ask "Install OpenOffice Components ? [yes/NO]"
 if ${response}; then
-	yumlist="${yumlist} openoffice.org-calc"
-fi
-
-ask "Install OpenOffice Writer ? [yes/NO]"
-if ${response}; then
-	yumlist="${yumlist} openoffice.org-writer"
+	ask "Install OpenOffice Calc ? [yes/NO]"
+	if ${response}; then
+		yumlist="${yumlist} openoffice.org-calc"
+	fi
+	ask "Install OpenOffice Writer ? [yes/NO]"
+	if ${response}; then
+		yumlist="${yumlist} openoffice.org-writer"
+	fi
 fi
 
 ask "Install Password Manager 'KeePass' ? [yes/NO]"
@@ -29,13 +31,69 @@ if ${response}; then
 	yumlist="${yumlist} keepassx"
 fi
 
+ask "Install Personal Information Manager 'osmo' ? [yes/NO]"
+if ${response}; then
+	yumlist="${yumlist} osmo"
+fi
+
 ask "Install IcedTea Java plugin for Firefox ? [yes/NO]"
 if ${response}; then
 	yumlist="${yumlist} java-1.7.0-icedtea-plugin"
 fi
 
-echo $"yumlist = '${yumlist}'"
+ask "Install Flash plugin for Firefox from Adobe ? [yes/NO]"
+if ${response}; then
+	flash=yes
+fi
 
-yum install -y ${yumlist}
+ask "Install PDF viewer 'evince ? [yes/NO]"
+if ${response}; then
+ yumlist="${yumlist} evince"
+fi
+
+ask "Install Media Player ? [yes/NO]"
+if ${response}; then
+ ask "Install Media Player 'vlc' ? [yes/NO]"
+ if ${response}; then
+  # May need to fix this up for pulseaudio - do this below
+		vlc_fix=yes
+  yumlist="${yumlist} vlc"
+	fi
+ ask "Install Media Player 'gxine' ? [yes/NO]"
+ if ${response}; then
+  # May need to fix this up for pulseaudio - do this below
+		gxine_fix=yes
+	 yumlist="${yumlist} gxine"
+	fi
+fi
+
+ask "Install Games ? [yes/NO]"
+if ${response}; then
+ ask "Install Tremulous (FPS based on Quake engine) ? [yes/NO]"
+ if ${response}; then
+	 yumlist="${yumlist} tremulous"
+	fi
+ ask "Install Quake3 (needs game CD too) ? [yes/NO]"
+ if ${response}; then
+	 yumlist="${yumlist} quake3"
+	fi
+fi
+
+if ! [ "a${yumlist}" = "a" ]; then
+ echo $"yumlist = '${yumlist}'"
+ yum install -y ${yumlist}
+fi
+
+if [ "a${flash}" = "ayes" ]; then
+ rpm -ivh "http://fpdownload.macromedia.com/get/flashplayer/current/flash-plugin-9.0.115.0-release.i386.rpm"
+fi
 
 # Now do various clean-ups - to fix pulseaudio, for instance
+if [ "is${vlc_fix}" = "isyes" ]; then
+ echo "pulseaudio already Ok for vlc"
+fi
+
+if [ "is${gxine_fix}" = "isyes" ]; then
+ echo "TODO : Fix pulseaudio for gxine"
+fi
+

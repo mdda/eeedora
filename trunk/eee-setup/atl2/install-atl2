@@ -18,9 +18,11 @@ cp ${setup}/atl2/atl2.ko ${moddir}/
 #    ... add to the file alias eth0 atl2 
 mp=/etc/modprobe.conf
 echo "" >> ${mp}
-echo "# Added for EeeDora setup" >> ${mp}
+echo "# Added for EeeDora setup : atl2" >> ${mp}
 #echo "alias eth0 atl2" >> ${mp}
-echo "alias eth1 atl2" >> ${mp}
+#echo "alias eth1 atl2" >> ${mp}
+echo "" >> ${mp}
+echo "# Added after atl2 setup " >> ${mp}
 echo "" >> ${mp}
 
 /sbin/depmod -a
