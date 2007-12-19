@@ -1,0 +1,17 @@
+diff -c -r a/truecrypt-4.3a-source-code/Linux/Kernel/Dm-target.c b/truecrypt-4.3a-source-code/Linux/Kernel/Dm-target.c
+*** a/truecrypt-4.3a-source-code/Linux/Kernel/Dm-target.c	2007-04-24 20:32:06.000000000 +0400
+--- b/truecrypt-4.3a-source-code/Linux/Kernel/Dm-target.c	2007-10-20 12:37:35.000000000 +0400
+***************
+*** 656,662 ****
+--- 656,666 ----
+  		goto err;
+  	}
+  
++ #if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,23)
++ 	bio_ctx_cache = kmem_cache_create ("truecrypt-bioctx", sizeof (struct bio_ctx), 0, 0, NULL);
++ #else
+  	bio_ctx_cache = kmem_cache_create ("truecrypt-bioctx", sizeof (struct bio_ctx), 0, 0, NULL, NULL);
++ #endif
+  	if (!bio_ctx_cache)
+  	{
+  		error ("kmem_cache_create failed");
