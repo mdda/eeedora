@@ -11,8 +11,8 @@ auth --useshadow --enablemd5
 selinux --disabled
 
 # This needs a --device command
-#network --device eth0 --bootproto dhcp --hostname=Eee
-network --device eth1 --bootproto dhcp --hostname=Eee
+network --device eth0 --bootproto dhcp --hostname=Eee
+#network --device eth1 --bootproto dhcp --hostname=Eee
 
 #firewall --disabled
 #firewall --enabled --trust=eth0 --ssh
@@ -136,22 +136,25 @@ memtest86+
 #totem
 #vim-X11
 
-# mdda desired
+# Enable Wifi AP searching
+wifi-radar
+
+# Expected to be on the machine :
 firefox
+scite
+curl
+
+# Very handy
+joe 
+
+# These are all selectable via options in /root/eee-setup/addons/install
 #openoffice.org-impress
 #openoffice.org-writer
 #openoffice.org-calc
+#samba-client
+#Zim
 
-# mdda useful list
-joe 
-scite
-Zim
-curl
-samba-client
-wifi-radar
 
-# mdda dev tools
-#cvs
 
 # Take these out for the Eee - We know we don't need them
 #-*firmware  # if @hardware-support is included above
@@ -207,15 +210,19 @@ system-config-soundcard
 # also start on startup (as user) : pulseaudio -D (into ~/.bash_profile - and remove ~/.xinit)
 pulseaudio
 
+# This is a decent volume control
+alsamixergui
+
+# Maybe want this
+#pavucontrol
+
 # Look important, but not needed, somehow
 #padevchooser
 #paman
 #paprefs
 
-
 # This seems to focus on networking...
 #paprefs
-
 
 # Not necessary once xcfe is reliable - we have 'Terminal'
 -xterm
@@ -240,6 +247,8 @@ gtk-xfce-engine
 gdbm
 # End of xfprint antidote
 
+# Don't need this - pulseaudio has the goodies
+-xfce4-mixer
 
 # Here are some of the pretty xfce4 plugins
 
@@ -338,7 +347,8 @@ xdg-user-dirs
 -sane-backends
 
 -specspo
-#-samba-client
+-samba-common
+-samba-client
 -a2ps
 -redhat-lsb
 -sox
@@ -354,6 +364,7 @@ xdg-user-dirs
 -aspell*
 -setroubleshoot
 -irda*
+-radeontool
 
 # Bluetooth
 -bluez*
@@ -413,6 +424,12 @@ cp ${setup}/ath/wifi-radar-ath /etc/wifi-radar/wifi-radar.conf
 
 ShowProgress "Install the atl2 kernel module"
 ${setup}/atl2/install-atl2 ${setup}
+
+# ShowProgress "Install the uvc webcam kernel module"
+# ${setup}/uvc/install-uvc ${setup}
+
+ShowProgress "Install the truecrypt kernel module - and main function"
+${setup}/truecrypt/install-truecrypt ${setup}
 
 fb=eeedora-firstboot
 init=/etc/rc.d/init.d
