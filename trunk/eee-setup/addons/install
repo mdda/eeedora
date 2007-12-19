@@ -14,7 +14,7 @@ function ask {
  fi 
 }  
 
-ask "Install OpenOffice Components ? [yes/NO]"
+ask "Select OpenOffice Components ? [yes/NO]"
 if ${response}; then
 	ask "Install OpenOffice Calc ? [yes/NO]"
 	if ${response}; then
@@ -26,14 +26,27 @@ if ${response}; then
 	fi
 fi
 
-ask "Install Password Manager 'KeePass' ? [yes/NO]"
+ask "Select productivity tools ? [yes/NO]"
 if ${response}; then
-	yumlist="${yumlist} keepassx"
+	ask "Install Password Manager 'KeePass' ? [yes/NO]"
+	if ${response}; then
+		yumlist="${yumlist} keepassx"
+	fi
+
+	ask "Install Personal Information Manager 'osmo' ? [yes/NO]"
+	if ${response}; then
+		yumlist="${yumlist} osmo"
+	fi
+
+	ask "Install Desktop Wiki editor 'Zim' ? [yes/NO]"
+	if ${response}; then
+		yumlist="${yumlist} Zim"
+	fi
 fi
 
-ask "Install Personal Information Manager 'osmo' ? [yes/NO]"
+ask "Install Samba	 for Windows connectivity ? [yes/NO]"
 if ${response}; then
-	yumlist="${yumlist} osmo"
+	yumlist="${yumlist} samba-client"
 fi
 
 ask "Install IcedTea Java plugin for Firefox ? [yes/NO]"
@@ -46,12 +59,13 @@ if ${response}; then
 	flash=yes
 fi
 
-ask "Install PDF viewer 'evince ? [yes/NO]"
+ask "Install PDF viewer 'evince' ? [yes/NO]"
 if ${response}; then
+ evince_fix=yes
  yumlist="${yumlist} evince"
 fi
 
-ask "Install Media Player ? [yes/NO]"
+ask "Select a Media Player ? [yes/NO]"
 if ${response}; then
  ask "Install Media Player 'vlc' ? [yes/NO]"
  if ${response}; then
@@ -67,7 +81,7 @@ if ${response}; then
 	fi
 fi
 
-ask "Install Games ? [yes/NO]"
+ask "Select Games ? [yes/NO]"
 if ${response}; then
  ask "Install Tremulous (FPS based on Quake engine) ? [yes/NO]"
  if ${response}; then
@@ -79,12 +93,22 @@ if ${response}; then
 	fi
 fi
 
-if ! [ "a${yumlist}" = "a" ]; then
- echo $"yumlist = '${yumlist}'"
- yum install -y ${yumlist}
+echo ''
+
+affirm=''
+ask "Install fully automatically ? [yes/NO]"
+if ${response}; then
+ affirm="-y"
 fi
 
-if [ "a${flash}" = "ayes" ]; then
+echo ''
+
+if ! [ "empty${yumlist}" = "empty" ]; then
+ echo $"yumlist = '${yumlist}'"
+ yum install ${affirm} ${yumlist}
+fi
+
+if [ "is${flash}" = "isyes" ]; then
  rpm -ivh "http://fpdownload.macromedia.com/get/flashplayer/current/flash-plugin-9.0.115.0-release.i386.rpm"
 fi
 
@@ -94,6 +118,10 @@ if [ "is${vlc_fix}" = "isyes" ]; then
 fi
 
 if [ "is${gxine_fix}" = "isyes" ]; then
- echo "TODO : Fix pulseaudio for gxine"
+ echo "pulseaudio already Ok for gxine - barring the odd glitch"
+fi
+
+if [ "is${evince_fix}" = "isyes" ]; then
+ echo "TODO : Add menu entry for evince"
 fi
 
