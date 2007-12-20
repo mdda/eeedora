@@ -1,0 +1,24 @@
+#! /bin/bash
+
+unrar x ASUS_ACPI_071126.rar 
+tar -xzf asus_acpi.tar.gz 
+
+pushd .
+
+cd asus_acpi
+sed -i \
+ -e 's|2.6.21.4-eeepc|$(shell uname -r)|' \
+	Makefile
+
+#sed -i \
+# -e |acpi_bus_generate_event|acpi_bus_generate_proc_event| \
+#	asus.c
+
+# diff -Nur asus_acpi.c-asus asus_acpi.c > ../patch.acpi.fedora
+patch -p0 < ../patch.acpi.fedora
+
+make
+
+popd
+
+cp asus_acpi/*.ko .

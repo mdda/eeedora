@@ -1,0 +1,32 @@
+#! /bin/bash
+
+# You've got to be root to do this -
+# it depends on the eee_tarball being located in /root/
+
+setup=${1:-/root/eee-setup}
+
+# Get the eth0 connection working : 
+#   atheros L2 100Mbit Ethernet adapter (PCI)
+#   driver : atl2 (i.e. ATL2)
+#   LOOK AT : http://forums.fedoraforum.org/showthread.php?t=162793&page=1&pp=15
+
+moddir=/lib/modules/`uname -r`/kernel/drivers/net/atl2
+mkdir -p ${moddir}
+cp ${setup}/atl2/atl2.ko ${moddir}/
+
+# Now add this as an alias to /etc/modprobe.conf
+#    ... add to the file alias eth0 atl2 
+mp=/etc/modprobe.conf
+echo "" >> ${mp}
+echo "# Added for EeeDora setup : atl2" >> ${mp}
+#echo "alias eth0 atl2" >> ${mp}
+#echo "alias eth1 atl2" >> ${mp}
+echo "" >> ${mp}
+echo "# Added after atl2 setup " >> ${mp}
+echo "" >> ${mp}
+
+/sbin/depmod -a
+
+# Do this as a force since the mirror repo in the ks 
+# may have a slightly dated kernel (no big deal)
+/sbin/modprobe -f atl2 
