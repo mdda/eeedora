@@ -35,6 +35,7 @@ if ${response}; then
 
 	ask "Install Personal Information Manager 'osmo' ? [yes/NO]"
 	if ${response}; then
+	 osmo_fix=yes
 		yumlist="${yumlist} osmo"
 	fi
 
@@ -123,5 +124,11 @@ fi
 
 if [ "is${evince_fix}" = "isyes" ]; then
  echo "TODO : Add menu entry for evince"
+fi
+
+if [ "is${osmo_fix}" = "isyes" ]; then
+ echo "Setting up default config for osmo"
+	tar -xzf dot-osmo.tar.gz /home/${liveuser}/
+	chown -R ${liveuser}:${liveuser} /home/${liveuser}/.osmo
 fi
 
