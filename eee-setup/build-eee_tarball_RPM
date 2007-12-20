@@ -25,6 +25,11 @@ mkdir ${rpmdir}/
 
 ###   Add more files to the tar archive here....
 
+# This is the acpi driver (from Asus, updated for latest kernels)
+mkdir ${rpmdir}/acpi
+cp ./acpi/*.ko ${rpmdir}/acpi/
+cp ./acpi/install-acpi ${rpmdir}/acpi/
+
 # Here's the wired ethernet driver 'atl2.ko'
 mkdir ${rpmdir}/atl2
 cp ./atl2/*.ko ${rpmdir}/atl2/
