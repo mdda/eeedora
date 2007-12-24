@@ -11,10 +11,10 @@ rpm -ivh kernel-$(uname -r).src.rpm
 rpmbuild -bp --target=noarch /usr/src/redhat/SPECS/kernel.spec
 cp /usr/src/redhat/BUILD/kernel-${KVER}/linux-${KVER}.noarch/drivers/md/dm.h /usr/src/kernels/`uname -r`-`uname -p`/drivers/md
 
+#curl -O  http://www.truecrypt.org/downloads/truecrypt-${TCVER}-source-code.tar.gz
+tar -xzf truecrypt-${TCVER}-source-code.tar.gz
 
-curl -O  http://www.truecrypt.org/downloads/truecrypt-${TCVER}-source-code.tar.gz
-
-curl -O  http://www.linuxlove.org/for2.6.23.patch
+#curl -O  http://www.linuxlove.org/for2.6.23.patch
 patch -p1 -i for2.6.23.patch
 
 cd truecrypt-${TCVER}-source-code/Linux/
@@ -22,3 +22,5 @@ cd truecrypt-${TCVER}-source-code/Linux/
 
 cp truecrypt-${TCVER}-source-code/Linux/Cli/truecrypt .
 cp truecrypt-${TCVER}-source-code/Linux/Kernel/truecrypt.ko .
+
+#rm -rf truecrypt-${TCVER}-source-code
