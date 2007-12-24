@@ -1,0 +1,21 @@
+#! /bin/bash
+
+cd acpi
+./rebuild_acpi-ko
+cd ..
+
+cd ath
+./rebuild_ath-madwifi-ko
+cd ..
+
+cd atl2
+./rebuild_atl2-ko 
+cd ..
+
+cd truecrypt
+./rebuild_atl2-ko 
+cd ..
+
+cd uvc 
+./rebuild_uvc-ko 
+cd ..
