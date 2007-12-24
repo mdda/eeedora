@@ -109,6 +109,9 @@ pam
 # Prompt for root password if needed
 usermode-gtk
 
+# acpi for the hotkeys (asus_acpi included in the eee_tarball)
+acpid
+
 # No need on the Eee
 # @ hardware-support 
 
@@ -138,6 +141,8 @@ memtest86+
 
 # Enable Wifi AP searching
 wifi-radar
+# And disable NetworkManager, since it messes us up
+-NetworkManager
 
 # Expected to be on the machine :
 firefox
@@ -212,6 +217,8 @@ pulseaudio
 
 # This is a decent volume control
 alsamixergui
+# This is for CLI volume control (and for acpi scripting...)
+alsa-utils
 
 # Maybe want this
 #pavucontrol
@@ -347,8 +354,10 @@ xdg-user-dirs
 -sane-backends
 
 -specspo
+
 -samba-common
 -samba-client
+
 -a2ps
 -redhat-lsb
 -sox
@@ -425,8 +434,24 @@ cp ${setup}/ath/wifi-radar-ath /etc/wifi-radar/wifi-radar.conf
 ShowProgress "Install the atl2 kernel module"
 ${setup}/atl2/install-atl2 ${setup}
 
-# ShowProgress "Install the uvc webcam kernel module"
-# ${setup}/uvc/install-uvc ${setup}
+ShowProgress "Install the asus_acpi kernel module"
+${setup}/acpi/install-acpi ${setup}
+
+#ShowProgress "Force asus_acpi to be loaded"
+#echo "# Force asus_acpi to load" >> /etc/rc.local 
+#echo "/sbin/modprobe asus_acpi" >> /etc/rc.local 
+#echo "/etc/init.d/acpi restart" >> /etc/rc.local 
+
+ShowProgress "Put the acpi handlers in"
+cp ${setup}/acpi/events/*.conf /etc/acpi/events/
+cp ${setup}/acpi/actions/eee* /etc/acpi/actions/ 
+
+ShowProgress "Install the uvc webcam kernel module"
+${setup}/uvc/install-uvc ${setup}
+
+ShowProgress "Start camera on startup"
+echo "# Start Camera on startup" >> /etc/rc.local 
+echo "echo 1 > /proc/acpi/asus/camera" >> /etc/rc.local 
 
 ShowProgress "Install the truecrypt kernel module - and main function"
 ${setup}/truecrypt/install-truecrypt ${setup}
