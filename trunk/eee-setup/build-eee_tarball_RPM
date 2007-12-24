@@ -29,6 +29,9 @@ mkdir ${rpmdir}/
 mkdir ${rpmdir}/acpi
 cp ./acpi/*.ko ${rpmdir}/acpi/
 cp ./acpi/install-acpi ${rpmdir}/acpi/
+mkdir ${rpmdir}/acpi/actions ${rpmdir}/acpi/events
+cp ./acpi/events/*.conf ${rpmdir}/acpi/events/
+cp ./acpi/actions/eee* ${rpmdir}/acpi/actions/
 
 # Here's the wired ethernet driver 'atl2.ko'
 mkdir ${rpmdir}/atl2
