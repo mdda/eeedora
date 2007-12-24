@@ -1,39 +1,47 @@
 #! /bin/bash
 
-svn checkout svn://svn.berlios.de/linux-uvc/linux-uvc/trunk
+if ! true; then 
+	svn checkout svn://svn.berlios.de/linux-uvc/linux-uvc/trunk
+	pushd .
 
-pushd .
+	cd trunk/
+	make
+	popd
 
-cd trunk/
-make
-popd
+	cp trunk/uvcvideo.ko uvcvideo.ko-svn
+	cp uvcvideo.ko-svn uvcvideo.ko
+else
+	# This stuff installs from the Asus source - may not cooperate with Fedora much though
+	pushd .
 
-cp trunk/uvcvideo.ko .
+	# this rar file was released by Asus 
+	unrar x Uvcvideo_Source_071127.rar 
+	tar -xzf uvcvideo_20070706-4.tar.gz 
 
+	# This is the meat of it
+	cd uvcvideo
+	tar -xzf uvcvideo.tar.gz 
+	cd uvcvideo
+	make clean
+	make 
+	cp *.ko ../../uvcvideo.ko-asus
+	popd
 
-exit
+	cp uvcvideo.ko-asus uvcvideo.ko
 
-# Install lucview
-yum install SDL SDL-devel
+ # Clean up
+	rm -rf uvcvideo uvcvideo_20070706-4.*
+fi
 
-tar -xzf 
-cd 
-make
-
-# This stuff installs from the Asus source - may not cooperate with Fedora much though
-pushd .
-
-# this rar file is what Asus released
-unrar x Uvcvideo_Source_071127.rar 
-tar -xzf uvcvideo_20070706-4.tar.gz 
-
-# This is the meat of it
-cd uvcvideo
-tar -xzf uvcvideo.tar.gz 
-cd uvcvideo
-make
-cp *.ko ../../
-popd
-
-# Clean up
-rm -rf uvcvideo uvcvideo_20070706-4.*
+# Build lucview
+if ! true; then 
+	yum install SDL SDL-devel
+ 
+	pushd .
+ tar -xzf luvcview-20070512.tar.gz
+	cd luvcview-20070512
+	make clean
+	make
+	cp luvcview ../
+ popd
+fi
