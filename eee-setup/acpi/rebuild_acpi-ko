@@ -22,3 +22,5 @@ make
 popd
 
 cp asus_acpi/*.ko .
+
+perl make_events.pl

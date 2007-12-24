@@ -1,0 +1,109 @@
+#! /bin/sh
+
+acpi=${1:-unknown}
+full=${2:-nothing}
+
+function wifi_off() {
+ /sbin/rmmod ath_pci
+ /sbin/rmmod ath_rate_sample
+ /sbin/rmmod ath_hal
+
+ /sbin/rmmod wlan_scan_sta
+ /sbin/rmmod wlan_wep
+ /sbin/rmmod wlan
+# echo 0 > /proc/acpi/asus/wlan
+}
+
+function wifi_on() {
+ /sbin/modprobe ath_rate_sample
+ /sbin/modprobe ath_pci
+
+ /sbin/modprobe wlan
+ /sbin/modprobe wlan_wep
+ /sbin/modprobe wlan_scan_sta
+# echo 1 > /proc/acpi/asus/wlan
+}
+
+#echo `date`" '${acpi}' '${full}'" >> /etc/acpi.debug
+#su eeedora -c "notify-send -i appointment -u critical \"$1\" \"$2\""
+
+note='unknown'
+
+if [ "${acpi}" == "wifi" ]; then
+ ath=`/sbin/lsmod | grep ath_pci`
+ if [ "off${ath}" == "off" ]; then 
+  note='wifi-on'
+  wifi_on
+ else
+  note='wifi-off'
+  wifi_off
+ fi
+fi
+
+if [ "${acpi}" == "zzz" ]; then
+ wifi_off
+ pm-suspend
+ wifi_on
+ note='resume'
+fi
+
+if [ "${acpi}" == "lid" ]; then
+ wifi_off
+ pm-suspend
+ wifi_on
+ note='resume'
+fi
+
+if [ "${acpi}" == "power" ]; then
+# /sbin/shutdown -h now
+# note='shutdown'
+ xfce4-panel -q
+ note=''
+fi
+
+# http://prouchon.free.fr/Linux/Edgy.html
+
+if [ "${acpi}" == "mute" ]; then
+ #o=`aumix -q | egrep 'vol 0, ?0'`
+ o=`amixer get iSpeaker | egrep ' Playback \[on\]'`
+ if [ -z $o ]; then
+  amixer set iSpeaker unmute
+  note='vol-unmute'
+ else
+  amixer set iSpeaker mute
+  note='vol-mute'
+ fi
+fi
+
+if [ "${acpi}" == "voldown" ]; then
+ #/usr/bin/aumix -v-2
+ amixer set PCM 10%- > /dev/null
+ note='vol-down'
+fi
+
+if [ "${acpi}" == "volup" ]; then
+ #/usr/bin/aumix -v+2
+ amixer set PCM 10%+ > /dev/null
+ note='vol-up'
+fi
+
+# http://wiki.zenwalk.org/index.php?title=Using_Asus_special_keys
+# http://padre.web.elte.hu/linux_on_asus_l4l.html
+if [ "${acpi}" == "vga" ]; then
+# echo `echo ${full} | sed 's/.*0*6\(.\).*/\1/'` >/proc/acpi/asus/disp
+ note='vga'
+fi
+
+if [ "${acpi}" == "apps" ]; then
+ note='apps'
+fi
+
+
+
+if [ "empty${note}" != "empty" ]; then 
+ su eeedora -c "/usr/bin/python /etc/acpi/actions/eee.py \"${note}\" \"${full}\""
+fi
+
+exit 0
+
+#/usr/bin/python /etc/acpi/actions/eee.py "$1" "$2"
