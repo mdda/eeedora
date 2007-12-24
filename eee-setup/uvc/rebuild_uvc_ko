@@ -12,6 +12,14 @@ cp trunk/uvcvideo.ko .
 
 
 exit
+
+# Install lucview
+yum install SDL SDL-devel
+
+tar -xzf 
+cd 
+make
+
 # This stuff installs from the Asus source - may not cooperate with Fedora much though
 pushd .
 
