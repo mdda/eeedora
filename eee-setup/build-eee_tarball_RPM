@@ -52,6 +52,7 @@ cp ./ath/wifi-radar-ath ${rpmdir}/ath/
 mkdir ${rpmdir}/uvc
 cp ./uvc/*.ko ${rpmdir}/uvc/
 cp ./uvc/install-uvc ${rpmdir}/uvc/
+cp ./uvc/lucview ${rpmdir}/uvc/
 
 # These are related to services (eg: fix-up the system on the live machine)
 cp -R services ${rpmdir}/
