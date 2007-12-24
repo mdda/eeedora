@@ -1,7 +1,11 @@
-
+#! /bin/bash
 
 bunzip2 madwifi-eee.tar.bz2 
 tar -xf madwifi-eee.tar 
+bzip2 madwifi-eee.tar
+
+pushd .
+
 cd madwifi
 tar -xzf madwifi-ng-r2756-20071018.tar.gz 
 cd madwifi-ng-r2756-20071018
@@ -11,3 +15,10 @@ cd madwifi-ng-r2756-20071018
 
 # This is the important one
 patch -Np0 -i ../madwifi-eee.patch 
+
+make clean
+make
+
+popd
+
+for i in `find madwifi | grep '.ko$'`; do cp $i .;done
