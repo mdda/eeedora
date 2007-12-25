@@ -19,13 +19,13 @@ cp ${setup}/atl2/atl2.ko ${moddir}/
 mp=/etc/modprobe.conf
 echo "" >> ${mp}
 echo "# Added for EeeDora setup : atl2" >> ${mp}
-#echo "alias eth0 atl2" >> ${mp}
+echo "alias eth0 atl2" >> ${mp}
 #echo "alias eth1 atl2" >> ${mp}
-echo "" >> ${mp}
+#echo "" >> ${mp}
 echo "# Added after atl2 setup " >> ${mp}
 echo "" >> ${mp}
 
-/sbin/depmod -a
+/sbin/depmod -ae
 
 # Do this as a force since the mirror repo in the ks 
 # may have a slightly dated kernel (no big deal)

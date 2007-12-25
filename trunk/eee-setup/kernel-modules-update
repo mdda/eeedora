@@ -13,7 +13,7 @@ cd atl2
 cd ..
 
 cd truecrypt
-./rebuild_atl2-ko 
+./rebuild_truecrypt
 cd ..
 
 cd uvc 

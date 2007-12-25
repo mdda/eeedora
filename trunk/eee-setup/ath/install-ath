@@ -13,11 +13,12 @@ cp ${setup}/ath/*.ko ${moddir}/
 #    ... add to the file alias eth0 atl2 
 mp=/etc/modprobe.conf
 echo "" >> ${mp}
-echo "# Added for EeeDora setup" >> ${mp}
+echo "# Added for EeeDora setup : ath" >> ${mp}
 echo "alias ath0 ath_pci" >> ${mp}
+echo "# Added after ath setup " >> ${mp}
 echo "" >> ${mp}
 
-/sbin/depmod -a
+/sbin/depmod -ae
 
 # Do this as a force since the mirror repo in the ks 
 # may have a slightly dated kernel (no big deal)

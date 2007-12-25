@@ -1,6 +1,6 @@
 #! /bin/bash
 
-unrar x ASUS_ACPI_071126.rar 
+unrar x -y ASUS_ACPI_071126.rar 
 tar -xzf asus_acpi.tar.gz 
 
 pushd .
@@ -17,6 +17,7 @@ sed -i \
 # diff -Nur asus_acpi.c-asus asus_acpi.c > ../patch.acpi.fedora
 patch -p0 < ../patch.acpi.fedora
 
+make clean	
 make
 
 popd
