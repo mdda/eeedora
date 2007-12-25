@@ -1,0 +1,30 @@
+#! /bin/bash
+
+# You've got to be root to do this -
+# it depends on the eee_tarball being located in /root/
+
+setup=${1:-/root/eee-setup}
+
+moddir=/lib/modules/`uname -r`/kernel/drivers/media/video
+#moddir=/lib/modules/`uname -r`/uvcvideo
+
+mkdir -p ${moddir}
+cp ${setup}/uvc/uvc*.ko ${moddir}/
+
+# Now add this as an alias to /etc/modprobe.conf
+#mp=/etc/modprobe.conf
+#echo "" >> ${mp}
+#echo "# Added for EeeDora setup : uvc" >> ${mp}
+#echo "alias eth0 atl2" >> ${mp}
+#echo "alias eth1 atl2" >> ${mp}
+#echo " install uvcvideo /sbin/modprobe snd_usb_audio; /sbin/modprobe --ignore-install uvcvideo" >> ${mp}
+#echo "install uvcvideo /sbin/modprobe snd_usb_audio; /sbin/modprobe --ignore-install uvcvideo" >> ${mp}
+#echo "" >> ${mp}
+#echo "# Added after uvc setup " >> ${mp}
+#echo "" >> ${mp}
+
+/sbin/depmod -a
+
+# Do this as a force since the mirror repo in the ks 
+# may have a slightly dated kernel (no big deal)
+/sbin/modprobe -f uvcvideo

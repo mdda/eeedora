@@ -231,6 +231,9 @@ alsa-utils
 # This seems to focus on networking...
 #paprefs
 
+# This is for the luvcview program
+SDL
+
 # Not necessary once xcfe is reliable - we have 'Terminal'
 -xterm
 
@@ -438,9 +441,9 @@ ShowProgress "Install the asus_acpi kernel module"
 ${setup}/acpi/install-acpi ${setup}
 
 #ShowProgress "Force asus_acpi to be loaded"
-#echo "# Force asus_acpi to load" >> /etc/rc.local 
-#echo "/sbin/modprobe asus_acpi" >> /etc/rc.local 
-#echo "/etc/init.d/acpi restart" >> /etc/rc.local 
+echo "# Force asus_acpi to load" >> /etc/rc.local 
+echo "/sbin/modprobe asus_acpi" >> /etc/rc.local 
+echo "/etc/init.d/acpid restart" >> /etc/rc.local 
 
 ShowProgress "Put the acpi handlers in"
 cp ${setup}/acpi/events/*.conf /etc/acpi/events/

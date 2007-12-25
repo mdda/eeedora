@@ -1,21 +1,27 @@
 #! /bin/bash
 
-if ! true; then 
-	svn checkout svn://svn.berlios.de/linux-uvc/linux-uvc/trunk
+# If you want an SVN compiled version, download it now...
+#svn checkout svn://svn.berlios.de/linux-uvc/linux-uvc/trunk
+
+if [ -e trunk ]; then 
 	pushd .
 
 	cd trunk/
+	make clean
 	make
+	
 	popd
 
 	cp trunk/uvcvideo.ko uvcvideo.ko-svn
 	cp uvcvideo.ko-svn uvcvideo.ko
-else
+fi
+
+if [ -e Uvcvideo_Source_071127.rar ]; then 
 	# This stuff installs from the Asus source - may not cooperate with Fedora much though
 	pushd .
 
 	# this rar file was released by Asus 
-	unrar x Uvcvideo_Source_071127.rar 
+	unrar x -y Uvcvideo_Source_071127.rar 
 	tar -xzf uvcvideo_20070706-4.tar.gz 
 
 	# This is the meat of it
@@ -30,11 +36,11 @@ else
 	cp uvcvideo.ko-asus uvcvideo.ko
 
  # Clean up
-	rm -rf uvcvideo uvcvideo_20070706-4.*
+#	rm -rf uvcvideo uvcvideo_20070706-4.*
 fi
 
 # Build lucview
-if ! true; then 
+if [ -e luvcview-20070512.tar.gz ]; then 
 	yum install SDL SDL-devel
  
 	pushd .
@@ -45,3 +51,9 @@ if ! true; then
 	cp luvcview ../
  popd
 fi
+
+if [ -e uvcvideo.ko-svn ]; then 
+# cp uvcvideo.ko-svn uvcvideo.ko
+fi
+
+# Interesting : http://forum.skype.com/index.php?showtopic=102838

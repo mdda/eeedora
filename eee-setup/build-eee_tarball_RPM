@@ -27,7 +27,7 @@ mkdir ${rpmdir}/
 
 # This is the acpi driver (from Asus, updated for latest kernels)
 mkdir ${rpmdir}/acpi
-cp ./acpi/*.ko ${rpmdir}/acpi/
+cp ./acpi/*.ko* ${rpmdir}/acpi/
 cp ./acpi/install-acpi ${rpmdir}/acpi/
 mkdir ${rpmdir}/acpi/actions ${rpmdir}/acpi/events
 cp ./acpi/events/*.conf ${rpmdir}/acpi/events/
@@ -50,7 +50,7 @@ cp ./ath/wifi-radar-ath ${rpmdir}/ath/
 
 # This is the webcam kernel module
 mkdir ${rpmdir}/uvc
-cp ./uvc/*.ko ${rpmdir}/uvc/
+cp ./uvc/*.ko* ${rpmdir}/uvc/
 cp ./uvc/install-uvc ${rpmdir}/uvc/
 cp ./uvc/luvcview ${rpmdir}/uvc/
 
