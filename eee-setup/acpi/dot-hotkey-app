@@ -1,0 +1,4 @@
+#! /bin/bash
+
+# This is being executed at 'root' - be careful !
+su eeedora -c "DISPLAY=:0 /usr/bin/python /etc/acpi/actions/eee.py \"apps\" \"Script in ~/.hotkey-app needs updating...\""
