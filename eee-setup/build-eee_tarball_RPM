@@ -32,6 +32,7 @@ cp ./acpi/install-acpi ${rpmdir}/acpi/
 mkdir ${rpmdir}/acpi/actions ${rpmdir}/acpi/events
 cp ./acpi/events/*.conf ${rpmdir}/acpi/events/
 cp ./acpi/actions/eee* ${rpmdir}/acpi/actions/
+cp ./acpi/dot-hotkey-app ${rpmdir}/acpi/
 
 # Here's the wired ethernet driver 'atl2.ko'
 mkdir ${rpmdir}/atl2
