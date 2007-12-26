@@ -46,13 +46,22 @@ if __name__ == '__main__':
 		uri = "file:///usr/share/icons/Bluecurve/64x64/status/audio-volume-high.png"
 		n = pynotify.Notification("Volume - Increase", "", uri)
 
-	if sys.argv[1] == "vga":
-		#uri = "file:///usr/share/icons/Bluecurve/64x64/status/audio-volume-high.png"
-		n = pynotify.Notification("LCD / VGA Switch", "TODO")
+	if sys.argv[1] == "vga-disconnected":
+		uri = "file:///usr/share/icons/Bluecurve/32x32/actions/stop.png"
+		n = pynotify.Notification("LCD / VGA Switch", "No monitor attached", uri)
+		to=1000
+	if sys.argv[1] == "vga-on":
+		uri = "file:///usr/share/icons/Bluecurve/64x64/stock/stock-fullscreen.png"
+		n = pynotify.Notification("LCD / VGA Switch", "Monitor in 1280x1024", uri)
+		to=3000
+	if sys.argv[1] == "vga-off":
+		uri = "file:///usr/share/icons/Bluecurve/32x32/stock/stock-fullscreen.png"
+		n = pynotify.Notification("LCD / VGA Switch", "External monitor Off", uri)
+		to=3000
 
 	if sys.argv[1] == "apps":
-		#uri = "file:///usr/share/icons/Bluecurve/64x64/status/audio-volume-high.png"
-		n = pynotify.Notification("Apps Key", "Any ideas for this one?")
+		uri = "file:///usr/share/icons/Bluecurve/32x32/stock/panel-accessories.png"
+		n = pynotify.Notification("Apps Key", sys.argv[2], uri)
 		to=3000
 
 	n.set_timeout(to)
