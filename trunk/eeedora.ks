@@ -440,10 +440,15 @@ ${setup}/atl2/install-atl2 ${setup}
 ShowProgress "Install the asus_acpi kernel module"
 ${setup}/acpi/install-acpi ${setup}
 
-#ShowProgress "Force asus_acpi to be loaded"
-echo "# Force asus_acpi to load" >> /etc/rc.local 
-echo "/sbin/modprobe asus_acpi" >> /etc/rc.local 
-echo "/etc/init.d/acpid restart" >> /etc/rc.local 
+ShowProgress "Force asus_acpi to be loaded"
+aa=/etc/sysconfig/modules/asus_acpi.modules
+echo "# Force asus_acpi to load" >> ${aa} 
+echo "/sbin/modprobe asus_acpi" >> ${aa}
+chmod 755 ${aa}
+#echo "# Force asus_acpi to load" >> /etc/rc.local 
+#echo "/sbin/modprobe asus_acpi" >> /etc/rc.local 
+#echo "install battery /sbin/modprobe asus_acpi && /sbin/modprobe --ignore-install battery" >> /etc/rc.local 
+#echo "/etc/init.d/acpid restart" >> /etc/rc.local 
 
 ShowProgress "Put the acpi handlers in"
 cp ${setup}/acpi/events/*.conf /etc/acpi/events/

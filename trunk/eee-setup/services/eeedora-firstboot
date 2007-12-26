@@ -25,9 +25,9 @@ exists() {
 # This tests whether we're repeating something we've already done.
 configured=/.eeedora-configured
 
-ShowProgress "Test whether this has been run - if so, abort"
+#ShowProgress "Test whether this has been run - if so, abort"
 if [ -e  ${configured} ] ; then
- ShowProgress "Apparently this has already happened"
+ ShowProgress "Apparently this has already happened - abort"
  exit 0
 fi
 
@@ -109,7 +109,8 @@ done
 #exists system-config-display --noui --reconfig --set-depth=24 $xdriver
 
 ShowProgress "Unmute sound card"
-exists alsaunmute 0 2> /dev/null
+exists amixer set iSpeaker unmute > /dev/null
+#exists alsaunmute 0 2> /dev/null
 
 if ${live}; then 
  ShowProgress "Turn off firstboot"
@@ -209,6 +210,12 @@ tar -xzf ${setup}/misc/firefox.tar.gz -C ${livehome}/
 
 ShowProgress "Allow '${liveuser}' to automount USB plugin drives"
 ${setup}/services/automount-volumes_hal-fix ${setup} ${liveuser}
+
+ShowProgress "Set up the hotkey App for '${liveuser}'"
+app=${livehome}/.hotkey-app
+cp ${setup}/acpi/dot-hotkey-app ${app}
+chmod 755 ${app}
+
 
 
 
