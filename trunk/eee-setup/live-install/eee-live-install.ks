@@ -40,7 +40,7 @@ part / --fstype ext2 --ondisk=sda --asprimary --size 1 --grow --fsoptions="noati
 #part swap --recommended DO.NOT.WANT.
 
 #bootloader --location=none
-bootloader --location=mbr --timeout=3
+bootloader --location=mbr --timeout=2
 
 # A default public root password - not the best idea.
 rootpw eeedora
