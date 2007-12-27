@@ -58,7 +58,9 @@ fi
 if [ "${acpi}" == "power" ]; then
 # /sbin/shutdown -h now
 # note='shutdown'
+ wifi_off
  DISPLAY=:0 xfce4-panel -q
+ wifi_on
  note=''
 fi
 
