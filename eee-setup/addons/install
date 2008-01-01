@@ -2,6 +2,8 @@
 
 liveuser=${1:-eeedora}
 
+mypath=`echo $0 | sed -e 's|/[^/]*$||'`
+
 # This must be done as root
 yumlist=''
 
@@ -10,54 +12,54 @@ function ask {
  read ans
  response=false
  if [ "${ans:0:1}" == "y" ] || [ "${ans:0:1}" == "Y" ] ; then
-	 response=true
+  response=true
  fi 
 }  
 
 ask "Select OpenOffice Components ? [yes/NO]"
 if ${response}; then
-	ask "Install OpenOffice Calc ? [yes/NO]"
-	if ${response}; then
-		yumlist="${yumlist} openoffice.org-calc"
-	fi
-	ask "Install OpenOffice Writer ? [yes/NO]"
-	if ${response}; then
-		yumlist="${yumlist} openoffice.org-writer"
-	fi
+ ask "Install OpenOffice Calc ? [yes/NO]"
+ if ${response}; then
+  yumlist="${yumlist} openoffice.org-calc"
+ fi
+ ask "Install OpenOffice Writer ? [yes/NO]"
+ if ${response}; then
+  yumlist="${yumlist} openoffice.org-writer"
+ fi
 fi
 
 ask "Select productivity tools ? [yes/NO]"
 if ${response}; then
-	ask "Install Password Manager 'KeePass' ? [yes/NO]"
-	if ${response}; then
-		yumlist="${yumlist} keepassx"
-	fi
+ ask "Install Password Manager 'KeePass' ? [yes/NO]"
+ if ${response}; then
+  yumlist="${yumlist} keepassx"
+ fi
 
-	ask "Install Personal Information Manager 'osmo' ? [yes/NO]"
-	if ${response}; then
-	 osmo_fix=yes
-		yumlist="${yumlist} osmo"
-	fi
+ ask "Install Personal Information Manager 'osmo' ? [yes/NO]"
+ if ${response}; then
+  osmo_fix=yes
+  yumlist="${yumlist} osmo"
+ fi
 
-	ask "Install Desktop Wiki editor 'Zim' ? [yes/NO]"
-	if ${response}; then
-		yumlist="${yumlist} Zim"
-	fi
+ ask "Install Desktop Wiki editor 'Zim' ? [yes/NO]"
+ if ${response}; then
+  yumlist="${yumlist} Zim"
+ fi
 fi
 
 ask "Install Samba	 for Windows connectivity ? [yes/NO]"
 if ${response}; then
-	yumlist="${yumlist} samba-client"
+ yumlist="${yumlist} samba-client"
 fi
 
 ask "Install IcedTea Java plugin for Firefox ? [yes/NO]"
 if ${response}; then
-	yumlist="${yumlist} java-1.7.0-icedtea-plugin"
+ yumlist="${yumlist} java-1.7.0-icedtea-plugin"
 fi
 
 ask "Install Flash plugin for Firefox from Adobe ? [yes/NO]"
 if ${response}; then
-	flash=yes
+ flash=yes
 fi
 
 ask "Install PDF viewer 'evince' ? [yes/NO]"
@@ -71,27 +73,31 @@ if ${response}; then
  ask "Install Media Player 'vlc' ? [yes/NO]"
  if ${response}; then
   # May need to fix this up for pulseaudio - do this below
-		vlc_fix=yes
+  vlc_fix=yes
   yumlist="${yumlist} vlc"
-	fi
+ fi
  ask "Install Media Player 'gxine' ? [yes/NO]"
  if ${response}; then
   # May need to fix this up for pulseaudio - do this below
-		gxine_fix=yes
-	 yumlist="${yumlist} gxine"
-	fi
+  gxine_fix=yes
+  yumlist="${yumlist} gxine"
+ fi
 fi
 
 ask "Select Games ? [yes/NO]"
 if ${response}; then
- ask "Install Tremulous (FPS based on Quake engine) ? [yes/NO]"
+ ask "Install OpenArena (FPS - Quake III engine) ? [yes/NO]"
  if ${response}; then
-	 yumlist="${yumlist} tremulous"
-	fi
+  yumlist="${yumlist} openarena"
+ fi
+ ask "Install Tremulous (FPS/Strategy - Quake III engine) ? [yes/NO]"
+ if ${response}; then
+  yumlist="${yumlist} tremulous"
+ fi
  ask "Install Quake3 (needs game CD too) ? [yes/NO]"
  if ${response}; then
-	 yumlist="${yumlist} quake3"
-	fi
+  yumlist="${yumlist} quake3"
+ fi
 fi
 
 echo ''
@@ -104,13 +110,13 @@ fi
 
 echo ''
 
+if [ "is${flash}" = "isyes" ]; then
+ rpm -ivh "http://fpdownload.macromedia.com/get/flashplayer/current/flash-plugin-9.0.115.0-release.i386.rpm"
+fi
+
 if ! [ "empty${yumlist}" = "empty" ]; then
  echo $"yumlist = '${yumlist}'"
  yum install ${affirm} ${yumlist}
-fi
-
-if [ "is${flash}" = "isyes" ]; then
- rpm -ivh "http://fpdownload.macromedia.com/get/flashplayer/current/flash-plugin-9.0.115.0-release.i386.rpm"
 fi
 
 # Now do various clean-ups - to fix pulseaudio, for instance
@@ -128,7 +134,7 @@ fi
 
 if [ "is${osmo_fix}" = "isyes" ]; then
  echo "Setting up default config for osmo"
-	tar -xzf dot-osmo.tar.gz /home/${liveuser}/
-	chown -R ${liveuser}:${liveuser} /home/${liveuser}/.osmo
+ tar -xzf ${mypath}/dot-osmo.tar.gz -C /home/${liveuser}/
+ chown -R ${liveuser}:${liveuser} /home/${liveuser}/.osmo
 fi
 
