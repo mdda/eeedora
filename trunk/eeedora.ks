@@ -445,6 +445,7 @@ aa=/etc/sysconfig/modules/asus_acpi.modules
 echo "# Force asus_acpi to load" >> ${aa} 
 echo "/sbin/modprobe asus_acpi" >> ${aa}
 chmod 755 ${aa}
+
 #echo "# Force asus_acpi to load" >> /etc/rc.local 
 #echo "/sbin/modprobe asus_acpi" >> /etc/rc.local 
 #echo "install battery /sbin/modprobe asus_acpi && /sbin/modprobe --ignore-install battery" >> /etc/rc.local 
@@ -463,6 +464,9 @@ echo "echo 1 > /proc/acpi/asus/camera" >> /etc/rc.local
 
 ShowProgress "Install the truecrypt kernel module - and main function"
 ${setup}/truecrypt/install-truecrypt ${setup}
+
+ShowProgress "Fixing snd module removal to enable clean power-down"
+${setup}/misc/fix-powerdown
 
 fb=eeedora-firstboot
 init=/etc/rc.d/init.d
