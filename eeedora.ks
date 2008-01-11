@@ -466,7 +466,8 @@ ShowProgress "Install the truecrypt kernel module - and main function"
 ${setup}/truecrypt/install-truecrypt ${setup}
 
 ShowProgress "Fixing snd module removal to enable clean power-down"
-${setup}/misc/fix-powerdown
+cp ${setup}/misc/fix-powerdown /sbin/halt.local
+chmod 755 /sbin/halt.local
 
 fb=eeedora-firstboot
 init=/etc/rc.d/init.d
