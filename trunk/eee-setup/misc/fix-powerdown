@@ -1,6 +1,4 @@
 #! /bin/bash
 
-sed -i \
- -e 's|# Shutdown UPS drivers|# Shutdown sound module\n/sbin/rmmod snd-hda-intel\n\n&|' \
-	/etc/rc.d/init.d/halt
-
+# Shutdown sound module
+/sbin/rmmod snd-hda-intel
