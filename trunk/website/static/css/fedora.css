@@ -396,7 +396,8 @@ input, textarea, option
 
 .downloadbox li
 {
-  width: 26ex;
+  xwidth: 26ex;
+  width: 72ex;
   float: left;
   padding: 0 0 2ex;
 }
