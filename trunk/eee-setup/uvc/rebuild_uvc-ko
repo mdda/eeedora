@@ -53,7 +53,8 @@ if [ -e luvcview-20070512.tar.gz ]; then
 fi
 
 if [ -e uvcvideo.ko-svn ]; then 
-# cp uvcvideo.ko-svn uvcvideo.ko
+ echo "uvcvideo.ko-svn exists"
+	# cp uvcvideo.ko-svn uvcvideo.ko
 fi
 
 # Interesting : http://forum.skype.com/index.php?showtopic=102838
