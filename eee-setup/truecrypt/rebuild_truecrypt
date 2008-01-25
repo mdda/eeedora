@@ -17,8 +17,12 @@ tar -xzf truecrypt-${TCVER}-source-code.tar.gz
 #curl -O  http://www.linuxlove.org/for2.6.23.patch
 patch -p1 -i for2.6.23.patch
 
+pushd .
+
 cd truecrypt-${TCVER}-source-code/Linux/
 ./build.sh 
+
+popd
 
 cp truecrypt-${TCVER}-source-code/Linux/Cli/truecrypt .
 cp truecrypt-${TCVER}-source-code/Linux/Kernel/truecrypt.ko .
