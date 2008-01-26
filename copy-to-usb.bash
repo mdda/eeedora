@@ -35,6 +35,9 @@ usbmount=/media/temp-usb-mountpoint
 #  Save and Exit
 #  It should boot into the USB drive
 
+# append initrd=initrd0.img root=/dev/sdb1 rootfstype=vfat ro quiet liveimg
+
+
 usbcopystart='NotDone'
 usbcopyend='NotDone'
 
