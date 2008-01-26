@@ -55,7 +55,7 @@ if [ "$answer1" = "yes" ] ; then
 #  cp scripts/install-atl2 ${usbmount}/drivers/
 
 	# Actually, the scripts are a good thing for development...
-	mkdir ${usbmount}/scripts
+	mkdir -p ${usbmount}/scripts
 #  cp scripts/install-atl2 ${usbmount}/scripts/
 	cp scripts/report-back.bash ${usbmount}/scripts/
 #		cp scripts/start-xfce ${usbmount}/scripts/

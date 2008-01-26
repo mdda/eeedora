@@ -358,7 +358,8 @@ class ImageCreator(object):
 
 # eeedora update :
 #        self.image_size = 4096 # in megabytes
-        self.image_size = 2048 # in megabytes
+#        self.image_size = 2048 # in megabytes
+        self.image_size = 1792 # in megabytes
         self.blocksize = 4096 # in kilobytes
         self.minimized_image_size = 0 # in kilobytes
 
