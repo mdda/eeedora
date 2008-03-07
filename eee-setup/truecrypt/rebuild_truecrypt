@@ -3,7 +3,7 @@
 KVER=2.6.23
 TCVER=4.3a
 
-yum install sparse yumdownloader
+yum install sparse yum-utils
 
 yumdownloader --source kernel
 rpm -ivh kernel-$(uname -r).src.rpm
