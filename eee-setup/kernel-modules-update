@@ -8,15 +8,15 @@ cd ath
 ./rebuild_ath-madwifi-ko
 cd ..
 
-cd atl2
-./rebuild_atl2-ko 
-cd ..
+#cd atl2
+#./rebuild_atl2-ko 
+#cd ..
 
 cd truecrypt
 ./rebuild_truecrypt
 cd ..
 
-cd uvc 
-./rebuild_uvc-ko 
-cd ..
+#cd uvc 
+#./rebuild_uvc-ko 
+#cd ..
 

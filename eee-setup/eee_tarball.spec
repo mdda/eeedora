@@ -51,6 +51,9 @@ install eee-setup.tar.gz %{buildroot}/root/
 #/sbin/modprobe -f atl2
 
 %changelog
+* Sun Mar 09 2008 Martin Andrews <Martin.Andrews@xxxxxxxxxx> - 2.6.24.3-12
+- Decided to rename the rpm based on kernel version after all,
+- since that is the deciding factor for a forced update.
 * Thu Nov 21 2007 Martin Andrews <Martin.Andrews@xxxxxxxxxx> - 0.1.0.0
 - Initial build - this is a complete hack, I'm sorry
 - Since the kernel-version dependency is always going to be there
