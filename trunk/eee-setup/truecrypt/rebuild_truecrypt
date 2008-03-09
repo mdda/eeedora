@@ -1,9 +1,13 @@
 #! /bin/bash
 
-KVER=2.6.23
-TCVER=4.3a
+KVER=2.6.24
+TCVER=5.0a
 
-yum install sparse yum-utils
+#KVER=2.6.23
+#TCVER=4.3a
+
+#yum install sparse yum-utils 
+yum install sparse yum-utils fuse fuse-devel wxGTK wxGTK-devel
 
 yumdownloader --source kernel
 rpm -ivh kernel-$(uname -r).src.rpm
@@ -12,15 +16,32 @@ rpmbuild -bp --target=noarch /usr/src/redhat/SPECS/kernel.spec
 cp /usr/src/redhat/BUILD/kernel-${KVER}/linux-${KVER}.noarch/drivers/md/dm.h /usr/src/kernels/`uname -r`-`uname -p`/drivers/md
 
 #curl -O  http://www.truecrypt.org/downloads/truecrypt-${TCVER}-source-code.tar.gz
-tar -xzf truecrypt-${TCVER}-source-code.tar.gz
+
+# So, of course, now the truecrypt people have added 
+# spaces and capitalization into their download : Not-Very-UNIX
+####curl -o truecrypt-${TCVER}-source-code.tar.gz "http://www.truecrypt.org/downloads/TrueCrypt\ ${TCVER}\ Source.tar.gz"
+# Ahh, but that doesn't even work - they're now compelling the license verification for their source download...
+# EeeDora looks fine (assuming they've got their source link somewhere in /usr/bin/truecrypt --help)
+
+# For now, let's assume the download has been suitably renamed :
+if [ -f "TrueCrypt\ ${TCVER}\ Source.tar.gz" ]; then 
+ mv "TrueCrypt\ ${TCVER}\ Source.tar.gz" "truecrypt-${TCVER}-source-code.tar.gz"
+fi
+tar -xzf "truecrypt-${TCVER}-source-code.tar.gz"
 
 #curl -O  http://www.linuxlove.org/for2.6.23.patch
-patch -p1 -i for2.6.23.patch
+#patch -p1 -i for2.6.23.patch
 
 pushd .
 
-cd truecrypt-${TCVER}-source-code/Linux/
-./build.sh 
+#cd truecrypt-${TCVER}-source-code/Linux/
+#./build.sh 
+
+cd truecrypt-${TCVER}-source
+make 
+
+
+
 
 popd
 
