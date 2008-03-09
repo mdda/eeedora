@@ -1,0 +1,25 @@
+--- /src/Dm-target.c.orig    2007-04-24 12:32:06.000000000 -0400
++++ Kernel/Dm-target.c  2007-12-29 22:34:21.502087564 -0500
+@@ -375,7 +375,7 @@
+        if (!atomic_dec_and_test (&bc->ref_count))
+                return;
+ 
+-       bio_endio (bc->orig_bio, bc->orig_bio->bi_size, bc->error);
++       bio_endio (bc->orig_bio, bc->error);
+        mempool_free (bc, tc->bio_ctx_pool);
+ }
+ 
+@@ -656,7 +656,12 @@
+                goto err;
+        }
+ 
+-       bio_ctx_cache = kmem_cache_create ("truecrypt-bioctx", sizeof (struct bio_ctx), 0, 0, NULL, NULL);
++       #if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,23)
++               bio_ctx_cache = kmem_cache_create ("truecrypt-bioctx", sizeof (struct bio_ctx), 0, 0, NULL, NULL);
++       #else
++               bio_ctx_cache = kmem_cache_create ("truecrypt-bioctx", sizeof (struct bio_ctx), 0, 0, NULL);
++       #endif
++
+        if (!bio_ctx_cache)
+        {
+                error ("kmem_cache_create failed");
