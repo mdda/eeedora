@@ -1,0 +1,3 @@
+# To test the camera, do :
+
+./luvcview -d /dev/video0 -f yuv -s 640x480

@@ -7,9 +7,14 @@
 # unwrapped using tar -xzf /root/eee-setup.tar.gz -C /root/
 # and all the files will appear in /root/eee-setup/
 
-rpmver=`uname -r`
 #rpmver=0.1.0.1
-rpmrelease=0 
+
+kver=`uname -r`
+rpmver=`echo "${kver}" | sed 's|^\(.*\)-.*|\1|'`
+rpmrelease=`echo "${kver}" | sed -e 's|.*-\(.*\)$|\1|'`
+
+echo "RPM ver='${rpmver}', release='${rpmrelease}'"
+#exit 1
 
 rpmname=eee_tarball
 rpmdir=eee-setup
@@ -36,10 +41,10 @@ cp ./acpi/actions/eee* ${rpmdir}/acpi/actions/
 cp ./acpi/dot-hotkey-app ${rpmdir}/acpi/
 
 # Here's the wired ethernet driver 'atl2.ko'
-mkdir ${rpmdir}/atl2
-cp ./atl2/*.ko ${rpmdir}/atl2/
-cp ./atl2/install-atl2 ${rpmdir}/atl2/
-# Run using script /root/${rpmdir}/atl2/install-atl2
+#mkdir ${rpmdir}/atl2
+#cp ./atl2/*.ko ${rpmdir}/atl2/
+#cp ./atl2/install-atl2 ${rpmdir}/atl2/
+## Run using script /root/${rpmdir}/atl2/install-atl2
 
 # These are the wireless internet kernel modules and fixes
 mkdir ${rpmdir}/ath
@@ -55,6 +60,7 @@ mkdir ${rpmdir}/uvc
 cp ./uvc/*.ko* ${rpmdir}/uvc/
 cp ./uvc/install-uvc ${rpmdir}/uvc/
 cp ./uvc/luvcview ${rpmdir}/uvc/
+cp ./uvc/README ${rpmdir}/uvc/
 
 # These are related to services (eg: fix-up the system on the live machine)
 cp -R services ${rpmdir}/

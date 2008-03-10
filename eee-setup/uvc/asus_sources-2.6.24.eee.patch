@@ -1,0 +1,40 @@
+Common subdirectories: uvcvideo-asus/.svn and uvcvideo/.svn
+Common subdirectories: uvcvideo-asus/.tmp_versions and uvcvideo/.tmp_versions
+Only in uvcvideo: uvc_ctrl.o
+Only in uvcvideo: .uvc_ctrl.o.cmd
+diff -c uvcvideo-asus/uvc_driver.c uvcvideo/uvc_driver.c
+*** uvcvideo-asus/uvc_driver.c	2008-03-09 19:06:05.000000000 -0400
+--- uvcvideo/uvc_driver.c	2008-03-09 19:19:16.000000000 -0400
+***************
+*** 1427,1433 ****
+  	vdev->dev = &dev->udev->dev;
+  	vdev->type = 0;
+  	vdev->type2 = 0;
+! 	vdev->hardware = 0;
+  	vdev->minor = -1;
+  	vdev->fops = &uvc_fops;
+  	vdev->release = video_device_release;
+--- 1427,1433 ----
+  	vdev->dev = &dev->udev->dev;
+  	vdev->type = 0;
+  	vdev->type2 = 0;
+! /*	vdev->hardware = 0; */
+  	vdev->minor = -1;
+  	vdev->fops = &uvc_fops;
+  	vdev->release = video_device_release;
+Only in uvcvideo: uvc_driver.o
+Only in uvcvideo: .uvc_driver.o.cmd
+Only in uvcvideo-asus: .uvc_driver.o.d
+Only in uvcvideo: uvc_queue.o
+Only in uvcvideo: .uvc_queue.o.cmd
+Only in uvcvideo: uvc_v4l2.o
+Only in uvcvideo: .uvc_v4l2.o.cmd
+Only in uvcvideo: uvcvideo.ko
+Only in uvcvideo: .uvcvideo.ko.cmd
+Only in uvcvideo: uvcvideo.mod.c
+Only in uvcvideo: uvcvideo.mod.o
+Only in uvcvideo: .uvcvideo.mod.o.cmd
+Only in uvcvideo: uvc_video.o
+Only in uvcvideo: uvcvideo.o
+Only in uvcvideo: .uvc_video.o.cmd
+Only in uvcvideo: .uvcvideo.o.cmd
