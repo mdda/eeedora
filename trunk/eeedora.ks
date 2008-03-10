@@ -434,8 +434,9 @@ ShowProgress "Fix up wifi-radar config"
 mkdir -p /etc/wifi-radar/
 cp ${setup}/ath/wifi-radar-ath /etc/wifi-radar/wifi-radar.conf
 
-ShowProgress "Install the atl2 kernel module"
-${setup}/atl2/install-atl2 ${setup}
+# This is now in the kernel - so ignore...
+# ShowProgress "Install the atl2 kernel module"
+# ${setup}/atl2/install-atl2 ${setup}
 
 ShowProgress "Install the asus_acpi kernel module"
 ${setup}/acpi/install-acpi ${setup}
@@ -446,6 +447,7 @@ echo "# Force asus_acpi to load" >> ${aa}
 echo "/sbin/modprobe asus_acpi" >> ${aa}
 chmod 755 ${aa}
 
+# Old version : Not necessary now
 #echo "# Force asus_acpi to load" >> /etc/rc.local 
 #echo "/sbin/modprobe asus_acpi" >> /etc/rc.local 
 #echo "install battery /sbin/modprobe asus_acpi && /sbin/modprobe --ignore-install battery" >> /etc/rc.local 
@@ -455,6 +457,7 @@ ShowProgress "Put the acpi handlers in"
 cp ${setup}/acpi/events/*.conf /etc/acpi/events/
 cp ${setup}/acpi/actions/eee* /etc/acpi/actions/ 
 
+# This may be in the kernel :: Check!
 ShowProgress "Install the uvc webcam kernel module"
 ${setup}/uvc/install-uvc ${setup}
 
