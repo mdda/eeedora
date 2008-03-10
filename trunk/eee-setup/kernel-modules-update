@@ -13,10 +13,10 @@ cd ..
 #cd ..
 
 cd truecrypt
-./rebuild_truecrypt
+./rebuild_truecrypt-4.3
 cd ..
 
-#cd uvc 
-#./rebuild_uvc-ko 
-#cd ..
+cd uvc 
+./rebuild_uvc-ko 
+cd ..
 

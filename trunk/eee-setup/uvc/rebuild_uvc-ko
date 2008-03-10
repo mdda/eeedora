@@ -3,6 +3,7 @@
 # If you want an SVN compiled version, download it now...
 #svn checkout svn://svn.berlios.de/linux-uvc/linux-uvc/trunk
 
+#if [ 1 == 0 ]; then 
 if [ -e trunk ]; then 
 	pushd .
 
@@ -16,6 +17,7 @@ if [ -e trunk ]; then
 	cp uvcvideo.ko-svn uvcvideo.ko
 fi
 
+#if [ 1 == 0 ]; then 
 if [ -e Uvcvideo_Source_071127.rar ]; then 
 	# This stuff installs from the Asus source - may not cooperate with Fedora much though
 	pushd .
@@ -27,6 +29,9 @@ if [ -e Uvcvideo_Source_071127.rar ]; then
 	# This is the meat of it
 	cd uvcvideo
 	tar -xzf uvcvideo.tar.gz 
+	# This patch file created by :
+	# diff -c uvcvideo-asus uvcvideo > 2.6.24.eee.1.patch
+	patch -p0 < ../asus_sources-2.6.24.eee.patch
 	cd uvcvideo
 	make clean
 	make 
@@ -38,6 +43,7 @@ if [ -e Uvcvideo_Source_071127.rar ]; then
  # Clean up
 #	rm -rf uvcvideo uvcvideo_20070706-4.*
 fi
+
 
 # Build lucview
 if [ -e luvcview-20070512.tar.gz ]; then 
