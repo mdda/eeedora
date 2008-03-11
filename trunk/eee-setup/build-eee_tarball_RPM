@@ -33,8 +33,10 @@ mkdir ${rpmdir}/
 
 # This is the acpi driver (from Asus, updated for latest kernels)
 mkdir ${rpmdir}/acpi
-cp ./acpi/*.ko* ${rpmdir}/acpi/
+cp ./acpi/asus_acpi_eee.ko ${rpmdir}/acpi/
 cp ./acpi/install-acpi ${rpmdir}/acpi/
+cp ./acpi/blacklist-asus_acpi ${rpmdir}/acpi/
+cp ./acpi/upgrade-acpi ${rpmdir}/acpi/
 mkdir ${rpmdir}/acpi/actions ${rpmdir}/acpi/events
 cp ./acpi/events/*.conf ${rpmdir}/acpi/events/
 cp ./acpi/actions/eee* ${rpmdir}/acpi/actions/

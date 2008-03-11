@@ -1,0 +1,13 @@
+#! /bin/bash
+
+# You've got to be root to do this -
+# it depends on the eee_tarball being located in /root/
+
+setup=${1:-/root/eee-setup}
+
+# Blacklist the existing asus_acpi kernel driver
+mp=/etc/modprobe.d/blacklist
+echo "" >> ${mp}
+echo "# Added for EeeDora setup" >> ${mp}
+echo "blacklist asus_acpi" >> ${mp}
+echo "" >> ${mp}

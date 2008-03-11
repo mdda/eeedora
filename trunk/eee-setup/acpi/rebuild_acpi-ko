@@ -1,5 +1,18 @@
 #! /bin/bash
 
+pushd .
+
+cd 2.6.24
+./rebuild-asus_acpi_eee-ko
+cp *.ko ..
+popd
+
+perl make_events.pl
+
+exit 1
+
+# This is for the previous 2.6.23 version..
+
 unrar x -y ASUS_ACPI_071126.rar 
 tar -xzf asus_acpi.tar.gz 
 

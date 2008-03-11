@@ -7,19 +7,19 @@ setup=${1:-/root/eee-setup}
 
 moddir=/lib/modules/`uname -r`/kernel/drivers/acpi
 mkdir -p ${moddir}
-cp ${setup}/acpi/asus_acpi.ko ${moddir}/
+cp ${setup}/acpi/asus_acpi_eee.ko ${moddir}/
 
 # Now add this as an alias to /etc/modprobe.conf
 mp=/etc/modprobe.conf
 echo "" >> ${mp}
-echo "# Added for EeeDora setup : asus_acpi" >> ${mp}
-#echo "alias eth1 atl2" >> ${mp}
-echo "install acpi /sbin/modprobe asus_acpi" >> ${mp}
-echo "# Added after asus_acpi setup" >> ${mp}
+echo "# Added for EeeDora setup : asus_acpi_eee" >> ${mp}
+echo "install acpi /sbin/modprobe asus_acpi_eee" >> ${mp}
+echo "# Added after asus_acpi_eee setup" >> ${mp}
 echo "" >> ${mp}
+
 
 /sbin/depmod -a
 
 # Do this as a force since the mirror repo in the ks 
 # may have a slightly dated kernel (no big deal)
-/sbin/modprobe -f asus_acpi
+/sbin/modprobe -f asus_acpi_eee

@@ -438,13 +438,18 @@ cp ${setup}/ath/wifi-radar-ath /etc/wifi-radar/wifi-radar.conf
 # ShowProgress "Install the atl2 kernel module"
 # ${setup}/atl2/install-atl2 ${setup}
 
-ShowProgress "Install the asus_acpi kernel module"
+ShowProgress "Install the asus_acpi_eee kernel module"
 ${setup}/acpi/install-acpi ${setup}
+${setup}/acpi/blacklist-asus_acpi ${setup}
 
 ShowProgress "Force asus_acpi to be loaded"
-aa=/etc/sysconfig/modules/asus_acpi.modules
-echo "# Force asus_acpi to load" >> ${aa} 
-echo "/sbin/modprobe asus_acpi" >> ${aa}
+#aa=/etc/sysconfig/modules/asus_acpi.modules
+#echo "# Force asus_acpi to load" >> ${aa} 
+#echo "/sbin/modprobe asus_acpi" >> ${aa}
+#chmod 755 ${aa}
+aa=/etc/sysconfig/modules/asus_acpi_eee.modules
+echo "# Force asus_acpi_eee to load" >> ${aa} 
+echo "/sbin/modprobe asus_acpi_eee" >> ${aa}
 chmod 755 ${aa}
 
 # Old version : Not necessary now

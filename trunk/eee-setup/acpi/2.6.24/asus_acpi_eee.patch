@@ -1,0 +1,564 @@
+--- a/drivers/acpi/asus_acpi.c	2007-12-21 10:11:41.000000000 -0500
++++ b/drivers/acpi/asus_acpi.c	2007-12-20 23:41:17.000000000 -0500
+@@ -56,6 +56,126 @@
+ #define ACPI_HOTK_NAME          "Asus Laptop ACPI Extras Driver"
+ #define ACPI_HOTK_CLASS         "hotkey"
+ #define ACPI_HOTK_DEVICE_NAME   "Hotkey"
++#define ACPI_HOTK_HID           "ATK0100"
++
++/*
++ * Definitions for Asus EeePC : begin
++ */
++#define	PROC_INIT	"init"
++#define	PROC_CAMERA	"camera"
++#define	PROC_CARDR	"cardr"
++#define	PROC_CPUFV	"cpufv"
++#define	PROC_HDPS	"hdps"
++#define	PROC_MODEM	"modem"
++#define	PROC_WLAN	"wlan"
++#define	PROC_USB	"usb"
++
++#define	NOTIFY_WLAN_ON	0x10
++
++#define EEEPC_HOTK_NAME          "Asus EEEPC Hotkey Driver"
++#define EEEPC_HOTK_CLASS         "hotkey"
++#define EEEPC_HOTK_DEVICE_NAME   "Hotkey"
++#define EEEPC_HOTK_HID           "ASUS010"
++
++enum {
++	DISABLE_ASL_WLAN = 0x0001,
++	DISABLE_ASL_BLUETOOTH = 0x0002,
++	DISABLE_ASL_IRDA = 0x0004,
++	DISABLE_ASL_CAMERA = 0x0008,
++	DISABLE_ASL_TV = 0x0010,
++	DISABLE_ASL_GPS = 0x0020,
++	DISABLE_ASL_DISPLAYSWITCH = 0x0040,
++	DISABLE_ASL_MODEM = 0x0080,
++	DISABLE_ASL_CARDREADER = 0x0100
++	};
++
++typedef enum {
++	CM_ASL_WLAN = 0,
++	CM_ASL_BLUETOOTH,
++	CM_ASL_IRDA,
++	CM_ASL_1394,
++	CM_ASL_CAMERA,
++	CM_ASL_TV,
++	CM_ASL_GPS,
++	CM_ASL_DVDROM,
++	CM_ASL_DISPLAYSWITCH,
++	CM_ASL_PANELBRIGHT,
++	CM_ASL_BIOSFLASH,
++	CM_ASL_ACPIFLASH,
++	CM_ASL_CPUFV,
++	CM_ASL_CPUTEMPERATURE,
++	CM_ASL_FANCPU,
++	CM_ASL_FANCHASSIS,
++	CM_ASL_USBPORT1,
++	CM_ASL_USBPORT2,
++	CM_ASL_USBPORT3,
++	CM_ASL_MODEM,
++	CM_ASL_CARDREADER,
++	CM_ASL_LID
++	} cm_asl_t;
++
++const char *cm_getv[]= {"WLDG",   NULL,   NULL,   NULL,
++			"CAMG",   NULL,   NULL,   NULL,
++			  NULL, "PBLG",   NULL,   NULL,
++			"CFVG",   NULL,   NULL,   NULL,
++			"USBG",   NULL,   NULL, "MODG",
++			"CRDG", "LIDG"};
++
++const char *cm_setv[]= {"WLDS",   NULL,   NULL,   NULL,
++			"CAMS",   NULL,   NULL,   NULL,
++			"SDSP", "PBLS", "HDPS",   NULL,
++			"CFVS",   NULL,   NULL,   NULL,
++			"USBG",   NULL,   NULL, "MODS",
++			"CRDS",   NULL};
++
++static uid_t eeepc_uid;
++static gid_t eeepc_gid;
++module_param(eeepc_uid, uint, 0);
++MODULE_PARM_DESC(eeepc_uid, "UID for entries in /proc/acpi/eeepc.\n");
++module_param(eeepc_gid, uint, 0);
++MODULE_PARM_DESC(eeepc_gid, "GID for entries in /proc/acpi/eeepc.\n");
++
++static unsigned int init_flag;
++static struct proc_dir_entry *eeepc_proc_dir;
++
++/*
++ * This is the main structure, we can use it to store useful information 
++ * about the hotk device
++ */
++struct eeepc_hotk {
++	struct acpi_device	*device;	//the device we are in
++	acpi_handle		handle;		//the handle of the hotk device
++	unsigned int		cm_supported;	//the control method supported status of this BIOS.
++	unsigned short		event_count[128];	//count for each event
++};
++
++/* The actual device the driver binds to */
++static struct eeepc_hotk *ehotk;
++
++/*
++ * The hotkey driver declaration
++ */
++static int eeepc_hotk_add(struct acpi_device *device);
++static int eeepc_hotk_remove(struct acpi_device *device, int type);
++
++static const struct acpi_device_id eee_device_ids[] = {
++    {EEEPC_HOTK_HID, 0},
++    {"", 0}
++};
++
++static struct acpi_driver eeepc_hotk_driver = {
++	.name = "eeepc_acpi",
++	.class = EEEPC_HOTK_CLASS,
++	.ids = eee_device_ids,
++	.ops = {
++		.add = eeepc_hotk_add,
++		.remove = eeepc_hotk_remove,
++	},
++};
++
++/*
++ * Definitions for Asus EeePC : end
++ */
+ 
+ /*
+  * Some events we use, same for all Asus
+@@ -425,20 +545,14 @@
+ static struct asus_hotk *hotk;
+ 
+ /*
+- * The hotkey driver and autoloading declaration
++ * The hotkey driver declaration
+  */
+ static int asus_hotk_add(struct acpi_device *device);
+ static int asus_hotk_remove(struct acpi_device *device, int type);
+-static const struct acpi_device_id asus_device_ids[] = {
+-	{"ATK0100", 0},
+-	{"", 0},
+-};
+-MODULE_DEVICE_TABLE(acpi, asus_device_ids);
+-
+ static struct acpi_driver asus_hotk_driver = {
+ 	.name = "asus_acpi",
+ 	.class = ACPI_HOTK_CLASS,
+-	.ids = asus_device_ids,
++	.ids = eee_device_ids,
+ 	.ops = {
+ 		.add = asus_hotk_add,
+ 		.remove = asus_hotk_remove,
+@@ -1192,7 +1306,6 @@
+ 			break;
+ 		default:
+ 			kfree(model);
+-			model = NULL;
+ 			break;
+ 		}
+ 	}
+@@ -1363,7 +1476,7 @@
+         .update_status  = set_brightness_status,
+ };
+ 
+-static void asus_acpi_exit(void)
++static void __exit asus_acpi_exit(void)
+ {
+ 	if (asus_backlight_device)
+ 		backlight_device_unregister(asus_backlight_device);
+@@ -1404,7 +1517,7 @@
+ 	if (!asus_hotk_found) {
+ 		acpi_bus_unregister_driver(&asus_hotk_driver);
+ 		remove_proc_entry(PROC_ASUS, acpi_root_dir);
+-		return -ENODEV;
++		return result;
+ 	}
+ 
+ 	asus_backlight_device = backlight_device_register("asus",NULL,NULL,
+@@ -1413,12 +1526,382 @@
+ 		printk(KERN_ERR "Could not register asus backlight device\n");
+ 		asus_backlight_device = NULL;
+ 		asus_acpi_exit();
+-		return -ENODEV;
+ 	}
+         asus_backlight_device->props.max_brightness = 15;
+ 
+ 	return 0;
+ }
++/* 
++ * Replaced with eeepc_hotk_init 
++ */
++//module_init(asus_acpi_init);
++/*
++ * Replaced with eeepc_hotk_exit
++ */
++//module_exit(asus_acpi_exit);
++
++/* 
++ * returns 1 if write is successful, 0 else.
++ */
++static int
++write_eeepc_acpi_int(acpi_handle handle, const char *method, int val, struct acpi_buffer *output)
++{
++	struct acpi_object_list params;
++	union acpi_object in_obj;
++	acpi_status status;
++
++	params.count = 1;
++	params.pointer = &in_obj;
++	in_obj.type = ACPI_TYPE_INTEGER;
++	in_obj.integer.value = val;
++
++	status = acpi_evaluate_object(handle, (char *)method, &params, output);
++	return (status == AE_OK);
++}
++
++static int
++read_eeepc_acpi_int(acpi_handle handle, const char *method, int *val)
++{
++	struct acpi_buffer output;
++	union acpi_object out_obj;
++	acpi_status status;
++
++	output.length = sizeof(out_obj);
++	output.pointer = &out_obj;
++
++	status = acpi_evaluate_object(handle, (char *)method, NULL, &output);
++	*val = out_obj.integer.value;
++	return (status == AE_OK) && (out_obj.type == ACPI_TYPE_INTEGER);
++}
++
++static int
++eeepc_hotk_write_proc(struct file *file, const char __user * buffer, unsigned long count, void *data)
++{
++	int	value, rv;
++	cm_asl_t cm;
++
++	rv = parse_arg(buffer, count, &value);
++	cm = (unsigned int)data;
++	if((ehotk->cm_supported & (0x1<<cm)) && (0 < rv))
++	{
++		if (!write_eeepc_acpi_int(ehotk->handle, cm_setv[cm], value, NULL))
++			printk(KERN_WARNING "[eeepc hotk] Error writing %s.\n", cm_setv[cm]);
++	}
++	return rv;
++}
++
++static int
++eeepc_hotk_read_proc(char *page, char **start, off_t off, int count, int *eof, void *data)
++{
++	int	value;
++	cm_asl_t cm;
++
++	cm = (unsigned int)data;
++
++	if((ehotk->cm_supported & (0x1<<cm))) { 
++		if (!cm_getv[cm]) return 0;
++		if (!read_eeepc_acpi_int(ehotk->handle, cm_getv[cm], &value))
++			printk(KERN_WARNING "[eeepc hotk] Error reading %s.\n", cm_getv[cm]);
++	}
++	else	value = -1;
++	return sprintf(page, "%d\n", value);
++}
++
++static int
++eeepc_hotk_reset_init(struct file *file, const char __user * buffer, unsigned long count, void *data)
++{
++	int	value, rv;
++
++	rv = parse_arg(buffer, count, &value);
++	if (!write_eeepc_acpi_int(ehotk->handle, "INIT", value, NULL))
++		printk(KERN_ERR "[eeepc hotk] Hotkey initialization failed\n");
++	else	printk(KERN_INFO "[eeepc hotk] reset init flag 0x%x\n", value);
++	return rv;
++}
++
++static int
++eeepc_hotk_init_proc(char* name, mode_t mode, struct acpi_device *device)
++{
++	struct proc_dir_entry *proc = create_proc_entry(name, mode, acpi_device_dir(device));
++
++	if (!proc) {
++		printk(KERN_WARNING "[eeepc hotk] Unable to create init fs entry\n");
++		return -1;
++	}
++	proc->write_proc = eeepc_hotk_reset_init;
++	proc->read_proc = NULL;
++	proc->data = NULL;
++	proc->owner = THIS_MODULE;
++	proc->uid = eeepc_uid;
++	proc->gid = eeepc_gid;
++	return 0;
++}
++
++static int
++eeepc_hotk_new_proc(char *name, cm_asl_t cm , mode_t mode,  struct acpi_device *device)
++{
++	struct proc_dir_entry *proc = create_proc_entry(name, mode, acpi_device_dir(device));
++
++	if (!proc) {
++		printk(KERN_WARNING "[eeepc hotk] Unable to create %s fs entry\n", name);
++		return -1;
++	}
++	proc->write_proc = eeepc_hotk_write_proc;
++	proc->read_proc = eeepc_hotk_read_proc;
++	proc->data = (void*)cm;
++	proc->owner = THIS_MODULE;
++	proc->uid = eeepc_uid;
++	proc->gid = eeepc_gid;
++	return 0;
++}
++
++static int 
++eeepc_hotk_add_fs(struct acpi_device *device)
++{
++	mode_t mode;
++
++	if ((eeepc_uid == 0) && (eeepc_gid == 0)) 
++		mode = S_IFREG | S_IRUGO | S_IWUGO;
++	else 
++	{
++		mode = S_IFREG | S_IRUSR | S_IRGRP | S_IWUSR | S_IWGRP;
++		printk(KERN_WARNING "  eeepc_uid and eeepc_gid parameters are "
++		       "deprecated, use chown and chmod instead!\n");
++	}
++
++	acpi_device_dir(device) = eeepc_proc_dir;
++	if (!acpi_device_dir(device))
++		return -ENODEV;
++
++	if(ehotk->cm_supported & (0x1 << CM_ASL_WLAN))
++		eeepc_hotk_new_proc(PROC_WLAN, CM_ASL_WLAN , mode, device);
++		
++	if(ehotk->cm_supported & (0x1 << CM_ASL_CAMERA))
++		eeepc_hotk_new_proc(PROC_CAMERA, CM_ASL_CAMERA , mode, device);
++
++	if(ehotk->cm_supported & (0x1 << CM_ASL_DISPLAYSWITCH))
++		eeepc_hotk_new_proc(PROC_DISP, CM_ASL_DISPLAYSWITCH , mode, device);
++
++	if(ehotk->cm_supported & (0x1 << CM_ASL_PANELBRIGHT))
++		eeepc_hotk_new_proc(PROC_BRN, CM_ASL_PANELBRIGHT , mode, device);
++	
++	if(ehotk->cm_supported & (0x1 << CM_ASL_BIOSFLASH))
++		eeepc_hotk_new_proc(PROC_HDPS, CM_ASL_BIOSFLASH , mode, device);
++	
++	if(ehotk->cm_supported & (0x1 << CM_ASL_CPUFV))
++		eeepc_hotk_new_proc(PROC_CPUFV, CM_ASL_CPUFV , mode, device);
++	
++	if(ehotk->cm_supported & (0x1 << CM_ASL_MODEM))
++		eeepc_hotk_new_proc(PROC_MODEM, CM_ASL_MODEM , mode, device);
++	
++	if(ehotk->cm_supported & (0x1 << CM_ASL_CARDREADER))
++		eeepc_hotk_new_proc(PROC_CARDR, CM_ASL_CARDREADER , mode, device);
++
++	eeepc_hotk_init_proc(PROC_INIT, mode, device);
++
++	return 0;
++}
++
++static int 
++eeepc_hotk_remove_fs(struct acpi_device *device)
++{
++	if (acpi_device_dir(device)) 
++	{
++		if(ehotk->cm_supported & (0x1 << CM_ASL_WLAN))
++			remove_proc_entry(PROC_WLAN, acpi_device_dir(device));
++
++		if(ehotk->cm_supported & (0x1 << CM_ASL_CAMERA))
++			remove_proc_entry(PROC_CAMERA, acpi_device_dir(device));
++
++		if(ehotk->cm_supported & (0x1 << CM_ASL_DISPLAYSWITCH))
++			remove_proc_entry(PROC_DISP, acpi_device_dir(device));
++
++		if(ehotk->cm_supported & (0x1 << CM_ASL_PANELBRIGHT))
++			remove_proc_entry(PROC_BRN, acpi_device_dir(device));
++	
++		if(ehotk->cm_supported & (0x1 << CM_ASL_BIOSFLASH))
++			remove_proc_entry(PROC_HDPS, acpi_device_dir(device));
++	
++		if(ehotk->cm_supported & (0x1 << CM_ASL_CPUFV))
++			remove_proc_entry(PROC_CPUFV, acpi_device_dir(device));
++	
++		if(ehotk->cm_supported & (0x1 << CM_ASL_MODEM))
++			remove_proc_entry(PROC_MODEM, acpi_device_dir(device));
++	
++		if(ehotk->cm_supported & (0x1 << CM_ASL_CARDREADER))
++			remove_proc_entry(PROC_CARDR, acpi_device_dir(device));
++		
++		remove_proc_entry(PROC_INIT, acpi_device_dir(device));
++	}
++	return 0;
++}
++
++static int 
++eeepc_hotk_check(void)
++{
++	struct acpi_buffer buffer = { ACPI_ALLOCATE_BUFFER, NULL };
++	int result = AE_OK;
++	
++	result = acpi_bus_get_status(ehotk->device);
++	if(result)
++		return result;
++	if(ehotk->device->status.present)
++	{
++		if (!write_eeepc_acpi_int(ehotk->handle, "INIT", init_flag, &buffer)) 
++		{
++			printk(KERN_ERR "[eeepc hotk] Hotkey initialization failed\n");
++			return -ENODEV;
++		}
++		else	printk(KERN_NOTICE "[eeepc hotk] Hotkey init flags 0x%x.\n", init_flag);
++
++		// get control methods supported.
++		if(!read_eeepc_acpi_int(ehotk->handle, "CMSG", &ehotk->cm_supported))
++		{
++			printk(KERN_ERR "[eeepc hotk] Get control methods supported failed\n");
++			return -ENODEV;
++		}
++		else	printk(KERN_INFO "[eeepc hotk] Get control methods supported : 0x%x\n", ehotk->cm_supported);
++		ehotk->cm_supported = ehotk->cm_supported | (0x01 << CM_ASL_LID);
++	}
++	else
++	{
++		printk(KERN_ERR "[eeepc hotk] Hotkey device not present, aborting\n");
++		return -EINVAL;
++	}
++
++	return result;
++}
++
++static void 
++eeepc_hotk_notify(acpi_handle handle, u32 event, void *data)
++{
++	int value;
++	if (!ehotk)
++		return;
++
++	// if DISABLE_ASL_WLAN is set, the notify code for fn+f2 will always be 0x10
++	if((DISABLE_ASL_WLAN&init_flag) && (event==NOTIFY_WLAN_ON))
++	{
++		if(ehotk->cm_supported & (0x1 << CM_ASL_WLAN))
++		{
++			if(!(read_eeepc_acpi_int(ehotk->handle, cm_getv[CM_ASL_WLAN], &value)))
++				printk(KERN_WARNING "[eeepc hotk] Error reading %s\n", cm_getv[CM_ASL_WLAN]);
++			else if(value == 1)
++				event = 0x11;
++		}
++	}
++	acpi_bus_generate_proc_event(ehotk->device, event, ehotk->event_count[event % 128]++);
++
++	return;
++}
++
++static int ehotk_found;
++
++static int eeepc_hotk_add(struct acpi_device *device)
++{
++	acpi_status status = AE_OK;
++	int	result;
++
++	if(!device)
++		return -EINVAL;
++
++	printk(KERN_NOTICE "Asus EEEPC HOTKEY\n");
++	
++	ehotk = kzalloc(sizeof(struct eeepc_hotk), GFP_KERNEL);
++	if(!ehotk)
++		return -ENOMEM;
++	
++	ehotk->handle = device->handle;
++	strcpy(acpi_device_name(device), EEEPC_HOTK_DEVICE_NAME);
++	strcpy(acpi_device_class(device), EEEPC_HOTK_CLASS);
++	acpi_driver_data(device) = ehotk;
++	ehotk->device = device;
++
++	result = eeepc_hotk_check();
++	if (result)
++		goto end;
++
++	result = eeepc_hotk_add_fs(device);
++	if (result)
++		goto end;
++	
++	status = acpi_install_notify_handler(ehotk->handle, ACPI_SYSTEM_NOTIFY,
++					     eeepc_hotk_notify, ehotk);
++	if (ACPI_FAILURE(status))
++		printk(KERN_ERR "  Error installing notify handler\n");
++
++	ehotk_found = 1;
++
++end:
++	if (result) {
++		kfree(ehotk);
++
++	}
++
++	return result;
++
++}
++
++static int eeepc_hotk_remove(struct acpi_device *device, int type)
++{
++	acpi_status status = 0;
++
++	if (!device || !acpi_driver_data(device))
++		return -EINVAL;
++
++	status = acpi_remove_notify_handler(ehotk->handle, ACPI_SYSTEM_NOTIFY, eeepc_hotk_notify);
++
++	if (ACPI_FAILURE(status))
++		printk(KERN_ERR "[eeepc hotk] Error removing notify handler\n");
++
++	eeepc_hotk_remove_fs(device);
++
++	kfree(ehotk);
++
++	return 0;
++}
++
++static void __exit eeepc_hotk_exit(void)
++{
++	acpi_bus_unregister_driver(&eeepc_hotk_driver);
++	remove_proc_entry(PROC_ASUS, acpi_root_dir);
++
++	return;
++}
++
++static int __init eeepc_hotk_init(void)
++{
++	int result;
++
++	if (acpi_disabled)
++		return -ENODEV;
++
++	eeepc_proc_dir = proc_mkdir(PROC_ASUS, acpi_root_dir);
++	if (!eeepc_proc_dir) 
++	{
++		printk(KERN_ERR "Asus ACPI: Unable to create /proc entry\n");
++		return -ENODEV;
++	}
++	eeepc_proc_dir->owner = THIS_MODULE;
++
++	init_flag = DISABLE_ASL_WLAN|DISABLE_ASL_DISPLAYSWITCH;
++
++	result = acpi_bus_register_driver(&eeepc_hotk_driver);
++	if (result < 0) 
++	{
++		remove_proc_entry(PROC_ASUS, acpi_root_dir);
++		return result;
++	}
++
++	if (!ehotk_found) 
++	{
++		acpi_bus_unregister_driver(&eeepc_hotk_driver);
++		remove_proc_entry(PROC_ASUS, acpi_root_dir);
++		return result;
++	}
++	return 0;
++}
++
++module_init(eeepc_hotk_init);
++module_exit(eeepc_hotk_exit);
+ 
+-module_init(asus_acpi_init);
+-module_exit(asus_acpi_exit);
