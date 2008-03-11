@@ -1,0 +1,24 @@
+#! /bin/bash
+
+# You've got to be root to do this -
+# it depends on the eee_tarball being located in /root/
+
+setup=${1:-/root/eee-setup}
+
+${setup}/acpi/install-acpi ${setup}
+${setup}/acpi/blacklist-asus_acpi ${setup}
+
+echo "Remove module-forcing for asus_acpi"
+aa=/etc/sysconfig/modules/asus_acpi.modules
+rm -f ${aa}
+
+echo "Force asus_acpi_eee to be loaded"
+aa=/etc/sysconfig/modules/asus_acpi_eee.modules
+echo "# Force asus_acpi_eee to load" >> ${aa} 
+echo "/sbin/modprobe asus_acpi_eee" >> ${aa}
+chmod 755 ${aa}
+
+echo "Put the acpi handlers in"
+cp ${setup}/acpi/events/*.conf /etc/acpi/events/
+cp ${setup}/acpi/actions/eee* /etc/acpi/actions/ 
+

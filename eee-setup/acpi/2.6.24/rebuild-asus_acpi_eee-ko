@@ -1,0 +1,13 @@
+# Patch file is from :
+# http://www.geeentoo.com/patches/asus_acpi_eee.patch.bz2
+
+ver=2.6.24
+
+# This assumes we've got the kernel sources locally
+acpi=/usr/src/redhat/BUILD/kernel-${ver}/linux-${ver}.noarch/drivers/acpi
+
+cp ${acpi}/asus_acpi.c .
+patch -p3 <asus_acpi_eee.patch 
+mv asus_acpi.c asus_acpi_eee.c
+make clean
+make
