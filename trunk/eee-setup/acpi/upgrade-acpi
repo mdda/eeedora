@@ -5,6 +5,10 @@
 
 setup=${1:-/root/eee-setup}
 
+# Now remove existing alias in /etc/modprobe.conf
+mp=/etc/modprobe.conf
+sed -i -e 's|^install acpi |# &|' ${mp}
+
 ${setup}/acpi/install-acpi ${setup}
 ${setup}/acpi/blacklist-asus_acpi ${setup}
 
