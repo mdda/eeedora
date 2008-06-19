@@ -3,17 +3,13 @@
 KVER=2.6.24
 TCVER=5.0a
 
-#KVER=2.6.23
-#TCVER=4.3a
+yum install fuse fuse-devel wxGTK wxGTK-devel
 
-#yum install sparse yum-utils 
-yum install sparse yum-utils fuse fuse-devel wxGTK wxGTK-devel
+#yumdownloader --source kernel
+#rpm -ivh kernel-$(uname -r).src.rpm
 
-yumdownloader --source kernel
-rpm -ivh kernel-$(uname -r).src.rpm
-
-rpmbuild -bp --target=noarch /usr/src/redhat/SPECS/kernel.spec
-cp /usr/src/redhat/BUILD/kernel-${KVER}/linux-${KVER}.noarch/drivers/md/dm.h /usr/src/kernels/`uname -r`-`uname -p`/drivers/md
+#rpmbuild -bp --target=noarch /usr/src/redhat/SPECS/kernel.spec
+#cp /usr/src/redhat/BUILD/kernel-${KVER}/linux-${KVER}.noarch/drivers/md/dm.h /usr/src/kernels/`uname -r`-`uname -p`/drivers/md
 
 #curl -O  http://www.truecrypt.org/downloads/truecrypt-${TCVER}-source-code.tar.gz
 
@@ -34,13 +30,13 @@ tar -xzf "truecrypt-${TCVER}-source-code.tar.gz"
 
 pushd .
 
-#cd truecrypt-${TCVER}-source-code/Linux/
-#./build.sh 
-
 cd truecrypt-${TCVER}-source
-make 
 
+curl -O http://prdownloads.sourceforge.net/wxwindows/wxWidgets-2.8.7.tar.gz
+tar -xzf wxWidgets-2.8.7.tar.gz 
+WX_ROOT=`pwd`/wxWidgets-2.8.7 make wxbuild
 
+WX_ROOT=`pwd`/wxWidgets-2.8.7 make
 
 
 popd

@@ -13,11 +13,16 @@ kver=`uname -r`
 rpmver=`echo "${kver}" | sed 's|^\(.*\)-.*|\1|'`
 rpmrelease=`echo "${kver}" | sed -e 's|.*-\(.*\)$|\1|'`
 
+# This is for when there are several releases for the same kernel version
+rpmminor='.03'
+rpmrelease=${rpmrelease}${rpmminor}
+
 echo "RPM ver='${rpmver}', release='${rpmrelease}'"
 #exit 1
 
 rpmname=eee_tarball
-rpmdir=eee-setup
+rpmln=eee-setup
+rpmdir=${rpmln}_${rpmver}-${rpmrelease}
 
 # Build the build directory for the RPM directly
 mkdir ${rpmname}-${rpmver}/
