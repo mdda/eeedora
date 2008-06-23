@@ -68,6 +68,12 @@ if ${response}; then
  yumlist="${yumlist} evince"
 fi
 
+ask "Install backup client 'unison' ? [yes/NO]"
+if ${response}; then
+ unison_fix=yes
+ yumlist="${yumlist} unison227"
+fi
+
 ask "Select a Media Player ? [yes/NO]"
 if ${response}; then
  ask "Install Media Player 'vlc' ? [yes/NO]"

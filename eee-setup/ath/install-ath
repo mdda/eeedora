@@ -12,11 +12,13 @@ cp ${setup}/ath/*.ko ${moddir}/
 # Now add this as an alias to /etc/modprobe.conf
 #    ... add to the file alias eth0 atl2 
 mp=/etc/modprobe.conf
-echo "" >> ${mp}
+echo "#" >> ${mp}
 echo "# Added for EeeDora setup : ath" >> ${mp}
+echo "alias wifi0 ath_pci" >> ${mp}
 echo "alias ath0 ath_pci" >> ${mp}
+echo "options ath_pci autocreate=sta" >> ${mp}
 echo "# Added after ath setup " >> ${mp}
-echo "" >> ${mp}
+echo "#" >> ${mp}
 
 /sbin/depmod -ae
 

@@ -342,6 +342,10 @@ thunar-volman
 #inkscape
 #planner
 
+# This is to pave the way for truecrypt-5.0a stuff
+fuse
+fuse-libs
+
 # we _need_ xdg-user-dirs
 xdg-user-dirs
 
@@ -411,7 +415,9 @@ eee_splash
 %post
 ShowProgress() {
 # echo $"$1" >> /etc/eeedora.progress
+# Also show this on the console when building the image (host machine)
  echo $"live-kickstart :"`date +%F_%H-%M`" : $1" >> /etc/eeedora.progress
+ echo $"live-kickstart :"`date +%F_%H-%M`" : $1"
 }
 ShowProgress "Start of Live Kickstart script"
 
@@ -422,10 +428,20 @@ ShowProgress "Start of Live Kickstart script"
 
 # open up the tarball
 tar -xzf /root/eee-setup.tar.gz -C /root/
+# Ahh - let's find out where it un-wrapped into...
+setup_temp=`ls -d /root/eee-setup_* | sort | tail -1`
 setup=/root/eee-setup
+# Now create a link...
+rm -f ${setup}
+ln -s ${setup_temp} ${setup}
+ShowProgress "Unwrapped into ${setup_temp} to ${setup}"
+# Now we're in the 'regular' situation, with un-versioned file locations
 
 ShowProgress "Blacklist the ath5k kernel module"
 ${setup}/ath/blacklist-ath5k ${setup}
+
+ShowProgress "Turn off SELINUX on the Eee"
+${setup}/misc/selinux-off ${setup}
 
 ShowProgress "Install the ath kernel module"
 ${setup}/ath/install-ath ${setup}
@@ -443,17 +459,13 @@ ${setup}/acpi/install-acpi ${setup}
 ${setup}/acpi/blacklist-asus_acpi ${setup}
 
 ShowProgress "Force asus_acpi to be loaded"
-#aa=/etc/sysconfig/modules/asus_acpi.modules
-#echo "# Force asus_acpi to load" >> ${aa} 
-#echo "/sbin/modprobe asus_acpi" >> ${aa}
-#chmod 755 ${aa}
 aa=/etc/sysconfig/modules/asus_acpi_eee.modules
-echo "# Force asus_acpi_eee to load" >> ${aa} 
+echo "#\n# Force asus_acpi_eee to load" >> ${aa} 
 echo "/sbin/modprobe asus_acpi_eee" >> ${aa}
 chmod 755 ${aa}
 
 # Old version : Not necessary now
-#echo "# Force asus_acpi to load" >> /etc/rc.local 
+#echo "#\n# Force asus_acpi to load" >> /etc/rc.local 
 #echo "/sbin/modprobe asus_acpi" >> /etc/rc.local 
 #echo "install battery /sbin/modprobe asus_acpi && /sbin/modprobe --ignore-install battery" >> /etc/rc.local 
 #echo "/etc/init.d/acpid restart" >> /etc/rc.local 
@@ -467,10 +479,11 @@ ShowProgress "Install the uvc webcam kernel module"
 ${setup}/uvc/install-uvc ${setup}
 
 ShowProgress "Start camera on startup"
-echo "# Start Camera on startup" >> /etc/rc.local 
+echo "#\n# Start Camera on startup" >> /etc/rc.local 
 echo "echo 1 > /proc/acpi/asus/camera" >> /etc/rc.local 
 
-ShowProgress "Install the truecrypt kernel module - and main function"
+#ShowProgress "Install the truecrypt kernel module - and main function"
+ShowProgress "Install the truecrypt main function"
 ${setup}/truecrypt/install-truecrypt ${setup}
 
 ShowProgress "Fixing snd module removal to enable clean power-down"

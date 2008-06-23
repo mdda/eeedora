@@ -7,14 +7,12 @@
 # unwrapped using tar -xzf /root/eee-setup.tar.gz -C /root/
 # and all the files will appear in /root/eee-setup/
 
-#rpmver=0.1.0.1
-
 kver=`uname -r`
 rpmver=`echo "${kver}" | sed 's|^\(.*\)-.*|\1|'`
 rpmrelease=`echo "${kver}" | sed -e 's|.*-\(.*\)$|\1|'`
 
 # This is for when there are several releases for the same kernel version
-rpmminor='.03'
+rpmminor='.06'
 rpmrelease=${rpmrelease}${rpmminor}
 
 echo "RPM ver='${rpmver}', release='${rpmrelease}'"
@@ -79,7 +77,13 @@ cp -R repos ${rpmdir}/
 cp -R xorg ${rpmdir}/
 
 # This is to get the user defaults for XFCE how I like them
-cp -R xfce ${rpmdir}/
+mkdir ${rpmdir}/xfce
+cp ./xfce/setup-xfce ${rpmdir}/xfce/
+cp ./xfce/eeedora-dot-config.tar.gz ${rpmdir}/xfce/
+cp ./xfce/dot-xsession ${rpmdir}/xfce/
+cp ./xfce/dot-xinitrc ${rpmdir}/xfce/
+cp ./xfce/sysconfig-desktop ${rpmdir}/xfce/
+cp ./xfce/README ${rpmdir}/xfce/
 
 # This is to set up the defaults for XDM 
 cp -R xdm ${rpmdir}/
@@ -94,7 +98,7 @@ cp ./artwork/splash.jpg ${rpmdir}/artwork/
 
 # This is to set up the defaults for XDM 
 mkdir ${rpmdir}/truecrypt
-cp ./truecrypt/*.ko ${rpmdir}/truecrypt/
+#cp ./truecrypt/*.ko ${rpmdir}/truecrypt/
 cp ./truecrypt/truecrypt ${rpmdir}/truecrypt/
 cp ./truecrypt/install-truecrypt ${rpmdir}/truecrypt/
 cp ./truecrypt/sudo-truecrypt-fix ${rpmdir}/truecrypt/

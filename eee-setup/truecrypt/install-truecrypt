@@ -2,15 +2,17 @@
 
 setup=${1:-/root/eee-setup}
 
-moddir=/lib/modules/`uname -r`/extra
-mkdir -p ${moddir}
-cp ${setup}/truecrypt/truecrypt.ko ${moddir}/
+# truecrypt is no longer a kernel module - we just need fuse...
 
-/sbin/depmod -a
+#moddir=/lib/modules/`uname -r`/extra
+#mkdir -p ${moddir}
+#cp ${setup}/truecrypt/truecrypt.ko ${moddir}/
+
+#/sbin/depmod -a
 
 # Do this as a force since the mirror repo in the ks 
 # may have a slightly dated kernel (no big deal)
-/sbin/modprobe -f truecrypt
+#/sbin/modprobe -f truecrypt
 
 TCBIN=/usr/bin/truecrypt 
 

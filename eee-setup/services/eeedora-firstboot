@@ -184,9 +184,10 @@ ${setup}/misc/fix-pulseaudio ${setup} ${liveuser}
 ShowProgress "Fix up truecrypt sudo for '${liveuser}'"
 ${setup}/truecrypt/sudo-truecrypt-fix ${setup} ${liveuser}
 
-ShowProgress "Set up monospaced fonts for '${liveuser}'"
+ShowProgress "Set up various defaults for SciTE for '${liveuser}'"
 cat ${setup}/misc/scite.monospaced >> ${livehome}/.SciTEUser.properties
 cat ${setup}/misc/scite.filesearch >> ${livehome}/.SciTEUser.properties
+cat ${setup}/misc/scite.tabs >> ${livehome}/.SciTEUser.properties
 
 # Only do this for the live user - since it only makes sense to have a liveinstall icon on that desktop
 if ${live}; then 

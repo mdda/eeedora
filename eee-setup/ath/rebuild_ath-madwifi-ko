@@ -1,5 +1,37 @@
 #! /bin/bash
 
+# This is from http://kernelreloaded.blog385.com/index.php/archives/madwifi-wireless-for-asus-eee-pc-on-fedora-9-howto/
+
+MADWIFI=madwifi-nr-r3366+ar5007
+
+if [ ! -f "${MADWIFI}.tar.gz" ]; then 
+ echo "Attempting to download the wxWidgets source from madwifi snapshots"
+ wget http://snapshots.madwifi.org/special/${MADWIFI}.tar.gz
+	if [ ! -f "${MADWIFI}.tar.gz" ]; then 
+	 echo "Failed to download patched sources - sorry"
+		exit 0
+	fi
+fi
+
+tar xvf ${MADWIFI}.tar.gz
+
+MADWIFI_DIR=`echo "${MADWIFI}" | sed -e 's|-nr-|-ng-|'`
+
+pushd .
+cd ${MADWIFI_DIR}
+make clean
+make
+
+popd
+
+#su
+#make install
+
+for i in `find ${MADWIFI_DIR} | grep '.ko$'`; do cp $i .;done
+exit 1
+
+# This is the old 'manual patch' version
+
 bunzip2 madwifi-eee.tar.bz2 
 tar -xf madwifi-eee.tar 
 bzip2 madwifi-eee.tar
