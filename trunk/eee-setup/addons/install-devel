@@ -1,0 +1,53 @@
+#! /bin/bash
+
+liveuser=${1:-eeedora}
+
+mypath=`echo $0 | sed -e 's|/[^/]*$||'`
+
+# This must be done as root
+yumlist=''
+
+function ask {
+ echo -n $1
+ read ans
+ response=false
+ if [ "${ans:0:1}" == "y" ] || [ "${ans:0:1}" == "Y" ] ; then
+  response=true
+ fi 
+}  
+
+ask "Install C++ development tools ? [yes/NO]"
+if ${response}; then
+ yumlist="${yumlist} svn automake gcc-c++"
+ yumlist="${yumlist} boost boost-devel"
+fi
+
+ask "Install OpenGL development tools ? [yes/NO]"
+if ${response}; then
+ yumlist="${yumlist} ncurses-devel mesa-libGLU-devel freeglut-devel libXmu-devel"
+fi
+
+ask "Install ODE physics simulation tools ? [yes/NO]"
+if ${response}; then
+ yumlist="${yumlist} ode ode-devel"
+fi
+
+echo ''
+
+affirm=''
+ask "Install fully automatically ? [yes/NO]"
+if ${response}; then
+ affirm="-y"
+fi
+
+echo ''
+
+if ! [ "empty${yumlist}" = "empty" ]; then
+ echo $"yumlist = '${yumlist}'"
+ yum install ${affirm} ${yumlist}
+fi
+
+# Now do various clean-ups - to fix pulseaudio, for instance
+#if [ "is${vlc_fix}" = "isyes" ]; then
+# echo "pulseaudio already Ok for vlc"
+#fi

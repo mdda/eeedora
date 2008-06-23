@@ -13,7 +13,8 @@ cd ..
 #cd ..
 
 cd truecrypt
-./rebuild_truecrypt-4.3
+#./rebuild_truecrypt-4.3
+./rebuild_truecrypt-5.1
 cd ..
 
 cd uvc 
