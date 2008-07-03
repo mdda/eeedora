@@ -18,7 +18,7 @@ function ask {
 
 ask "Install C++ development tools ? [yes/NO]"
 if ${response}; then
- yumlist="${yumlist} svn automake gcc-c++"
+ yumlist="${yumlist} svn make automake gcc-c++"
  yumlist="${yumlist} boost boost-devel"
 fi
 
