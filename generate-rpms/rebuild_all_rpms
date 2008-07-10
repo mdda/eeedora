@@ -1,0 +1,3 @@
+#! /bin/bash
+
+./build_generic_rpm wicd
