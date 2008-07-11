@@ -2,21 +2,29 @@
 
 RPM_PACKAGE=${1:-wicd}
 
+# If there's a Makefile, build the tarball and spec file automatically
+if [ -f ${RPM_PACKAGE}/Makefile ]; then 
+ pushd .
+ cd ${RPM_PACKAGE}
+	make tarball
+	popd
+fi
+
 mkdir -p ${RPM_PACKAGE}/TMP ${RPM_PACKAGE}/BUILD
 rm -rf ${RPM_PACKAGE}/TMP/* ${RPM_PACKAGE}/BUILD/* 
 
 rpmbuild -ba \
---define "%_topdir `pwd`" \
---define "%_rpmtopdir	%{_topdir}/${RPM_PACKAGE}" \
---define "%_builddir	%{_rpmtopdir}/BUILD" \
---define "%_rpmdir	%{_rpmtopdir}" \
---define "%_sourcedir	%{_rpmtopdir}" \
---define "%_specdir	%{_rpmtopdir}" \
---define "%_tmppath	%{_rpmtopdir}/TMP" \
---define "%_buildroot	%{_tmppath}/%{name}-root" \
---define "%_srcrpmdir	%{_rpmtopdir}" \
---eval "%{_tmppath}" \
-${RPM_PACKAGE}/${RPM_PACKAGE}.spec 2>&1 |tee ${RPM_PACKAGE}/rpmbuild.log
+	--define "%_topdir `pwd`" \
+	--define "%_rpmtopdir	%{_topdir}/${RPM_PACKAGE}" \
+	--define "%_builddir	%{_rpmtopdir}/BUILD" \
+	--define "%_rpmdir	%{_rpmtopdir}" \
+	--define "%_sourcedir	%{_rpmtopdir}" \
+	--define "%_specdir	%{_rpmtopdir}" \
+	--define "%_tmppath	%{_rpmtopdir}/TMP" \
+	--define "%_buildroot	%{_tmppath}/%{name}-root" \
+	--define "%_srcrpmdir	%{_rpmtopdir}" \
+	--eval "%{_tmppath}" \
+	${RPM_PACKAGE}/${RPM_PACKAGE}.spec 2>&1 |tee ${RPM_PACKAGE}/rpmbuild.log
 
 mkdir -p ../rpms-for-eee/i386/ ../rpms-for-eee/SRPMS/ 
 cp ${RPM_PACKAGE}/i386/*.rpm ../rpms-for-eee/i386/
