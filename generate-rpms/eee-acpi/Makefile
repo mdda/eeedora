@@ -38,6 +38,8 @@ tarball:
 	cp ./root/etc/acpi/actions/eee.py $$RPM/root/etc/acpi/actions/ ; \
 	cp ./root/etc/acpi/actions/{wlan.sh,camera.sh} $$RPM/root/etc/acpi/actions/ ; \
 	cp ./root/etc/acpi/events/hotkeys.{conf,sh} $$RPM/root/etc/acpi/events/ ; \
+	mkdir -p $$RPM/root/etc/pm/sleep.d ; \
+	cp ./root/etc/pm/sleep.d/S99wireless $$RPM/root/etc/pm/sleep.d/ ; \
 	tar -cvf ./$$TBALL $$RPM ; \
 	gzip ./$$TBALL ; \
 	rm -rf $$RPM ; \
