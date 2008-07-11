@@ -1,0 +1,15 @@
+#!/bin/sh
+WLAN=$(cat /sys/devices/platform/eeepc/wlan)
+
+case "$1" in
+ thaw|resume)
+  if [[ "$WLAN" = "1" ]]; then
+   { ip link set wifi0 up ; } 2>/dev/null
+  fi
+  ;;
+
+ *)
+  ;;
+esac
+
+exit $?
