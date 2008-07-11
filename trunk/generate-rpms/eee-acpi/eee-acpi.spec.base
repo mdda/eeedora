@@ -83,6 +83,13 @@ service acpid start
 modprobe eeepc
 echo "modprobe eeepc" >> /etc/rc.local
 
+# This is a back-light fix...  Shouldn't really be here
+echo 'lastbrn=`</sys/devices/platform/eeepc/brn`' >> /usr/lib/pm-utils/sleep.d/99video
+echo 'echo $lastbrn  > /sys/devices/platform/eeepc/brn' >> /usr/lib/pm-utils/sleep.d/99video
+
+
+
+
 %postun
 
 %files
@@ -93,6 +100,7 @@ echo "modprobe eeepc" >> /etc/rc.local
 /etc/acpi/actions/eee.py*
 /etc/acpi/actions/wlan.sh
 /etc/acpi/actions/camera.sh
+/etc/pm/sleep.d/S99wireless 
 
 # the binary files
 # %{_bindir}/%{name}

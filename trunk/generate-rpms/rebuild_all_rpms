@@ -3,6 +3,7 @@
 ./build_generic_rpm wicd
 ./build_generic_rpm madwifi
 ./build_generic_rpm scitepm
+./build_generic_rpm eee-acpi
 
 # truecrypt
 #  - now version 6.0
