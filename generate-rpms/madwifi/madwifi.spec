@@ -39,8 +39,11 @@ URL: http://madwifi.org
 Source0: madwifi-ng-r3366+ar5007.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 Requires: /sbin/depmod
-Requires: %{name}-module >= %{version}
 BuildRequires: /sbin/depmod
+
+#Requires: %{name}-module >= %{version}
+Requires: eee-%{name}-module >= %{version}
+Provides: eee-%{name}
 
 # BuildRequires:  /lib/modules/%{mykversion}/build/Makefile
 
@@ -71,8 +74,10 @@ but otherwise appear identical to users):
 %package module
 Summary: A linux device driver for Atheros chipsets (ar5210, ar5211, ar5212).
 Group: System Environment/Kernel
-Requires: kernel = %{mykversion}
 Release: %{myrelease}_%{mykrelver}
+
+Requires: kernel = %{mykversion}
+Provides: eee-%{name}-module
 
 %description module
 This software is broken into multiple modules.  The Atheros-specific

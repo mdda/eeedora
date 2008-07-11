@@ -1,3 +1,20 @@
 #! /bin/bash
 
 ./build_generic_rpm wicd
+./build_generic_rpm madwifi
+./build_generic_rpm scitepm
+
+# truecrypt
+#  - now version 6.0
+
+# eee-user-defaults
+#  - /etc/skel *
+#  - /etc/sysconfig/desktop
+
+# eee-acpi
+#  - actions/events 
+#  - actual module now in kernel (?)
+
+# boost 
+#  - (needs bjam?)
+
