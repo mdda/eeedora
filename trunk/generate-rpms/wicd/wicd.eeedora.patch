@@ -7,8 +7,9 @@ diff -uNr wicd_1.4.2-orig/etc/init.d/wicd wicd_1.4.2/etc/init.d/wicd
 +#
 +# wicd:		Wireless Internet Connection Daemon
 +#
-+# chkconfig:	345 26 89
++# chkconfig:	345 28 89
 +# description:	Manage wireless connections, and wired connections as a bonus.
++# processname:  wicd
 +#
 +### BEGIN INIT INFO
 +# Provides: wicd
