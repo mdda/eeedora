@@ -29,7 +29,10 @@ services --enabled=network --disabled=NetworkManager,sshd
 # Force the kickstart to recognize the atl2 driver ASAP
 #device atl2
 
-# No Partition information required to build the ISO 
+# OLD : No Partition information required to build the ISO 
+# New : Fedora 9 livecd-creator looks for a '/' definition for sizing and filesystem information
+part / --fstype ext2 --size 1792 --grow
+
 
 # A default public root password - not the best idea.
 rootpw eeedora
@@ -66,8 +69,11 @@ rootpw eeedora
 #repo --name=releases --baseurl=http://mirrors.tummy.com/pub/fedora.redhat.com/fedora/linux/releases/$releasever/Everything/$basearch/os/
 #repo --name=updates  --baseurl=http://mirrors.tummy.com/pub/fedora.redhat.com/fedora/linux/updates/$releasever/$basearch/
 
-repo --name=releases  --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?arch=i386&repo=fedora-8
-repo --name=updates   --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?arch=i386&repo=updates-released-f8
+#repo --name=releases  --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?arch=i386&repo=fedora-8
+#repo --name=updates   --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?arch=i386&repo=updates-released-f8
+
+repo --name=releases  --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?arch=i386&repo=fedora-9
+repo --name=updates   --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?arch=i386&repo=updates-released-f9
 
 #repo --name=releases  --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?arch=$basearch&repo=fedora-$releasever
 #repo --name=updates   --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?arch=$basearch&repo=updates-released-f$releasever
@@ -205,9 +211,13 @@ system-config-date
 system-config-display
 system-config-network
 system-config-printer
--system-config-firewall
+
+# This is required for /usr/sbin/lokkit (selinux) ??
+system-config-firewall-tui
+
+#-system-config-firewall
 -system-config-users
-system-config-soundcard
+#-system-config-soundcard
 -system-config-services  
 
 # Audio (new style = pulseaudio) - must fix up /dev/snd devices on every boot...
@@ -412,6 +422,14 @@ xdg-user-dirs
 eee_tarball
 eee_splash
 
+# And now our new stuff
+eee-madwifi
+eee-acpi
+scitepm
+wicd
+
+
+
 %post
 ShowProgress() {
 # echo $"$1" >> /etc/eeedora.progress
@@ -437,14 +455,14 @@ ln -s ${setup_temp} ${setup}
 ShowProgress "Unwrapped into ${setup_temp} to ${setup}"
 # Now we're in the 'regular' situation, with un-versioned file locations
 
-ShowProgress "Blacklist the ath5k kernel module"
-${setup}/ath/blacklist-ath5k ${setup}
+# ShowProgress "Blacklist the ath5k kernel module"
+# ${setup}/ath/blacklist-ath5k ${setup}
 
 ShowProgress "Turn off SELINUX on the Eee"
 ${setup}/misc/selinux-off ${setup}
 
-ShowProgress "Install the ath kernel module"
-${setup}/ath/install-ath ${setup}
+# ShowProgress "Install the ath kernel module"
+# ${setup}/ath/install-ath ${setup}
 
 ShowProgress "Fix up wifi-radar config"
 mkdir -p /etc/wifi-radar/
@@ -454,15 +472,15 @@ cp ${setup}/ath/wifi-radar-ath /etc/wifi-radar/wifi-radar.conf
 # ShowProgress "Install the atl2 kernel module"
 # ${setup}/atl2/install-atl2 ${setup}
 
-ShowProgress "Install the asus_acpi_eee kernel module"
-${setup}/acpi/install-acpi ${setup}
-${setup}/acpi/blacklist-asus_acpi ${setup}
+# ShowProgress "Install the asus_acpi_eee kernel module"
+# ${setup}/acpi/install-acpi ${setup}
+# ${setup}/acpi/blacklist-asus_acpi ${setup}
 
-ShowProgress "Force asus_acpi to be loaded"
-aa=/etc/sysconfig/modules/asus_acpi_eee.modules
-echo "#\n# Force asus_acpi_eee to load" >> ${aa} 
-echo "/sbin/modprobe asus_acpi_eee" >> ${aa}
-chmod 755 ${aa}
+# ShowProgress "Force asus_acpi to be loaded"
+# aa=/etc/sysconfig/modules/asus_acpi_eee.modules
+# echo "#\n# Force asus_acpi_eee to load" >> ${aa} 
+# echo "/sbin/modprobe asus_acpi_eee" >> ${aa}
+# chmod 755 ${aa}
 
 # Old version : Not necessary now
 #echo "#\n# Force asus_acpi to load" >> /etc/rc.local 
@@ -470,9 +488,9 @@ chmod 755 ${aa}
 #echo "install battery /sbin/modprobe asus_acpi && /sbin/modprobe --ignore-install battery" >> /etc/rc.local 
 #echo "/etc/init.d/acpid restart" >> /etc/rc.local 
 
-ShowProgress "Put the acpi handlers in"
-cp ${setup}/acpi/events/*.conf /etc/acpi/events/
-cp ${setup}/acpi/actions/eee* /etc/acpi/actions/ 
+#ShowProgress "Put the acpi handlers in"
+#cp ${setup}/acpi/events/*.conf /etc/acpi/events/
+#cp ${setup}/acpi/actions/eee* /etc/acpi/actions/ 
 
 # This may be in the kernel :: Check!
 ShowProgress "Install the uvc webcam kernel module"

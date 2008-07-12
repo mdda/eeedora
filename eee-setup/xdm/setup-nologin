@@ -50,6 +50,6 @@ echo '' >> /etc/sudoers
 #echo ${liveuser}'	localhost=/sbin/shutdown NOPASSWD:ALL' >> /etc/sudoers
 #echo ${liveuser}'	localhost=NOPASSWD:/sbin/reboot,/sbin/poweroff,/sbin/shutdown' >> /etc/sudoers
 #echo ${liveuser}'	localhost=NOPASSWD:/usr/bin/thunar' >> /etc/sudoers
-echo ${liveuser}'	ALL=NOPASSWD:/sbin/reboot,/sbin/poweroff,/sbin/shutdown' >> /etc/sudoers
+echo ${liveuser}'	ALL=NOPASSWD:/sbin/reboot,/sbin/poweroff,/sbin/shutdown,/usr/libexec/xfsm-shutdown-helper' >> /etc/sudoers
 echo ${liveuser}'	ALL=NOPASSWD:/usr/bin/thunar' >> /etc/sudoers
 echo '' >> /etc/sudoers
