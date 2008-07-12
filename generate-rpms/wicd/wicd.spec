@@ -40,12 +40,37 @@ ln -sf /var/log/wicd.log .
 [ -d "$RPM_BUILD_ROOT" -a "$RPM_BUILD_ROOT" != "/" ] && rm -rf $RPM_BUILD_ROOT
 
 %post
-/sbin/chkconfig --add %{name} >/dev/null 2>&1 || :
+init_script=wicd
+# /sbin/chkconfig --add %{name} >/dev/null 2>&1 || :
+if [ -x /usr/lib/lsb/install_initd ]; then
+	/usr/lib/lsb/install_initd /etc/init.d/${init_script}
+elif [ -x /sbin/chkconfig ]; then
+	/sbin/chkconfig --add ${init_script}
+else
+	for i in 2 3 4 5; do
+		ln -sf /etc/init.d/${init_script} /etc/rc.d/rc${i}.d/S28${init_script}
+	done
+	for i in 1 6; do
+		ln -sf /etc/init.d/${init_script} /etc/rc.d/rc${i}.d/K89${init_script}
+	done
+fi
 
 %preun
+init_script=wicd
+#if [ $1 = 0 ]; then
+#	/sbin/service %{name} stop > /dev/null 2>&1
+#	/sbin/chkconfig --del %{name}
+#fi
+#only on uninstall, not on upgrades.
 if [ $1 = 0 ]; then
-        /sbin/service %{name} stop > /dev/null 2>&1
-        /sbin/chkconfig --del %{name}
+	/etc/init.d/${init_script} stop  > /dev/null 2>&1
+	if [ -x /usr/lib/lsb/remove_initd ]; then
+		/usr/lib/lsb/install_initd /etc/init.d/${init_script}
+	elif [ -x /sbin/chkconfig ]; then
+		/sbin/chkconfig --del ${init_script}
+	else
+		rm -f /etc/rc.d/rc?.d/???${init_script}
+	fi
 fi
 
 %files
