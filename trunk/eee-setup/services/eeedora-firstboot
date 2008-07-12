@@ -124,7 +124,7 @@ ShowProgress "Add useful repos"
 cp ${setup}/repos/atrpms.repo /etc/yum.repos.d/
 rpm --import ${setup}/repos/RPM-GPG-KEY.atrpms
 
-rpm -ivh ${setup}/repos/livna-release-8.rpm
+rpm -ivh ${setup}/repos/livna-release-9.rpm
 rpm --import ${setup}/repos/RPM-LIVNA-GPG-KEY
 
 ShowProgress "Don't start yum-updatesd"
@@ -155,7 +155,8 @@ cp ${setup}/xfce/sysconfig-desktop /etc/sysconfig/desktop
 
 # disable screensaver locking
 ShowProgress "Disable screensaver locking"
-gconftool-2 --direct --config-source=xml:readwrite:/etc/gconf/gconf.xml.defaults -s -t bool /apps/gnome-screensaver/lock_enabled false >/dev/null
+gconftool-2 --direct --config-source=xml:readwrite:/etc/gconf/gconf.xml.defaults \
+            -s -t bool /apps/gnome-screensaver/lock_enabled false >/dev/null
 
 ShowProgress "Fix sound devices for pulseaudio"
 echo "chmod -R a+rwx /dev/snd" >> /etc/rc.local 

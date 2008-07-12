@@ -12,7 +12,7 @@ rpmver=`echo "${kver}" | sed 's|^\(.*\)-.*|\1|'`
 rpmrelease=`echo "${kver}" | sed -e 's|.*-\(.*\)$|\1|'`
 
 # This is for when there are several releases for the same kernel version
-rpmminor='.06'
+rpmminor='.01'
 rpmrelease=${rpmrelease}${rpmminor}
 
 echo "RPM ver='${rpmver}', release='${rpmrelease}'"
