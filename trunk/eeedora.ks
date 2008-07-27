@@ -423,7 +423,7 @@ eee_tarball
 eee_splash
 
 # And now our new stuff
-eee-madwifi
+#eee-madwifi
 eee-acpi
 scitepm
 wicd

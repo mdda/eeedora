@@ -1,7 +1,10 @@
 #
 #Gen the last kernel-devel available on the machine.
-###%{!?kernel: %{expand: %%define        kernel          %(rpm -q kernel-devel --qf %%{version}-%%{release}\\n | sort | tail -1)}}
-%{!?kernel: %{expand: %%define        kernel          %(rpm -q kernel-devel --last | head -1 | awk '{print $1}' | sed s/kernel-devel-// )}}
+# %{!?kernel: %{expand: %%define        kernel          %(rpm -q kernel-devel --last | head -1 | awk '{print $1}' | sed s/kernel-devel-// )}}
+
+# Force this ...
+%define        kernel          %(rpm -q kernel-devel --last | head -1 | awk '{print $1}' | sed s/kernel-devel-// )
+
 %if %(echo %{kernel} | grep -c smp)
       %{expand:%%define myksmp -smp}
 %endif

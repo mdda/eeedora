@@ -23,6 +23,8 @@ ln -s `pwd`/rpms-for-eee /mnt/eee-specific
 
 # This caches rpms locally (you should clean this out once you're done)
 mkdir yum-cache 
+# Clean out this directory - in case we've been making updates to RPMs without incrementing version #s properly
+rm -rf yum-cache/eee-specific
 
 creatingstart=`${dt}`
 
