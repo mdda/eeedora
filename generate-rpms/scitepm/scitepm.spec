@@ -46,7 +46,7 @@
 Name:      scitepm
 #Icon:      sciptepm.xpm
 Summary:   Programmer code helper sidebar for SciTE
-Version:   1.6.12
+Version:   1.6.13
 Release:   1.%{disttag}%{distver}
 #Release:			1%{?dist}
 License:   GPL
@@ -60,8 +60,10 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 #BuildRequires: kdebase3-devel
 #Prereq: /sbin/ldconfig
 Requires: scite
-Requires: gtk+-2.0 
-Requires: glib-2.0
+#Requires: gtk+-2.0 
+#Requires: glib-2.0
+Requires: gtk+
+Requires: glib2
 Provides: scitepm
 
 %description
