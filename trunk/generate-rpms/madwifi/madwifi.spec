@@ -39,7 +39,12 @@ URL: http://madwifi.org
 # This is obtained from : http://snapshots.madwifi.org/special/madwifi-nr-r3366+ar5007.tar.gz
 # And the tarball is renamed madwifi-ng-r3366+ar5007.tar.gz to match its extracted path
 
-Source0: madwifi-ng-r3366+ar5007.tar.gz
+# Doesn't work for 2.6.25.11
+#Source0: madwifi-ng-r3366+ar5007.tar.gz
+
+# Try to update version 
+Source0:  madwifi-hal-0.10.5.6-r3835-20080801.tar.gz
+
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 Requires: /sbin/depmod
 BuildRequires: /sbin/depmod
@@ -79,6 +84,7 @@ Summary: A linux device driver for Atheros chipsets (ar5210, ar5211, ar5212).
 Group: System Environment/Kernel
 Release: %{myrelease}_%{mykrelver}
 
+BuildRequires: kernel-devel = %{mykversion} 
 Requires: kernel = %{mykversion}
 Provides: eee-%{name}-module
 
@@ -102,7 +108,9 @@ keys of that type are created.
 #%setup -q 
 #%setup -q -n %{name}-%{branch}-r%{revision}-%{snapshot}
 #%setup -q -n %{name}-ng-r%{revision}-%{snapshot}
-%setup -q -n %{name}-ng-r%{revision}+%{snapshot}
+#ln -s madwifi-hal-0.10.5.6-r3835-20080801 %{name}-ng-r%{revision}+%{snapshot}
+#%setup -q -n %{name}-ng-r%{revision}+%{snapshot}
+%setup -q -n madwifi-hal-0.10.5.6-r3835-20080801
 find . -name Makefile\* | xargs perl -pi -e's,/sbin/depmod,: /sbin/depmod,'
 
 %build 
