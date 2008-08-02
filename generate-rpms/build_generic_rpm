@@ -2,6 +2,9 @@
 
 RPM_PACKAGE=${1:-wicd}
 
+# Remove a trailing slash (might be there due to auto-complete)
+RPM_PACKAGE=`echo $RPM_PACKAGE | sed -e 's|/$||'`
+
 # If there's a Makefile, build the tarball and spec file automatically
 if [ -f ${RPM_PACKAGE}/Makefile ]; then 
  pushd .
