@@ -59,6 +59,9 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 #BuildRoot: %{_tmppath}/%{name}2-%{version}-%{release}-build
 #BuildRequires: kdebase3-devel
 #Prereq: /sbin/ldconfig
+BuildRequires : gtk+-devel
+BuildRequires : gtk2-devel
+BuildRequires : glib2-devel
 Requires: scite
 #Requires: gtk+-2.0 
 #Requires: glib-2.0
