@@ -2,20 +2,18 @@ Summary: Wireless Internet Connection Daemon
 Name:   wicd
 #Version: 1.3.1
 #Release: 3
-Version: 1.5.0
+Version: 1.4.2
 Release: 1%{?dist}
 URL:    https://sourceforge.net/projects/wicd/
-#Source: %{name}_%{version}-src.tar.bz2
-Source: %{name}-%{version}.tar.gz
+Source: %{name}_%{version}-src.tar.bz2
 #Patch:  wicd.redhat.patch
-#Patch:  wicd.eeedora.patch
+Patch:  wicd.eeedora.patch
 License: GPL
 Group:  System Environment/Base
 #BuildRoot: /var/tmp/%{name}-root
 BuildRoot: %{_buildroot}
 #BuildArch: noarch
 BuildArch: i386
-BuildRequires : python-devel
 Requires: python chkconfig dbus
 
 %description
@@ -25,23 +23,18 @@ networks as an added bonus.
 
 %prep
 %setup -q -c
-# %patch0 -p1
+%patch0 -p1
 
 %install
 [ -d "$RPM_BUILD_ROOT" -a "$RPM_BUILD_ROOT" != "/" ] && rm -rf $RPM_BUILD_ROOT
 mkdir $RPM_BUILD_ROOT
 cp -pr * $RPM_BUILD_ROOT
-cd $RPM_BUILD_ROOT
-python setup.py configure
-python setup.py install
-
 #cd $RPM_BUILD_ROOT/opt/wicd/
 #rm -f *.pyc 
 #rm -f *.pyo
-
-#cd $RPM_BUILD_ROOT/opt/wicd/data
-#rm -f wicd.log
-#ln -sf /var/log/wicd.log .
+cd $RPM_BUILD_ROOT/opt/wicd/data
+rm -f wicd.log
+ln -sf /var/log/wicd.log .
 
 %clean
 [ -d "$RPM_BUILD_ROOT" -a "$RPM_BUILD_ROOT" != "/" ] && rm -rf $RPM_BUILD_ROOT
