@@ -12,7 +12,6 @@ selinux --disabled
 
 # This needs a --device command
 network --device eth0 --bootproto dhcp --hostname=Eee
-#network --device eth1 --bootproto dhcp --hostname=Eee
 
 #firewall --disabled
 #firewall --enabled --trust=eth0 --ssh
@@ -64,27 +63,19 @@ rootpw eeedora
 
 # Look for mirrors in : http://mirrors.fedoraproject.org/publiclist/Fedora/8/i386/
 
-#repo --name=releases --baseurl=http://download.fedora.redhat.com/pub/fedora/linux/releases/8/Everything/i386/os
-#repo --name=updates  --baseurl=http://download.fedora.redhat.com/pub/fedora/linux/updates/8/i386
-
-#repo --name=releases --baseurl=http://fedora.mirror.facebook.com/linux/releases/$releasever/Everything/$basearch/os/
-#repo --name=updates  --baseurl=http://fedora.mirror.facebook.com/linux/updates/$releasever/$basearch/
-
 #repo --name=releases --baseurl=http://mirrors.tummy.com/pub/fedora.redhat.com/fedora/linux/releases/$releasever/Everything/$basearch/os/
 #repo --name=updates  --baseurl=http://mirrors.tummy.com/pub/fedora.redhat.com/fedora/linux/updates/$releasever/$basearch/
-
-#repo --name=releases  --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?arch=i386&repo=fedora-8
-#repo --name=updates   --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?arch=i386&repo=updates-released-f8
-
-repo --name=releases  --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?arch=i386&repo=fedora-9
-repo --name=updates   --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?arch=i386&repo=updates-released-f9
 
 #repo --name=releases  --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?arch=$basearch&repo=fedora-$releasever
 #repo --name=updates   --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?arch=$basearch&repo=updates-released-f$releasever
 
+repo --name=releases  --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?arch=i386&repo=fedora-9
+repo --name=updates   --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?arch=i386&repo=updates-released-f9
+
 #repo --name=atrpms   --baseurl=http://dl.atrpms.net/f$releasever-$basearch/atrpms/stable
 #repo --name=atrpms   --baseurl=http://dl.atrpms.net/f$releasever-$basearch/atrpms/stable
 
+# This repo file location is created as a link in the build-eeedora script
 repo --name=eee-specific --baseurl=file:///mnt/eee-specific
 	
 # %packages
@@ -130,27 +121,10 @@ acpid
 # @ text-internet
 # @ graphical-internet
 
-# irssi
-# drivel
 memtest86+
-# a2ps
-#alpine
-#pidgin
-#xchat
-#blobwars
-#gimp
-#ImageMagick
-#NetworkManager-vpnc
-#privoxy
-#tor
-#rhythmbox
-#seahorse
-#sound-juicer
-#totem
-#vim-X11
 
 ## Enable Wifi AP searching
-#wifi-radar
+## wifi-radar
 # Now we have wicd (below)
 # And disable NetworkManager, since it messes us up
 -NetworkManager
