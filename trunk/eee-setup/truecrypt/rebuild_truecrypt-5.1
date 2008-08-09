@@ -44,6 +44,11 @@ fi
 tar -xzf ${WX_TAR}
 WX_ROOT=`pwd`/wxWidgets-2.8.7 make wxbuild
 
+# Patch  : need to add 
+#include <cstring>
+# into source/Platform/Memory.h
+
+
 WX_ROOT=`pwd`/wxWidgets-2.8.7 make
 
 popd

@@ -1,12 +1,16 @@
 #! /bin/bash
 
-cd acpi
-./rebuild_acpi-ko
+cd artwork
+./build-artwork
 cd ..
 
-cd ath
-./rebuild_ath-madwifi-ko
-cd ..
+# cd acpi
+# ./rebuild_acpi-ko
+# cd ..
+
+# cd ath
+# ./rebuild_ath-madwifi-ko
+# cd ..
 
 #cd atl2
 #./rebuild_atl2-ko 
@@ -20,4 +24,3 @@ cd ..
 cd uvc 
 ./rebuild_uvc-ko 
 cd ..
-
