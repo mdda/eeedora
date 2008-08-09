@@ -6,6 +6,11 @@ dt='date +%F_%Hh%Mm'
 # This is the ISO name (and the name of the distribution)
 eeedora=EeeDora_`${dt}`
 
+# For building overall : yum install livecd-tools
+# For artwork : yum install ImageMagick
+# For truecrypt : yum install 
+# For RPMs : yum install
+
 # Now for the code :
 
 # Create the repository of eee specific rpms (used in kickstart file)
@@ -15,16 +20,17 @@ mkdir -p rpms-for-eee/i386
 
 createrepo rpms-for-eee
 
-# set up a link for the repo 
+# set up a link for the repo - needed since the file:// location in the kickstart file is absolute
 ln -s `pwd`/rpms-for-eee /mnt/eee-specific
-
 
 # See : http://fedoraproject.org/wiki/FedoraLiveCD/LiveCDHowTo
 
-# This caches rpms locally (you should clean this out once you're done)
-mkdir yum-cache 
-# Clean out this directory - in case we've been making updates to RPMs without incrementing version #s properly
-rm -rf yum-cache/eee-specific
+# This caches rpms locally (you should clean this out once you're completely done)
+cachedir=`pwd`/yum-cache 
+mkdir -p ${cachedir}
+
+# Clean out this cache directory - in case we've been making updates to RPMs without incrementing version #s properly
+rm -rf ${cachedir}/eee-specific
 
 creatingstart=`${dt}`
 
@@ -46,6 +52,9 @@ echo "Starting ISO creation at ${creatingstart}"
 #	grep "self.image_size = " ${livecdcreator}
 #fi
 
+# /usr/lib/python2.5/site-packages/imgcreate/creator.py
+
+
 # http://www-128.ibm.com/developerworks/linux/library/l-fedora-livecd/
 # See http://www.redhat.com/archives/anaconda-devel-list/2007-July/msg00054.html to understand (important --turbo-liveinst)
 #  --turbo-liveinst 
@@ -54,7 +63,7 @@ echo "Starting ISO creation at ${creatingstart}"
 
 livecd-creator \
   --config=./eeedora.ks \
-  --cache=`pwd` \
+  --cache=${cachedir} \
   --fslabel=${eeedora} \
   | tee livecd-creator-output.${creatingstart}
 #		--skip-minimize \
@@ -67,6 +76,7 @@ livecd-creator \
 
 grep "Installing" livecd-creator-output.${creatingstart} | sort | sed 's|\r||' > packages-output.${creatingstart}
 
+# kill the eee-specific repo mount point 
 rm -f /mnt/eee-specific
 
 creatingend=`${dt}`

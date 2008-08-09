@@ -31,7 +31,11 @@ services --enabled=network --disabled=NetworkManager,sshd
 
 # OLD : No Partition information required to build the ISO 
 # New : Fedora 9 livecd-creator looks for a '/' definition for sizing and filesystem information
-part / --fstype ext2 --size 1792 --grow
+#part / --fstype ext2 --size 1792 --grow
+
+# This is so it will build on my 701 4G EeePC - but the live system doesn't need to be 
+# very big anyway...
+part / --fstype ext2 --size 1350 --grow
 
 
 # A default public root password - not the best idea.
@@ -145,8 +149,9 @@ memtest86+
 #totem
 #vim-X11
 
-# Enable Wifi AP searching
-wifi-radar
+## Enable Wifi AP searching
+#wifi-radar
+# Now we have wicd (below)
 # And disable NetworkManager, since it messes us up
 -NetworkManager
 
@@ -352,7 +357,7 @@ thunar-volman
 #inkscape
 #planner
 
-# This is to pave the way for truecrypt-5.0a stuff
+# This is to pave the way for truecrypt-{5,6} stuff
 fuse
 fuse-libs
 
@@ -423,7 +428,7 @@ eee_tarball
 eee_splash
 
 # And now our new stuff
-#eee-madwifi
+eee-madwifi
 eee-acpi
 scitepm
 wicd
@@ -464,9 +469,9 @@ ${setup}/misc/selinux-off ${setup}
 # ShowProgress "Install the ath kernel module"
 # ${setup}/ath/install-ath ${setup}
 
-ShowProgress "Fix up wifi-radar config"
-mkdir -p /etc/wifi-radar/
-cp ${setup}/ath/wifi-radar-ath /etc/wifi-radar/wifi-radar.conf
+# ShowProgress "Fix up wifi-radar config"
+# mkdir -p /etc/wifi-radar/
+# cp ${setup}/ath/wifi-radar-ath /etc/wifi-radar/wifi-radar.conf
 
 # This is now in the kernel - so ignore...
 # ShowProgress "Install the atl2 kernel module"
@@ -488,13 +493,13 @@ cp ${setup}/ath/wifi-radar-ath /etc/wifi-radar/wifi-radar.conf
 #echo "install battery /sbin/modprobe asus_acpi && /sbin/modprobe --ignore-install battery" >> /etc/rc.local 
 #echo "/etc/init.d/acpid restart" >> /etc/rc.local 
 
-#ShowProgress "Put the acpi handlers in"
-#cp ${setup}/acpi/events/*.conf /etc/acpi/events/
-#cp ${setup}/acpi/actions/eee* /etc/acpi/actions/ 
+# ShowProgress "Put the acpi handlers in"
+# cp ${setup}/acpi/events/*.conf /etc/acpi/events/
+# cp ${setup}/acpi/actions/eee* /etc/acpi/actions/ 
 
-# This may be in the kernel :: Check!
-ShowProgress "Install the uvc webcam kernel module"
-${setup}/uvc/install-uvc ${setup}
+# # This may be in the kernel :: Check!
+# ShowProgress "Install the uvc webcam kernel module"
+# ${setup}/uvc/install-uvc ${setup}
 
 ShowProgress "Start camera on startup"
 echo "#\n# Start Camera on startup" >> /etc/rc.local 

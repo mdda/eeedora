@@ -6,6 +6,8 @@
 # Conversion information also see :
 # http://sipx-wiki.calivia.com/index.php/A_Kickstart_CD_for_sipX_on_CentOS
 
+# For convert function, need to yum install ImageMagick
+
 # This is for Anaconda - used for the Live Boot Splash screen
 convert -colors 65536 -depth 16 eeedora-splash.png splash.jpg
 # ... going into : /usr/lib/anaconda-runtime/syslinux-vesa-splash.jpg
@@ -15,9 +17,9 @@ convert -colors 65536 -depth 16 eeedora-splash.png splash.jpg
 # specs: 640x480px PNG file with 16-color indexed palette. 
 # 2 of the 16 colors are required, so you've got only 14 to play with. 
 # The required colors (and slot #s in the color map) are: 0 = #000000 (black), 1 = #ffffff (white))
-#convert -colors 14 eeedora-splash.png splash.xpm
+convert -colors 14 eeedora-splash.png splash.xpm
 
-# I'm not sure I beleive the above 14 colour restriction...
+# I'm not sure I believe the above 14 colour restriction...
 #convert eeedora-splash.png splash.xpm
 # This is a wild idea ...
 #cp eeedora-splash.png splash.xpm
