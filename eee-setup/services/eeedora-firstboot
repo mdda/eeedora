@@ -140,7 +140,7 @@ if ${live}; then
  chkconfig --level 345 readahead_early off
  chkconfig --level 345 readahead_later off
 fi
-# This one screws up wifi-radar - which is better at managing the wifi
+# This one screws up wifi-radar and wicd - which is/are better at managing the wifi
 ShowProgress "Don't start NetworkManager"
 chkconfig --level 345 NetworkManager off
 

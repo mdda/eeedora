@@ -300,7 +300,7 @@ xfce4-weather-plugin
 -xfce4-xfapplet-plugin
 
 # some more stuff for xfce
-#orage
+orage
 
 thunar-archive-plugin
 thunar-media-tags-plugin
@@ -331,7 +331,7 @@ thunar-volman
 #inkscape
 #planner
 
-# This is to pave the way for truecrypt-{5,6} stuff
+# This is to pave the way for truecrypt-{5,6} stuff, or encfs (now, I think, my preference)
 fuse
 fuse-libs
 
@@ -434,8 +434,8 @@ ln -s ${setup_temp} ${setup}
 ShowProgress "Unwrapped into ${setup_temp} to ${setup}"
 # Now we're in the 'regular' situation, with un-versioned file locations
 
-# ShowProgress "Blacklist the ath5k kernel module"
-# ${setup}/ath/blacklist-ath5k ${setup}
+ShowProgress "Blacklist the ath5k kernel module"
+${setup}/ath/blacklist-ath5k ${setup}
 
 ShowProgress "Turn off SELINUX on the Eee"
 ${setup}/misc/selinux-off ${setup}
@@ -479,9 +479,9 @@ ShowProgress "Start camera on startup"
 echo "#\n# Start Camera on startup" >> /etc/rc.local 
 echo "echo 1 > /proc/acpi/asus/camera" >> /etc/rc.local 
 
-#ShowProgress "Install the truecrypt kernel module - and main function"
-ShowProgress "Install the truecrypt main function"
-${setup}/truecrypt/install-truecrypt ${setup}
+# ShowProgress "Install the truecrypt kernel module - and main function"
+# ShowProgress "Install the truecrypt main function"
+# ${setup}/truecrypt/install-truecrypt ${setup}
 
 ShowProgress "Fixing snd module removal to enable clean power-down"
 cp ${setup}/misc/fix-powerdown /sbin/halt.local
