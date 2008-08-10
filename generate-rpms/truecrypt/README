@@ -3,8 +3,12 @@
 # This has a click-through license that you should read
 
 # Original source of the spec file (from a SUSE SRPM):
-#curl -O ftp://ftp.pbone.net/mirror/ftp5.gwdg.de/pub/opensuse/repositories/home%3A/NicoK/openSUSE_11.0/src/truecrypt-6.0a-2.1.src.rpm
+# curl -O ftp://ftp.pbone.net/mirror/ftp5.gwdg.de/pub/opensuse/repositories/home%3A/NicoK/openSUSE_11.0/src/truecrypt-6.0a-2.1.src.rpm
 #
 # extract the spec file :
 # rpm2cpio truecrypt-6.0a-2.1.src.rpm | cpio -iumd truecrypt.spec
-
+#
+# extract everything
+# rpm2cpio truecrypt-6.0a-2.1.src.rpm | cpio -idv
+#
+# see : http://www.brandonhutchinson.com/cpio_command.html
