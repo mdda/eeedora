@@ -60,7 +60,7 @@ else
 		ln -sf /etc/init.d/${init_script} /etc/rc.d/rc${i}.d/K89${init_script}
 	done
 fi
-# /sbin/restorecon /var/log/wicd.log
+/sbin/restorecon /var/log/wicd.log
 
 
 %preun

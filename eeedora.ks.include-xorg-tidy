@@ -11,8 +11,8 @@ xorg-x11-drv-keyboard
 xorg-x11-drv-mouse
 synaptics
 linuxwacom
-#xorg-x11-drv-i810
-xorg-x11-drv-intel
+xorg-x11-drv-i810
+#xorg-x11-drv-intel
 xorg-x11-drv-vesa
 
 # This following list was created using :

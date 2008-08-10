@@ -59,13 +59,12 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 #BuildRoot: %{_tmppath}/%{name}2-%{version}-%{release}-build
 #BuildRequires: kdebase3-devel
 #Prereq: /sbin/ldconfig
-BuildRequires : gtk+-devel
 BuildRequires : gtk2-devel
 BuildRequires : glib2-devel
 Requires: scite
 #Requires: gtk+-2.0 
 #Requires: glib-2.0
-Requires: gtk+
+#Requires: gtk+
 Requires: glib2
 Provides: scitepm
 
@@ -120,7 +119,7 @@ make INSTALLDIR=%{buildroot}%{_bindir} install
 #%doc %_docdir/HTML/*/%{name}2/index.cache.bz2
 
 # the binary files
-%{_bindir}/%{name}
+%attr(0755,root,root) %{_bindir}/%{name}
 
 # the shared libraries
 #%kde_path/%_lib/*.so.*.*.*

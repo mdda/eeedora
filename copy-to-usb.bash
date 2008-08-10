@@ -16,7 +16,7 @@ echo "Drive: ${usbdrive}, Partition: ${usbpart}, ISO: ${eeedora_iso}"
 dt='date +%F_%Hh%Mm'
 
 # This is just a temporary mount point
-usbmount=/media/temp-usb-mountpoint
+#usbmount=/media/temp-usb-mountpoint
 
 ### NB : To boot of a flash drive, put it in the USB slot, and switch on the machine
 # Then hit 'F2' to get to the BIOS
@@ -47,30 +47,31 @@ if [ "$answer1" = "yes" ] ; then
 	# See : http://fedoraproject.org/wiki/FedoraLiveCD/USBHowTo
 	usbcopystart=`${dt}`
 
-	/usr/bin/livecd-iso-to-disk ${eeedora_iso} ${usbpart}
+	/usr/bin/livecd-iso-to-disk --overlay-size-mb 128 ${eeedora_iso} ${usbpart}
 
-	mkdir ${usbmount}
+#	mkdir ${usbmount}
 
 	# Remove this later - the drivers are going to go into RPMs anyway
-	mount ${usbpart} ${usbmount}
-#		mkdir ${usbmount}/drivers
-#		cp drivers/atl2/atl2.ko ${usbmount}/drivers/
-#  cp scripts/install-atl2 ${usbmount}/drivers/
+#	mount ${usbpart} ${usbmount}
+
+#	mkdir ${usbmount}/drivers
+#	cp drivers/atl2/atl2.ko ${usbmount}/drivers/
+# 	cp scripts/install-atl2 ${usbmount}/drivers/
 
 	# Actually, the scripts are a good thing for development...
-	mkdir -p ${usbmount}/scripts
-#  cp scripts/install-atl2 ${usbmount}/scripts/
-	cp scripts/report-back.bash ${usbmount}/scripts/
-#		cp scripts/start-xfce ${usbmount}/scripts/
+#	mkdir -p ${usbmount}/scripts
+#	cp scripts/install-atl2 ${usbmount}/scripts/
+#	cp scripts/report-back.bash ${usbmount}/scripts/
+#	cp scripts/start-xfce ${usbmount}/scripts/
 
 	# http://fedoraproject.org/wiki/Artwork/F8Themes/Infinity/Round3Final#head-8302d21a33d6f60a43f54da05aa423b14a327131
 
 # The next line works - but I'd like to see whether it actually comes from /boot/grub/
 #	convert -colors 65536 -depth 16 eee-setup/artwork/eeedora-splash.png ${usbmount}/syslinux/splash.jpg
-#		mv ${usbmount}/syslinux/syslinux-vesa-splash.png ${usbmount}/syslinux/splash.jpg
+#	mv ${usbmount}/syslinux/syslinux-vesa-splash.png ${usbmount}/syslinux/splash.jpg
 
-	umount ${usbmount}
-	rmdir ${usbmount}
+#	umount ${usbmount}
+#	rmdir ${usbmount}
 	
 	usbcopyend=`${dt}`
 
