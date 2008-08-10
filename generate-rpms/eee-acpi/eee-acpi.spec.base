@@ -83,11 +83,11 @@ echo "#\n# Force asus_acpi_eee to load" >> ${aa}
 echo "/sbin/modprobe eeepc" >> ${aa}
 chmod 755 ${aa}
 
-chkconfig acpid on
-service acpid start
+/sbin/chkconfig acpid on
+/sbin/service acpid start
 
 #echo "modprobe eeepc" >> /etc/rc.local
-modprobe eeepc
+/sbin/modprobe eeepc
 
 
 # This is a back-light fix...  Shouldn't really be here

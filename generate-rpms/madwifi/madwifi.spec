@@ -17,18 +17,18 @@
 
 # Define based on the tar ball extract.
 # Those two variable will be instanced during the tarball generation
-# %define       revision       @@SVNREL@@
-# %define       snapshot       @@DDAY@@
-%define       revision       3366
-%define       snapshot       ar5007
+# %define       revision	@@SVNREL@@
+# %define       snapshot	@@DDAY@@
+# %define       revision	3366
+# %define       snapshot	ar5007
 # branch is not used yet.
-# %define       branch         @@BRANCH@@
-%define		myrelease eee_1
+# %define       branch		@@BRANCH@@
+# %define	myrelease	eee_1
 Summary: A linux device driver for Atheros chipsets (ar5210, ar5211, ar5212).
 Name: madwifi
 # Version: 0.%{revision}.%{snapshot}
 Version: 0.9.4
-Release: %{myrelease}
+Release: eee_1
 License: GPL2
 Group: System Environment/Kernel
 URL: http://madwifi.org

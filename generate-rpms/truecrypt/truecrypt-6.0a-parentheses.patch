@@ -1,0 +1,75 @@
+diff -U 3 -H -d -r -N -- ./Core/Unix/CoreServiceProxy.h ./Core/Unix/CoreServiceProxy.h
+--- ./Core/Unix/CoreServiceProxy.h	2008-07-01 21:53:42.000000000 +0200
++++ ./Core/Unix/CoreServiceProxy.h	2008-07-05 13:36:04.000000000 +0200
+@@ -88,7 +88,7 @@
+ 				mountedVolume = CoreService::RequestMountVolume (options);
+ 
+ 				if (options.CachePassword
+-					&& (options.Password && !options.Password->IsEmpty() || options.Keyfiles && !options.Keyfiles->empty()))
++					&& ((options.Password && !options.Password->IsEmpty()) || (options.Keyfiles && !options.Keyfiles->empty())))
+ 				{
+ 					VolumePasswordCache::Store (*Keyfile::ApplyListToPassword (options.Keyfiles, options.Password));
+ 				}
+diff -U 3 -H -d -r -N -- ./Main/Forms/ChangePasswordDialog.cpp ./Main/Forms/ChangePasswordDialog.cpp
+--- ./Main/Forms/ChangePasswordDialog.cpp	2008-07-01 21:51:42.000000000 +0200
++++ ./Main/Forms/ChangePasswordDialog.cpp	2008-07-05 13:42:22.000000000 +0200
+@@ -160,11 +160,11 @@
+ 			bool newKeyfilesEmpty = !NewPasswordPanel->GetKeyfiles() || NewPasswordPanel->GetKeyfiles()->empty();
+ 
+ 			if (DialogMode == Mode::ChangeKeyfiles
+-				&& (passwordEmpty && newKeyfilesEmpty || keyfilesEmpty && newKeyfilesEmpty))
++				&& ((passwordEmpty && newKeyfilesEmpty) || (keyfilesEmpty && newKeyfilesEmpty)))
+ 				ok = false;
+ 
+ 			if (DialogMode == Mode::ChangePasswordAndKeyfiles
+-				&& (NewPasswordPanel->GetPassword()->IsEmpty() && newKeyfilesEmpty || !NewPasswordPanel->PasswordsMatch()))
++				&& ((NewPasswordPanel->GetPassword()->IsEmpty() && newKeyfilesEmpty) || !NewPasswordPanel->PasswordsMatch()))
+ 				ok = false;
+ 		}
+ 
+diff -U 3 -H -d -r -N -- ./Main/StringFormatter.cpp ./Main/StringFormatter.cpp
+--- ./Main/StringFormatter.cpp	2008-07-01 21:51:44.000000000 +0200
++++ ./Main/StringFormatter.cpp	2008-07-05 13:41:23.000000000 +0200
+@@ -68,16 +68,16 @@
+ 
+ 		if (numberExpected
+ 			|| endTagExpected
+-			|| !arg0.WasReferenced() && !arg0.IsEmpty()
+-			|| !arg1.WasReferenced() && !arg1.IsEmpty()
+-			|| !arg2.WasReferenced() && !arg2.IsEmpty()
+-			|| !arg3.WasReferenced() && !arg3.IsEmpty()
+-			|| !arg4.WasReferenced() && !arg4.IsEmpty()
+-			|| !arg5.WasReferenced() && !arg5.IsEmpty()
+-			|| !arg6.WasReferenced() && !arg6.IsEmpty()
+-			|| !arg7.WasReferenced() && !arg7.IsEmpty()
+-			|| !arg8.WasReferenced() && !arg8.IsEmpty()
+-			|| !arg9.WasReferenced() && !arg9.IsEmpty()
++			|| (!arg0.WasReferenced() && !arg0.IsEmpty())
++			|| (!arg1.WasReferenced() && !arg1.IsEmpty())
++			|| (!arg2.WasReferenced() && !arg2.IsEmpty())
++			|| (!arg3.WasReferenced() && !arg3.IsEmpty())
++			|| (!arg4.WasReferenced() && !arg4.IsEmpty())
++			|| (!arg5.WasReferenced() && !arg5.IsEmpty())
++			|| (!arg6.WasReferenced() && !arg6.IsEmpty())
++			|| (!arg7.WasReferenced() && !arg7.IsEmpty())
++			|| (!arg8.WasReferenced() && !arg8.IsEmpty())
++			|| (!arg9.WasReferenced() && !arg9.IsEmpty())
+ 			)
+ 			throw StringFormatterException (SRC_POS, wstring (format));
+ 	}
+diff -U 3 -H -d -r -N -- ./Main/TextUserInterface.cpp ./Main/TextUserInterface.cpp
+--- ./Main/TextUserInterface.cpp	2008-07-01 21:51:44.000000000 +0200
++++ ./Main/TextUserInterface.cpp	2008-07-05 13:40:40.000000000 +0200
+@@ -197,10 +197,10 @@
+ 			wxString s = AskString (StringFormatter (L"{0} (y={1}/n={2}) [{3}]: ",
+ 				message, LangString["YES"], LangString["NO"], LangString[defaultYes ? "YES" : "NO"]));
+ 
+-			if (s.IsSameAs (L'n', false) || s.IsSameAs (L"no", false) || !defaultYes && s.empty())
++			if (s.IsSameAs (L'n', false) || s.IsSameAs (L"no", false) || (!defaultYes && s.empty()))
+ 				return false;
+ 
+-			if (s.IsSameAs (L'y', false) || s.IsSameAs (L"yes", false) || defaultYes && s.empty())
++			if (s.IsSameAs (L'y', false) || s.IsSameAs (L"yes", false) || (defaultYes && s.empty()))
+ 				return true;
+ 		};
+ 	}

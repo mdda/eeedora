@@ -1,0 +1,21 @@
+diff -up ./Main/Main.make.wx ./Main/Main.make
+--- ./Main/Main.make.wx	2008-02-06 18:22:51.000000000 +0100
++++ ./Main/Main.make	2008-02-06 18:27:10.000000000 +0100
+@@ -76,13 +76,13 @@ CXXFLAGS += -I$(BASE_DIR)/Main
+ 
+ ifeq "$(TC_BUILD_CONFIG)" "Release"
+ 
+-CXXFLAGS += $(shell $(WX_BUILD_DIR)/wx-config --unicode --static --cxxflags)
+-WX_LIBS = $(shell $(WX_BUILD_DIR)/wx-config --unicode --static --libs $(WX_CONFIG_LIBS))
++CXXFLAGS += $(shell wx-config --unicode --cxxflags)
++WX_LIBS = $(shell wx-config --unicode --libs $(WX_CONFIG_LIBS))
+ 
+ else
+ 
+-CXXFLAGS += $(shell $(WX_BUILD_DIR)/wx-config --debug --unicode --static --cxxflags)
+-WX_LIBS = $(shell $(WX_BUILD_DIR)/wx-config --debug --unicode --static --libs $(WX_CONFIG_LIBS))
++CXXFLAGS += $(shell wx-config --debug --unicode --cxxflags)
++WX_LIBS = $(shell wx-config --debug --unicode --libs $(WX_CONFIG_LIBS))
+ 
+ endif
+ 
