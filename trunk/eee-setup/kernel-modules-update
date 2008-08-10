@@ -12,14 +12,14 @@ cd ..
 # ./rebuild_ath-madwifi-ko
 # cd ..
 
-#cd atl2
-#./rebuild_atl2-ko 
-#cd ..
+# cd atl2
+# ./rebuild_atl2-ko 
+# cd ..
 
-cd truecrypt
-#./rebuild_truecrypt-4.3
-./rebuild_truecrypt-5.1
-cd ..
+# cd truecrypt
+## ./rebuild_truecrypt-4.3
+# ./rebuild_truecrypt-5.1
+# cd ..
 
 cd uvc 
 ./rebuild_uvc-ko 

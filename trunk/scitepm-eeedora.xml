@@ -1,21 +1,44 @@
 <root>
 	<file>./TODO-Fedora9</file>
-	<group name='RPM-builder' expanded='TRUE'>
-		<file>./generate-rpms/build_generic_rpm</file>
-		<file>./generate-rpms/rebuild_all_rpms</file>
-	</group>
 	<group name='ISO-builder' expanded='TRUE'>
 		<file>./build-eeedora.bash</file>
 		<file>./eeedora.ks</file>
 		<file>./eeedora.ks.include-xorg-tidy</file>
 		<file>./copy-to-usb.bash</file>
 	</group>
-	<group name='Setup-old' expanded='TRUE'>
+	<group name='Setup-old' expanded='FALSE'>
 		<file>./eee-setup/build-eee_tarball_RPM</file>
 		<file>./eee-setup/create-eee_splash_RPM</file>
 		<file>./eee-setup/eee_splash.spec</file>
 		<file>./eee-setup/eee_tarball.listing</file>
 		<file>./eee-setup/eee_tarball.spec</file>
 		<file>./eee-setup/kernel-modules-update</file>
+	</group>
+	<group name='RPM-builder' expanded='TRUE'>
+		<file>./generate-rpms/build_generic_rpm</file>
+		<file>./generate-rpms/rebuild_all_rpms</file>
+		<group name='wicd' expanded='TRUE'>
+			<file>./generate-rpms/wicd/wicd.spec</file>
+			<file>./generate-rpms/wicd/README</file>
+			<file>./generate-rpms/wicd/rpmbuild.log</file>
+		</group>
+		<group name='madwifi-eee' expanded='FALSE'>
+			<file>./generate-rpms/madwifi/madwifi.spec</file>
+			<file>./generate-rpms/madwifi/README</file>
+			<file>./generate-rpms/madwifi/rpmbuild.log</file>
+		</group>
+		<group name='truecrypt' expanded='TRUE'>
+			<file>./generate-rpms/truecrypt/truecrypt.spec</file>
+			<file>./generate-rpms/truecrypt/README</file>
+		</group>
+		<group name='eee-acpi' expanded='TRUE'>
+			<file>./generate-rpms/eee-acpi/eee-acpi.spec.base</file>
+			<file>./generate-rpms/eee-acpi/Makefile</file>
+			<file>./generate-rpms/eee-acpi/rpmbuild.log</file>
+		</group>
+		<group name='scitepm' expanded='FALSE'>
+			<file>./generate-rpms/scitepm/scitepm.spec</file>
+			<file>./generate-rpms/scitepm/rpmbuild.log</file>
+		</group>
 	</group>
 </root>

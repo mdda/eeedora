@@ -6,13 +6,6 @@ dt='date +%F_%Hh%Mm'
 # This is the ISO name (and the name of the distribution)
 eeedora=EeeDora_`${dt}`
 
-# For building overall : yum install livecd-tools
-# For artwork : yum install ImageMagick
-# For truecrypt : yum install 
-# For RPMs : yum install
-
-# Now for the code :
-
 # Create the repository of eee specific rpms (used in kickstart file)
 mkdir -p rpms-for-eee/i386
 # There really needs to be rpms in there, though...
