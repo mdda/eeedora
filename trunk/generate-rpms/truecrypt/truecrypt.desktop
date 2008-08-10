@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Truecrypt
+GenericName=Disc encryption software
+GenericName[de]=Festplattenverschlüsselung
+Categories=System;Filesystem;
+Type=Application
+Exec=truecrypt
+Icon=truecrypt
+DocPath=
+Terminal=0
+

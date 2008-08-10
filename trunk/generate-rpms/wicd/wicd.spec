@@ -1,7 +1,5 @@
 Summary: Wireless Internet Connection Daemon
 Name:   wicd
-#Version: 1.3.1
-#Release: 3
 Version: 1.5.0
 Release: 1%{?dist}
 URL:    https://sourceforge.net/projects/wicd/
@@ -52,6 +50,8 @@ if [ -x /usr/lib/lsb/install_initd ]; then
 	/usr/lib/lsb/install_initd /etc/init.d/${init_script}
 elif [ -x /sbin/chkconfig ]; then
 	/sbin/chkconfig --add ${init_script}
+	/sbin/chkconfig --level 345 ${init_script} on
+	/sbin/service ${init_script} start
 else
 	for i in 2 3 4 5; do
 		ln -sf /etc/init.d/${init_script} /etc/rc.d/rc${i}.d/S28${init_script}
@@ -60,7 +60,7 @@ else
 		ln -sf /etc/init.d/${init_script} /etc/rc.d/rc${i}.d/K89${init_script}
 	done
 fi
-/sbin/restorecon /var/log/wicd.log
+# /sbin/restorecon /var/log/wicd.log
 
 
 %preun
@@ -75,6 +75,7 @@ if [ $1 = 0 ]; then
 	if [ -x /usr/lib/lsb/remove_initd ]; then
 		/usr/lib/lsb/install_initd /etc/init.d/${init_script}
 	elif [ -x /sbin/chkconfig ]; then
+		/sbin/service ${init_script} stop
 		/sbin/chkconfig --del ${init_script}
 	else
 		rm -f /etc/rc.d/rc?.d/???${init_script}
