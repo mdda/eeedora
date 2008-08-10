@@ -18,17 +18,24 @@ $rpms .= qq(
  
 # For artwork
  ImageMagick
+	
+# For acpi
+ acpid
  
 # For truecrypt  ...
+ fuse-devel wxGTK-devel
+	fuse wxGTK
  
 # For uvc (webcam)
  SDL SDL-devel
 
 # For wicd
  python-devel
+	python chkconfig dbus dhclient
  
 # For scitepm
  gtk2-devel glib2-devel
+	scite glib2
 
 );
 
@@ -44,7 +51,7 @@ foreach my $rpm (split('\s*\n\s*', $rpms)) {
 my @rpms_installed=split("\n", `rpm -qa --queryformat "%{=NAME}\\n"`);
 
 my %rpms_missing=();
-foreach my $rpm (@rpms) {
+foreach my $rpm (sort @rpms) {
  print "Checking for '$rpm'\n";
  my $found=grep( m{^$rpm}, @rpms_installed);
  next if($found);
@@ -71,7 +78,7 @@ if(%packages_missing) {
  print qq{Need to do :\nperl -MCPAN -e shell;\n},(map { "install $_;\n" } sort keys %packages_missing),qq{\n};
 }
 else {
- print "All perl use packages Ok!\n";
+ print "All perl packages Ok!\n";
 }
 
 1;

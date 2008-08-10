@@ -27,7 +27,7 @@
 			<file>./generate-rpms/madwifi/README</file>
 			<file>./generate-rpms/madwifi/rpmbuild.log</file>
 		</group>
-		<group name='truecrypt' expanded='TRUE'>
+		<group name='truecrypt' expanded='FALSE'>
 			<file>./generate-rpms/truecrypt/truecrypt.spec</file>
 			<file>./generate-rpms/truecrypt/README</file>
 		</group>
@@ -36,7 +36,7 @@
 			<file>./generate-rpms/eee-acpi/Makefile</file>
 			<file>./generate-rpms/eee-acpi/rpmbuild.log</file>
 		</group>
-		<group name='scitepm' expanded='FALSE'>
+		<group name='scitepm' expanded='TRUE'>
 			<file>./generate-rpms/scitepm/scitepm.spec</file>
 			<file>./generate-rpms/scitepm/rpmbuild.log</file>
 		</group>

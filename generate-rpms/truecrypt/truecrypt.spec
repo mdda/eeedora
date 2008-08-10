@@ -14,6 +14,7 @@ BuildRequires:  fuse-devel wxGTK-devel >= 2.8.0
 %if 0%{?suse_version} > 910
 BuildRequires:  update-desktop-files
 %endif
+Requires:							fuse wxGTK
 
 License:         TrueCrypt License Version 2.5
 Group:            System/Libraries
