@@ -14,7 +14,7 @@ BuildRoot: %{_buildroot}
 #BuildArch: noarch
 BuildArch: i386
 BuildRequires : python-devel
-Requires: python chkconfig dbus
+Requires: python chkconfig dbus dhclient
 
 %description
 wicd was started because of the lack of useful, functional wireless network

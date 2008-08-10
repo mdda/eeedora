@@ -379,7 +379,6 @@ xdg-user-dirs
 -festival*
 -gnome-speech
 
-
 # more things we don't need in Xfce
 -evolution
 -evolution-webcal
@@ -396,6 +395,9 @@ xdg-user-dirs
 
 # make sure no debuginfo doesn't end up on the live image
 -*debuginfo
+
+# Needs inclusion for EeeDora9 (not 8)
+# dhclient = pulled in by wicd now
 
 # Now all the Eee specific stuff - from the eee-specific repo
 eee_tarball
