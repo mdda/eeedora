@@ -1,0 +1,24 @@
+# This is appended when there's no display-manager
+# Normally, gdm or xdm would take care of this
+
+#if [ `tty` = "/dev/tty1" ]; then
+# startx
+#fi
+
+#AT CONSOLE
+
+if [ -z "$DISPLAY" ] && [ $(tty) == /dev/tty7 ]; then
+ #AT CONSOLE BEFORE XFCE4
+
+ xsetroot -solid steelblue
+
+ # This definitely works...
+ #startx
+
+ # This seems to use fewer resources
+ startxfce4
+
+ #AT CONSOLE AFTER XFCE4
+
+ sudo /sbin/shutdown -h now
+fi

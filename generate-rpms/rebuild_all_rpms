@@ -4,18 +4,14 @@
 ./build_generic_rpm madwifi
 ./build_generic_rpm scitepm
 ./build_generic_rpm eee-acpi
+./build_generic_rpm truecrypt
 
-# truecrypt
-#  - now version 6.0
+# ./build_generic_rpm eee-user-defaults
+#  = /etc/skel *
 
-# eee-user-defaults
-#  - /etc/skel *
+# Elsewhere
 #  - /etc/sysconfig/desktop
 
-# eee-acpi
-#  - actions/events 
-#  - actual module now in kernel (?)
-
 # boost 
-#  - (needs bjam?)
+#  - (needs bjam?) - maybe just let Fedora team do this one
 
