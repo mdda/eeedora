@@ -7,7 +7,7 @@ all:	bash xfce firefox scite
 bash:
 	@echo "Building /etc/skel/.bash_profile etc" ; \
 	mkdir -p root/etc/skel ; \
-	cp /root/etc/skel/.bash_profile root/etc/skel/ ; \
+	cp /etc/skel/.bash_profile root/etc/skel/ ; \
 	cat sources/xfce/autologin-appendto-dot-bash_profile >> root/etc/skel/.bash_profile
 
 xfce:
@@ -30,8 +30,10 @@ firefox:
 
 
 scite:
-	@echo "Building /etc/skel/.SciTEUser.properties" ; \ 
-	cat sources/scite/scite.{monospaced,filesearch,tabs} >> root/etc/skel/.SciTEUser.properties
+	@echo "Building /etc/skel/.SciTEUser.properties" ; \
+	cat sources/scite/scite.monospaced >> root/etc/skel/.SciTEUser.properties ;
+
+# ,filesearch,tabs} 
 
 install:
 	@echo "Installing eee-user-defaults ...." ; \

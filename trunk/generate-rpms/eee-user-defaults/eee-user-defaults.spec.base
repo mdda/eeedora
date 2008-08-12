@@ -65,7 +65,7 @@ echo Building %{name}-%{version}-%{release}
 %setup -q
 
 %build
-make
+make all
 
 %install
 make install
@@ -84,7 +84,14 @@ make install
 
 %files
 %defattr(-,root,root)
-/etc/skel/*
+/etc/skel/.xinitrc
+/etc/skel/.xsession
+/etc/skel/.bash_profile
+/etc/skel/.mozilla/*
+/etc/skel/.SciTEUser.properties
+/etc/skel/.config/*
+
+
 
 %changelog
 * Thu Jul 8 2008 - EeeDora_at_ PLATFORMedia.com
