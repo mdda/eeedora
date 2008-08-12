@@ -1,5 +1,5 @@
 #
-# spec file for package scitepm
+# spec file for package eee-user-defaults
 #
 # Copyright  (c)  2007-2008 - Martin Andrews
 # This file and all modifications and additions to the pristine
@@ -51,10 +51,10 @@ License:   GPL
 Vendor:    EeeDora Development team <EeeDora@PLATFORMedia.com>
 Packager:  %packer
 Group:     System
-Source0:   %{name}-%{version}.tar.gz
+Source0:  	%{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 #Requires: acpid
-Provides: eee-user-defaults
+Provides:	 eee-user-defaults
 
 %description
 This package creates the /etc/skel structure to make things start up nicely.
@@ -65,12 +65,10 @@ echo Building %{name}-%{version}-%{release}
 %setup -q
 
 %build
-# This builds stuff into %{buildroot}
 make
 
 %install
-#mkdir -p %{buildroot}
-#cp -R root/* %{buildroot}/
+make install
 
 %clean
 [ "${RPM_BUILD_ROOT}" != "/" ] && rm -rf ${RPM_BUILD_ROOT}
@@ -81,39 +79,12 @@ make
 #echo "/sbin/modprobe eeepc" >> ${aa}
 #chmod 755 ${aa}
 
-#/sbin/chkconfig acpid on
-#/sbin/service acpid start
-
-#echo "modprobe eeepc" >> /etc/rc.local
-#/sbin/modprobe eeepc
-
-
-# This is a back-light fix...  Shouldn't really be here
-#aa=/usr/lib/pm-utils/sleep.d/99video
-#echo 'lastbrn=`</sys/devices/platform/eeepc/brn`' >> ${aa}
-#echo 'echo $lastbrn  > /sys/devices/platform/eeepc/brn' >> ${aa}
-
-
-
 
 %postun
 
 %files
 %defattr(-,root,root)
 /etc/skel/*
-#/etc/acpi/events/hotkeys.conf
-#/etc/acpi/events/hotkeys.sh
-#/etc/acpi/actions/eee
-#/etc/acpi/actions/eee.py*
-#/etc/acpi/actions/wlan.sh
-#/etc/acpi/actions/camera.sh
-#/etc/pm/sleep.d/S99wireless 
-
-# the binary files
-# %{_bindir}/%{name}
-
-# the shared libraries
-#%kde_path/%_lib/*.so.*.*.*
 
 %changelog
 * Thu Jul 8 2008 - EeeDora_at_ PLATFORMedia.com

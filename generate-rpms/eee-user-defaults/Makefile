@@ -35,6 +35,7 @@ scite:
 
 install:
 	@echo "Installing eee-user-defaults ...." ; \
+	mkdir -p $${RPM_BUILD_ROOT} ; \
 	cp -R root/* $${RPM_BUILD_ROOT}/
 
 # Make a tarball for distribution (good for RPM spec'ing)
