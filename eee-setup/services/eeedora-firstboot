@@ -109,7 +109,8 @@ done
 #exists system-config-display --noui --reconfig --set-depth=24 $xdriver
 
 ShowProgress "Unmute sound card"
-exists amixer set iSpeaker unmute > /dev/null
+#exists amixer set iSpeaker unmute > /dev/null
+exists amixer set Master unmute > /dev/null
 #exists alsaunmute 0 2> /dev/null
 
 if ${live}; then 
@@ -171,13 +172,16 @@ ShowProgress "Add '${liveuser}' user with no passwd"
 useradd -c "Eeedora Live" ${liveuser} 
 passwd -d ${liveuser} > /dev/null
 
+# Enable this user to use 'fuse' (for encfs, etc)
+usermod -a -G fuse ${liveuser} 
+
 livehome=/home/${liveuser}
 
 ShowProgress "Process display manager options"
 ${setup}/xdm/setup-display-manager ${setup} ${liveuser}
 
-ShowProgress "Set up XFCE for '${liveuser}'"
-${setup}/xfce/setup-xfce ${setup} ${liveuser}
+#ShowProgress "Set up XFCE for '${liveuser}'"
+#${setup}/xfce/setup-xfce ${setup} ${liveuser}
 
 ShowProgress "Start up pulseaudio for '${liveuser}'"
 ${setup}/misc/fix-pulseaudio ${setup} ${liveuser}
@@ -185,15 +189,15 @@ ${setup}/misc/fix-pulseaudio ${setup} ${liveuser}
 ShowProgress "Fix up truecrypt sudo for '${liveuser}'"
 ${setup}/truecrypt/sudo-truecrypt-fix ${setup} ${liveuser}
 
-ShowProgress "Set up various defaults for SciTE for '${liveuser}'"
-cat ${setup}/misc/scite.monospaced >> ${livehome}/.SciTEUser.properties
-cat ${setup}/misc/scite.filesearch >> ${livehome}/.SciTEUser.properties
-cat ${setup}/misc/scite.tabs >> ${livehome}/.SciTEUser.properties
+#ShowProgress "Set up various defaults for SciTE for '${liveuser}'"
+#cat ${setup}/misc/scite.monospaced >> ${livehome}/.SciTEUser.properties
+#cat ${setup}/misc/scite.filesearch >> ${livehome}/.SciTEUser.properties
+#cat ${setup}/misc/scite.tabs >> ${livehome}/.SciTEUser.properties
 
 # Only do this for the live user - since it only makes sense to have a liveinstall icon on that desktop
 if ${live}; then 
- ShowProgress "Fix up the /usr/sbin/liveinst script - it needs to accept command line params"
- ${setup}/live-install/fix-liveinst-script ${setup}
+# ShowProgress "Fix up the /usr/sbin/liveinst script - it needs to accept command line params"
+# ${setup}/live-install/fix-liveinst-script ${setup}
 
  # ShowProgress "Add a desktop link to install the live image for '${liveuser}'"
  # ${setup}/live-install/fix-sudo-mount ${setup}
@@ -204,9 +208,9 @@ if ${live}; then
  cp ${setup}/live-install/eee-live-install ${livehome}/Desktop/Install-Live-Image
 fi
 
-ShowProgress "Set up firefox for '${liveuser}' (this is a personal thing)"
+#ShowProgress "Set up firefox for '${liveuser}' (this is a personal thing)"
 #mkdir ${livehome}/.mozilla
-tar -xzf ${setup}/misc/firefox.tar.gz -C ${livehome}/
+#tar -xzf ${setup}/misc/firefox.tar.gz -C ${livehome}/
 # TODO : 
 # Installed the ‘Littlefox’ theme into FireFox (takes up much less screen real-estate)
 

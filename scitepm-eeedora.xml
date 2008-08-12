@@ -1,12 +1,13 @@
 <root>
 	<file>./TODO-Fedora9</file>
 	<group name='ISO-builder' expanded='TRUE'>
+		<file>./ahead-of-building-check-machine.pl</file>
 		<file>./build-eeedora.bash</file>
 		<file>./eeedora.ks</file>
 		<file>./eeedora.ks.include-xorg-tidy</file>
 		<file>./copy-to-usb.bash</file>
 	</group>
-	<group name='Setup-old' expanded='FALSE'>
+	<group name='Setup-old' expanded='TRUE'>
 		<file>./eee-setup/build-eee_tarball_RPM</file>
 		<file>./eee-setup/create-eee_splash_RPM</file>
 		<file>./eee-setup/eee_splash.spec</file>
@@ -17,7 +18,7 @@
 	<group name='RPM-builder' expanded='TRUE'>
 		<file>./generate-rpms/build_generic_rpm</file>
 		<file>./generate-rpms/rebuild_all_rpms</file>
-		<group name='wicd' expanded='TRUE'>
+		<group name='wicd' expanded='FALSE'>
 			<file>./generate-rpms/wicd/wicd.spec</file>
 			<file>./generate-rpms/wicd/README</file>
 			<file>./generate-rpms/wicd/rpmbuild.log</file>
@@ -31,14 +32,18 @@
 			<file>./generate-rpms/truecrypt/truecrypt.spec</file>
 			<file>./generate-rpms/truecrypt/README</file>
 		</group>
-		<group name='eee-acpi' expanded='TRUE'>
+		<group name='eee-acpi' expanded='FALSE'>
 			<file>./generate-rpms/eee-acpi/eee-acpi.spec.base</file>
 			<file>./generate-rpms/eee-acpi/Makefile</file>
 			<file>./generate-rpms/eee-acpi/rpmbuild.log</file>
 		</group>
-		<group name='scitepm' expanded='TRUE'>
+		<group name='scitepm' expanded='FALSE'>
 			<file>./generate-rpms/scitepm/scitepm.spec</file>
 			<file>./generate-rpms/scitepm/rpmbuild.log</file>
+		</group>
+		<group name='eee-user-defaults' expanded='TRUE'>
+			<file>./generate-rpms/eee-user-defaults/eee-user-defaults.spec.base</file>
+			<file>./generate-rpms/eee-user-defaults/Makefile</file>
 		</group>
 	</group>
 </root>
