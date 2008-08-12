@@ -5,9 +5,7 @@
 ./build_generic_rpm scitepm
 ./build_generic_rpm eee-acpi
 ./build_generic_rpm truecrypt
-
-# ./build_generic_rpm eee-user-defaults
-#  = /etc/skel *
+./build_generic_rpm eee-user-defaults
 
 # Elsewhere
 #  - /etc/sysconfig/desktop

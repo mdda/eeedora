@@ -406,8 +406,12 @@ eee_splash
 # And now our new stuff
 eee-madwifi
 eee-acpi
+eee-user-defaults
 scitepm
 wicd
+
+# Include for now - may get replaced by pure encfs
+truecrypt
 
 
 
@@ -482,7 +486,7 @@ echo "#\n# Start Camera on startup" >> /etc/rc.local
 echo "echo 1 > /proc/acpi/asus/camera" >> /etc/rc.local 
 
 # ShowProgress "Install the truecrypt kernel module - and main function"
-# ShowProgress "Install the truecrypt main function"
+# ShowProgress "Install the truecrypt main function (now uses fuse)"
 # ${setup}/truecrypt/install-truecrypt ${setup}
 
 ShowProgress "Fixing snd module removal to enable clean power-down"
