@@ -5,11 +5,9 @@ all:	bash xfce firefox scite
 	@echo "Built '$${RPM_BUILD_ROOT}'" ;
 
 bash:
-	@echo "Building /etc/skel/.bash_profile etc" ; \
-	mkdir -p root/etc/skel ; \
-	cp /etc/skel/.bash_profile root/etc/skel/ ; \
-	cat sources/xfce/autologin-appendto-dot-bash_profile >> root/etc/skel/.bash_profile
-
+	@echo "Building /etc/skel/.bash_profile etc -- append in bash_install" ; \
+	mkdir -p root/etc/skel ; 
+	
 xfce:
 	@echo "Building /etc/skel/.xfce etc" ; \
 	cp sources/xfce/dot-xsession root/etc/skel/.xsession ; \
@@ -23,7 +21,7 @@ xfce:
 
 firefox:
 	@echo "Building /etc/skel/.mozilla" ; \
-	tar -xzf sources/firefox/firefox.tar.gz -C root/etc/skel/
+	tar -xzf sources/firefox/firefox.tar.gz -C root/etc/skel/ ; 
 
 # NB : Create beautiful Firefox settings dump with :
 # tar -czf firefox.tar.gz /home/eeedora/.mozilla
@@ -35,10 +33,15 @@ scite:
 
 # ,filesearch,tabs} 
 
-install:
+install: bash_install
 	@echo "Installing eee-user-defaults ...." ; \
 	mkdir -p $${RPM_BUILD_ROOT} ; \
 	cp -R root/* $${RPM_BUILD_ROOT}/
+
+bash_install:
+	mkdir -p $${RPM_BUILD_ROOT}/etc/skel ; \
+	if [ -f $${RPM_BUILD_ROOT}/etc/skel/.bash_profile ]; then cat sources/xfce/autologin-appendto-dot-bash_profile >> $${RPM_BUILD_ROOT}/etc/skel/.bash_profile; fi;
+
 
 # Make a tarball for distribution (good for RPM spec'ing)
 tarball:

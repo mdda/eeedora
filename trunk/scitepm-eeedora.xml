@@ -4,10 +4,11 @@
 		<file>./ahead-of-building-check-machine.pl</file>
 		<file>./build-eeedora.bash</file>
 		<file>./eeedora.ks</file>
+		<file>./eee-setup/services/eeedora-firstboot</file>
 		<file>./eeedora.ks.include-xorg-tidy</file>
 		<file>./copy-to-usb.bash</file>
 	</group>
-	<group name='Setup-old' expanded='TRUE'>
+	<group name='Setup-old' expanded='FALSE'>
 		<file>./eee-setup/build-eee_tarball_RPM</file>
 		<file>./eee-setup/create-eee_splash_RPM</file>
 		<file>./eee-setup/eee_splash.spec</file>
