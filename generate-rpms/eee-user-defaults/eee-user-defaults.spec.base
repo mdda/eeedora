@@ -53,7 +53,7 @@ Packager:  %packer
 Group:     System
 Source0:  	%{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
-#Requires: acpid
+Requires: 	bash
 Provides:	 eee-user-defaults
 
 %description
@@ -86,7 +86,7 @@ make install
 %defattr(-,root,root)
 /etc/skel/.xinitrc
 /etc/skel/.xsession
-/etc/skel/.bash_profile
+# /etc/skel/.bash_profile
 /etc/skel/.mozilla/*
 /etc/skel/.SciTEUser.properties
 /etc/skel/.config/*
