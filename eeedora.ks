@@ -100,7 +100,7 @@ patch
 
 yum
 yum-fastestmirror
-yum-skip-broken
+# yum-skip-broken # Not needed any more in F9
 
 openssh-clients
 openssh-server
