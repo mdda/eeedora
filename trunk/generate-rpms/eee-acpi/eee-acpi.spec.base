@@ -78,20 +78,20 @@ cp -R root/* %{buildroot}/
 [ "${RPM_BUILD_ROOT}" != "/" ] && rm -rf ${RPM_BUILD_ROOT}
 
 %post
-aa=/etc/sysconfig/modules/eee-acpi.modules
+aa=${RPM_BUILD_ROOT}/etc/sysconfig/modules/eee-acpi.modules
 echo "#\n# Force asus_acpi_eee to load" >> ${aa} 
 echo "/sbin/modprobe eeepc" >> ${aa}
 chmod 755 ${aa}
 
 /sbin/chkconfig acpid on
-/sbin/service acpid start
+# /sbin/service acpid start
 
-#echo "modprobe eeepc" >> /etc/rc.local
-/sbin/modprobe eeepc
+echo "modprobe eeepc" >> ${RPM_BUILD_ROOT}/etc/rc.local
+#/sbin/modprobe eeepc
 
 
 # This is a back-light fix...  Shouldn't really be here
-aa=/usr/lib/pm-utils/sleep.d/99video
+aa=${RPM_BUILD_ROOT}/usr/lib/pm-utils/sleep.d/99video
 echo 'lastbrn=`</sys/devices/platform/eeepc/brn`' >> ${aa}
 echo 'echo $lastbrn  > /sys/devices/platform/eeepc/brn' >> ${aa}
 
