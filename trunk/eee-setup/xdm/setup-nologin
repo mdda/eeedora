@@ -27,7 +27,9 @@ if ! [ 1 ]; then
 	sed -i -e 's|^6:2345:respawn:/sbin/mingetty tty6$|6:2345:respawn:/usr/bin/openvt -fwc 2 -- /bin/su - '${liveuser}' -c '${eee_startx}' >\& /dev/null|' /etc/inittab
 else
 	# append to bash_profile - this includes a powerdown, so that the 'liveuser' can logout=switch off
-	cat ${setup}/xdm/autologin-appendto-dot-bash_profile >> /home/${liveuser}/.bash_profile
+
+# Removed solely because it's being done (cross-fingers) in eee-user-defaults
+# cat ${setup}/xdm/autologin-appendto-dot-bash_profile >> /home/${liveuser}/.bash_profile
 
 	# This one uses .bash_profile
 	sed -i -e 's|^6:2345:respawn:/sbin/mingetty tty6$|c7:12345:respawn:/sbin/mingetty --autologin='${liveuser}' tty7|' /etc/inittab

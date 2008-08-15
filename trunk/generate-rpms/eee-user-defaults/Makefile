@@ -29,18 +29,25 @@ firefox:
 
 scite:
 	@echo "Building /etc/skel/.SciTEUser.properties" ; \
-	cat sources/scite/scite.monospaced >> root/etc/skel/.SciTEUser.properties ;
+	cat sources/scite/scite.{monospaced,filesearch,tabs} >> root/etc/skel/.SciTEUser.properties ;
 
-# ,filesearch,tabs} 
 
-install: bash_install
-	@echo "Installing eee-user-defaults ...." ; \
+# INSTALLER - into RPM_BUILD_ROOT
+
+install: bash_install pulse_audio_fix
+	@echo "Installing eee-user-defaults ..." ; \
 	mkdir -p $${RPM_BUILD_ROOT} ; \
 	cp -R root/* $${RPM_BUILD_ROOT}/
 
 bash_install:
+	@echo "Installing bash_install script ..." ; \
 	mkdir -p $${RPM_BUILD_ROOT}/etc/skel ; \
-	if [ -f $${RPM_BUILD_ROOT}/etc/skel/.bash_profile ]; then cat sources/xfce/autologin-appendto-dot-bash_profile >> $${RPM_BUILD_ROOT}/etc/skel/.bash_profile; fi;
+#	if [ -f $${RPM_BUILD_ROOT}/etc/skel/.bash_profile ]; then cat sources/xfce/autologin-appendto-dot-bash_profile >> $${RPM_BUILD_ROOT}/etc/skel/.bash_profile; fi; \
+ cat sources/xfce/autologin-appendto-dot-bash_profile >> $${RPM_BUILD_ROOT}/etc/skel/.bash_profile_xfce; 
+
+pulse_audio_fix:
+	# NOP - have a look at eee-setup/misc/fix-pulseaudio if a fix is required
+
 
 
 # Make a tarball for distribution (good for RPM spec'ing)

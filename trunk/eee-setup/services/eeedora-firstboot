@@ -183,8 +183,9 @@ ${setup}/xdm/setup-display-manager ${setup} ${liveuser}
 #ShowProgress "Set up XFCE for '${liveuser}'"
 #${setup}/xfce/setup-xfce ${setup} ${liveuser}
 
-ShowProgress "Start up pulseaudio for '${liveuser}'"
-${setup}/misc/fix-pulseaudio ${setup} ${liveuser}
+# Trying to do without...
+#ShowProgress "Start up pulseaudio for '${liveuser}'"
+#${setup}/misc/fix-pulseaudio ${setup} ${liveuser}
 
 ShowProgress "Fix up truecrypt sudo for '${liveuser}'"
 ${setup}/truecrypt/sudo-truecrypt-fix ${setup} ${liveuser}

@@ -53,7 +53,8 @@ Packager:  %packer
 Group:     System
 Source0:  	%{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
-Requires: 	bash
+Requires: 	bash, firefox, scite
+Requires:  /etc/skel/.bash_profile
 Provides:	 eee-user-defaults
 
 %description
@@ -74,11 +75,9 @@ make install
 [ "${RPM_BUILD_ROOT}" != "/" ] && rm -rf ${RPM_BUILD_ROOT}
 
 %post
-#aa=/etc/sysconfig/modules/eee-acpi.modules
-#echo "#\n# Force asus_acpi_eee to load" >> ${aa} 
-#echo "/sbin/modprobe eeepc" >> ${aa}
-#chmod 755 ${aa}
-
+aa=${RPM_BUILD_ROOT}/etc/skel/.bash_profile
+echo "#\n# This was added by eee-user-defaults RPM %post" >> ${aa} 
+echo "./.bash_profile_xfce\n" >> ${aa} 
 
 %postun
 
@@ -86,7 +85,7 @@ make install
 %defattr(-,root,root)
 /etc/skel/.xinitrc
 /etc/skel/.xsession
-# /etc/skel/.bash_profile
+/etc/skel/.bash_profile_xfce
 /etc/skel/.mozilla/*
 /etc/skel/.SciTEUser.properties
 /etc/skel/.config/*

@@ -19,7 +19,7 @@
 	<group name='RPM-builder' expanded='TRUE'>
 		<file>./generate-rpms/build_generic_rpm</file>
 		<file>./generate-rpms/rebuild_all_rpms</file>
-		<group name='wicd' expanded='FALSE'>
+		<group name='wicd' expanded='TRUE'>
 			<file>./generate-rpms/wicd/wicd.spec</file>
 			<file>./generate-rpms/wicd/README</file>
 			<file>./generate-rpms/wicd/rpmbuild.log</file>
@@ -45,6 +45,7 @@
 		<group name='eee-user-defaults' expanded='TRUE'>
 			<file>./generate-rpms/eee-user-defaults/eee-user-defaults.spec.base</file>
 			<file>./generate-rpms/eee-user-defaults/Makefile</file>
+			<file>./generate-rpms/eee-user-defaults/VERSION</file>
 		</group>
 	</group>
 </root>
