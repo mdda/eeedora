@@ -13,8 +13,18 @@ Group:  System Environment/Base
 BuildRoot: %{_buildroot}
 #BuildArch: noarch
 BuildArch: i386
-BuildRequires : python-devel
-Requires: python chkconfig dbus dhclient
+BuildRequires: python-devel
+# BuildRequires: rpm-pythonprov
+# BuildRequires: rpmbuild(macros) >= 1.228
+Requires(post,preun):  /sbin/chkconfig
+Requires: python, dbus, dhclient
+Requires: dbus-python
+#Requires: python-pygobject
+#Requires: python-pygtk-glade
+Requires: pygtk2-libglade
+#Requires: python-pygtk-gtk
+Requires: pygtk2
+Requires: /sbin/restorecon
 
 %description
 wicd was started because of the lack of useful, functional wireless network
@@ -25,14 +35,21 @@ networks as an added bonus.
 # %setup -q -c
 %setup -q
 # %patch0 -p1
-python setup.py configure
+%{__python} setup.py configure
+
+%build
+%{__python} setup.py build
 
 %install
 # [ -d "$RPM_BUILD_ROOT" -a "$RPM_BUILD_ROOT" != "/" ] && rm -rf $RPM_BUILD_ROOT
 # mkdir $RPM_BUILD_ROOT
 # cp -pr * $RPM_BUILD_ROOT
 # cd $RPM_BUILD_ROOT/
-python setup.py install --root=$RPM_BUILD_ROOT
+%{__python} setup.py install --root=$RPM_BUILD_ROOT --optimize=2
+# %py_ocomp $RPM_BUILD_ROOT%{py_sitedir}
+# %py_comp $RPM_BUILD_ROOT%{py_sitedir}
+# %py_postclean
+
 #gunzip $RPM_BUILD_ROOT/usr/share/man/man8/wicd*.8.gz
 #gunzip $RPM_BUILD_ROOT/usr/share/man/man5/wicd*.5.gz
 
@@ -51,7 +68,7 @@ if [ -x /usr/lib/lsb/install_initd ]; then
 elif [ -x /sbin/chkconfig ]; then
 	/sbin/chkconfig --add ${init_script}
 	/sbin/chkconfig --level 345 ${init_script} on
-	/sbin/service ${init_script} start
+#	/sbin/service ${init_script} start
 else
 	for i in 2 3 4 5; do
 		ln -sf /etc/init.d/${init_script} /etc/rc.d/rc${i}.d/S28${init_script}
