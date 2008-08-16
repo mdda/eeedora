@@ -76,8 +76,10 @@ make install
 
 %post
 aa=${RPM_BUILD_ROOT}/etc/skel/.bash_profile
-echo "#\n# This was added by eee-user-defaults RPM %post" >> ${aa} 
-echo "./.bash_profile_xfce\n" >> ${aa} 
+echo "" >> ${aa} 
+echo "# This was added by eee-user-defaults RPM %post" >> ${aa} 
+echo "./.bash_profile_xfce" >> ${aa} 
+echo "" >> ${aa} 
 
 %postun
 
