@@ -83,14 +83,14 @@ aa=${RPM_BUILD_ROOT}/etc/sysconfig/modules
 mkdir -p ${aa}
 echo "#" >> ${aa}/eee-acpi.modules
 echo "# Force asus_acpi_eee to load" >> ${aa}/eee-acpi.modules
-echo "/sbin/modprobe eeepc" >> ${aa}/eee-acpi.modules
+echo "/sbin/modprobe eeepc-laptop" >> ${aa}/eee-acpi.modules
 echo "#" >> ${aa}/eee-acpi.modules
 chmod 755 ${aa}/eee-acpi.modules
 
 /sbin/chkconfig acpid on
 # /sbin/service acpid start
 
-echo "modprobe eeepc" >> ${RPM_BUILD_ROOT}/etc/rc.local
+echo "/sbin/modprobe eeepc-laptop" >> ${RPM_BUILD_ROOT}/etc/rc.local
 #/sbin/modprobe eeepc
 
 
