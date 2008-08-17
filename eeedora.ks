@@ -440,8 +440,8 @@ ln -s ${setup_temp} ${setup}
 ShowProgress "Unwrapped into ${setup_temp} to ${setup}"
 # Now we're in the 'regular' situation, with un-versioned file locations
 
-ShowProgress "Blacklist the ath5k kernel module"
-${setup}/ath/blacklist-ath5k ${setup}
+# ShowProgress "Blacklist the ath5k kernel module"
+# ${setup}/ath/blacklist-ath5k ${setup}
 
 ShowProgress "Turn off SELINUX on the Eee"
 ${setup}/misc/selinux-off ${setup}

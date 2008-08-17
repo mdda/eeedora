@@ -47,6 +47,7 @@ Source0:  madwifi-hal-0.10.5.6-r3835-20080801.tar.gz
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 Requires: /sbin/depmod
+Requires: /etc/modprobe.d/blacklist
 BuildRequires: /sbin/depmod
 
 #Requires: %{name}-module >= %{version}
@@ -136,12 +137,15 @@ rm -rf %{buildroot}
 mkdir -p  %{buildroot}/usr/bin
 mkdir -p  %{buildroot}/$KMODPATH
 mkdir -p  %{buildroot}/usr/share/madwifi
+mkdir -p  %{buildroot}/etc
+mkdir -p  %{buildroot}/etc/modprobe.d
 
 make install DESTDIR=%{buildroot} KERNELPATH=/lib/modules/%{mykversion}.%{mykarch}/build BINDIR=/usr/bin MANDIR=/usr/share/man 
 cd tools ; make install DESTDIR=%{buildroot} KERNELPATH=/lib/modules/%{mykversion}/build BINDIR=/usr/bin MANDIR=/usr/share/man  ; cd ..
 
 %post  module
 mp=%{buildroot}/etc/modprobe.conf
+touch ${mp}
 echo "#" >> ${mp}
 echo "# Added for EeeDora setup : ath" >> ${mp}
 echo "alias wifi0 ath_pci" >> ${mp}
@@ -149,6 +153,14 @@ echo "alias ath0 ath_pci" >> ${mp}
 echo "options ath_pci autocreate=sta" >> ${mp}
 echo "# Added after ath setup " >> ${mp}
 echo "#" >> ${mp}
+
+mp=%{buildroot}/etc/modprobe.d/blacklist
+touch ${mp}
+echo "" >> ${mp}
+echo "# Added for EeeDora setup" >> ${mp}
+echo "blacklist ath5k" >> ${mp}
+echo "" >> ${mp}
+
 /sbin/depmod -ae %{mykversion}.%{mykarch}
 
 %postun  module
