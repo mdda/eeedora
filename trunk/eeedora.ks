@@ -419,10 +419,10 @@ truecrypt
 ShowProgress() {
 # echo $"$1" >> /etc/eeedora.progress
 # Also show this on the console when building the image (host machine)
- echo $"live-kickstart :"`date +%F_%H-%M`" : $1" >> /etc/eeedora.progress
- echo $"live-kickstart :"`date +%F_%H-%M`" : $1"
+ echo $"eeedora-ks   :"`date +%F_%H-%M`" : $1" >> /etc/eeedora.progress
+ echo $"eeedora-ks   :"`date +%F_%H-%M`" : $1"
 }
-ShowProgress "Start of Live Kickstart script"
+ShowProgress "Start of EeeDora Kickstart script"
 
 # This is on the machine that's doing the ISO image building...
 # However, the eee_setup rpm has been installed, so there's 

@@ -47,6 +47,9 @@ if [ "$answer1" = "yes" ] ; then
 	# See : http://fedoraproject.org/wiki/FedoraLiveCD/USBHowTo
 	usbcopystart=`${dt}`
 
+ # This is to allow the USB to mount if you just inserted it (sloppy, I know)
+ sleep 5
+
 	/usr/bin/livecd-iso-to-disk --overlay-size-mb 128 ${eeedora_iso} ${usbpart}
 
 #	mkdir ${usbmount}

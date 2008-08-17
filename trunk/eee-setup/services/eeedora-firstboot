@@ -14,6 +14,10 @@ ShowProgress() {
  echo $"eeedora-init :"`date +%F_%H-%M`" : $1" >> /etc/eeedora.progress
 }
 
+DoNotStart() {
+ if [ -f /etc/init.d/$1 ]; then chkconfig --level 345 $1 off; fi
+}
+
 ShowProgress "Loading /etc/init.d/functions"
 . /etc/init.d/functions
 
@@ -34,8 +38,7 @@ fi
 ShowProgress "Touching ${configured}"
 touch ${configured}
 
-# Ok, so this is certainly the first time run here 
-# Is this is a live install ?
+# Ok, so this is certainly the first time run here # Is this is a live install ?
 
 #if ! strstr "`cat /proc/cmdline`" liveimg || [ "$1" != "start" ] || [ -e /.liveimg-configured ] ; then
 
@@ -135,15 +138,16 @@ ShowProgress "Don't start cron/at as they tend to be painful in a Live context"
 # don't start cron/at as they tend to spawn things which are
 # disk intensive that are painful on a live image
 if ${live}; then 
- chkconfig --level 345 crond off
- chkconfig --level 345 atd off
- chkconfig --level 345 anacron off
- chkconfig --level 345 readahead_early off
- chkconfig --level 345 readahead_later off
+ DoNotStart "crond"
+ DoNotStart "atd"
+ DoNotStart "anacron"
+ DoNotStart "readahead_early"
+ DoNotStart "readahead_later"
+# chkconfig --level 345 readahead_later off
 fi
 # This one screws up wifi-radar and wicd - which is/are better at managing the wifi
 ShowProgress "Don't start NetworkManager"
-chkconfig --level 345 NetworkManager off
+DoNotStart "NetworkManager"
 
 ShowProgress "Stopgap fix for RH #217966; should be fixed in HAL instead"
 touch /media/.hal-mtab
@@ -224,8 +228,8 @@ fi
 # TODO : 
 # Installed the ‘Littlefox’ theme into FireFox (takes up much less screen real-estate)
 
-ShowProgress "Allow '${liveuser}' to automount USB plugin drives"
-${setup}/services/automount-volumes_hal-fix ${setup} ${liveuser}
+# ShowProgress "Allow '${liveuser}' to automount USB plugin drives"
+# ${setup}/services/automount-volumes_hal-fix ${setup} ${liveuser}
 
 ShowProgress "Set up the hotkey App for '${liveuser}'"
 app=${livehome}/.hotkey-app
@@ -237,9 +241,9 @@ chmod 755 ${app}
 
 # Do this permission setting last - 
 
-ShowProgress "Set User permissions - Can be removed once the ui hacks have gone"
-chown -R ${liveuser}:${liveuser} ${livehome}/
-chmod 700 ${livehome}/
+#ShowProgress "Set User permissions - Can be removed once the ui hacks have gone"
+#chown -R ${liveuser}:${liveuser} ${livehome}/
+#chmod 700 ${livehome}/
 
 ShowProgress "/sbin/restorecon for ${liveuser} home directory"
 /sbin/restorecon -R ${livehome}/
