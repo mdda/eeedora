@@ -30,12 +30,21 @@ $rpms .= qq(
  SDL SDL-devel
 
 # For wicd
- python-devel
-	python chkconfig dbus dhclient
+	dhclient 
+	chkconfig 
+ python-devel 
+	python dbus dbus-python 
+	pygtk2-libglade pygtk2
  
 # For scitepm
  gtk2-devel glib2-devel
 	scite glib2
+	
+# For eee-user-defaults
+	bash firefox scite
+	
+# For madwifi 
+ module-init-tools hwdata
 
 );
 

@@ -54,8 +54,10 @@ Group:     System
 Source0:  	%{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 Requires: 	bash, firefox, scite
-Requires:  /etc/skel/.bash_profile
 Provides:	 eee-user-defaults
+
+# This is ensured by dependency on bash
+#Requires:  /etc/skel/.bash_profile
 
 %description
 This package creates the /etc/skel structure to make things start up nicely.

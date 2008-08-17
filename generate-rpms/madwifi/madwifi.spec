@@ -47,8 +47,11 @@ Source0:  madwifi-hal-0.10.5.6-r3835-20080801.tar.gz
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 Requires: /sbin/depmod
-Requires: /etc/modprobe.d/blacklist
 BuildRequires: /sbin/depmod
+
+# These are so that /etc/modprobe.conf and /etc/modprobe.d/blacklist exist
+Requires: module-init-tools
+Requires: hwdata
 
 #Requires: %{name}-module >= %{version}
 Requires: eee-%{name}-module >= %{version}
