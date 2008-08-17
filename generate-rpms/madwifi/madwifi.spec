@@ -28,7 +28,7 @@ Summary: A linux device driver for Atheros chipsets (ar5210, ar5211, ar5212).
 Name: madwifi
 # Version: 0.%{revision}.%{snapshot}
 Version: 0.9.4
-Release: eee_1
+Release: eee_2
 License: GPL2
 Group: System Environment/Kernel
 URL: http://madwifi.org
@@ -146,36 +146,48 @@ mkdir -p  %{buildroot}/etc/modprobe.d
 make install DESTDIR=%{buildroot} KERNELPATH=/lib/modules/%{mykversion}.%{mykarch}/build BINDIR=/usr/bin MANDIR=/usr/share/man 
 cd tools ; make install DESTDIR=%{buildroot} KERNELPATH=/lib/modules/%{mykversion}/build BINDIR=/usr/bin MANDIR=/usr/share/man  ; cd ..
 
-%post  module
-mp=%{buildroot}/etc/modprobe.conf
+%post module
+/sbin/depmod -ae %{mykversion}.%{mykarch}
+
+%postun module
+/sbin/depmod -ae %{mykversion}.%{mykarch}
+
+# This applies to madwifi generally
+%post 
+
+mp=${RPM_BUILD_ROOT}/etc/modprobe.d/ath
 touch ${mp}
-echo "#" >> ${mp}
+echo "" >> ${mp}
 echo "# Added for EeeDora setup : ath" >> ${mp}
 echo "alias wifi0 ath_pci" >> ${mp}
 echo "alias ath0 ath_pci" >> ${mp}
 echo "options ath_pci autocreate=sta" >> ${mp}
 echo "# Added after ath setup " >> ${mp}
-echo "#" >> ${mp}
+echo "" >> ${mp}
 
-mp=%{buildroot}/etc/modprobe.d/blacklist
+#mp=${RPM_BUILD_ROOT}/etc/modprobe.conf
+#touch ${mp}
+#echo "" >> ${mp}
+#echo "# Added for EeeDora setup : ath" >> ${mp}
+#echo "alias wifi0 ath_pci" >> ${mp}
+#echo "alias ath0 ath_pci" >> ${mp}
+#echo "options ath_pci autocreate=sta" >> ${mp}
+#echo "# Added after ath setup " >> ${mp}
+#echo "" >> ${mp}
+
+mp=$RPM_BUILD_ROOT/etc/modprobe.d/blacklist
 touch ${mp}
 echo "" >> ${mp}
 echo "# Added for EeeDora setup" >> ${mp}
 echo "blacklist ath5k" >> ${mp}
 echo "" >> ${mp}
 
-/sbin/depmod -ae %{mykversion}.%{mykarch}
-
-%postun  module
-/sbin/depmod -ae %{mykversion}.%{mykarch}
 
 %clean 
 rm -rf %{buildroot}
 
 %files
 %doc COPYRIGHT README INSTALL THANKS 
-# %attr(0755,root,root) /usr/bin/*
-# %attr(0644,root,root) /usr/local/man/*
 %attr(0755,root,root) /usr/bin/*
 %attr(0644,root,root) /usr/share/man/*
 
