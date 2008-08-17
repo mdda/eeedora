@@ -121,7 +121,7 @@ export KMODPATH=/lib/modules/%{mykversion}.%{mykarch}/net
 export COPTS="-I /lib/modules/%{mykversion}.%{mykarch}/build/include/ $COPTS"
 # export ATH_RATE=ath_rate/onoe
 make 
-# cd tools ; make all ; cd ..
+cd tools ; make all ; cd ..
 
 %install 
 export KERNELRELEASE=%{mykversion}.%{mykarch}
@@ -138,9 +138,17 @@ mkdir -p  %{buildroot}/$KMODPATH
 mkdir -p  %{buildroot}/usr/share/madwifi
 
 make install DESTDIR=%{buildroot} KERNELPATH=/lib/modules/%{mykversion}.%{mykarch}/build BINDIR=/usr/bin MANDIR=/usr/share/man 
-# cd tools ; make install DESTDIR=%{buildroot} KERNELPATH=/lib/modules/%{mykversion}/build BINDIR=/usr/local/bin  ; cd ..
+cd tools ; make install DESTDIR=%{buildroot} KERNELPATH=/lib/modules/%{mykversion}/build BINDIR=/usr/bin MANDIR=/usr/share/man  ; cd ..
 
 %post  module
+mp=%{buildroot}/etc/modprobe.conf
+echo "#" >> ${mp}
+echo "# Added for EeeDora setup : ath" >> ${mp}
+echo "alias wifi0 ath_pci" >> ${mp}
+echo "alias ath0 ath_pci" >> ${mp}
+echo "options ath_pci autocreate=sta" >> ${mp}
+echo "# Added after ath setup " >> ${mp}
+echo "#" >> ${mp}
 /sbin/depmod -ae %{mykversion}.%{mykarch}
 
 %postun  module
@@ -151,8 +159,8 @@ rm -rf %{buildroot}
 
 %files
 %doc COPYRIGHT README INSTALL THANKS 
-#%attr(0755,root,root) /usr/local/bin/*
-#%attr(0644,root,root) /usr/local/man/*
+# %attr(0755,root,root) /usr/bin/*
+# %attr(0644,root,root) /usr/local/man/*
 %attr(0755,root,root) /usr/bin/*
 %attr(0644,root,root) /usr/share/man/*
 

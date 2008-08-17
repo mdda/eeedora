@@ -56,6 +56,7 @@ networks as an added bonus.
 #cd $RPM_BUILD_ROOT/opt/wicd/data
 #rm -f wicd.log
 #ln -sf /var/log/wicd.log .
+echo "" >> $RPM_BUILD_ROOT/var/log/wicd/wicd.log
 
 %clean
 [ -d "$RPM_BUILD_ROOT" -a "$RPM_BUILD_ROOT" != "/" ] && rm -rf $RPM_BUILD_ROOT
@@ -127,6 +128,7 @@ fi
 /etc/acpi/suspend.d/50-wicd-suspend.sh
 /usr/share/locale/*/LC_MESSAGES/wicd.mo
 /usr/lib/python2.5/site-packages/Wicd-1.5.0-py2.5.egg-info
+/var/log/wicd/wicd.log
 
 %changelog
 * Sun Jul 6 2008 Martin Andrews <EeeDora@PLATFORMedia.com> 1.4.2-1
