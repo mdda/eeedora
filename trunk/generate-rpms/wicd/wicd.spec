@@ -78,6 +78,14 @@ else
 		ln -sf /etc/init.d/${init_script} /etc/rc.d/rc${i}.d/K89${init_script}
 	done
 fi
+
+mp=%{buildroot}/etc/rc.local
+touch ${mp}
+echo "" >> ${mp}
+echo "# Added so that wicd can write a log file harmlessly" >> ${mp}
+echo "mkdir -p /var/log/wicd" >> ${mp}
+echo "" >> ${mp}
+
 /sbin/restorecon /var/log/wicd.log
 
 
