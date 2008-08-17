@@ -12,11 +12,17 @@ rpmver=`echo "${kver}" | sed 's|^\(.*\)-.*|\1|'`
 rpmrelease=`echo "${kver}" | sed -e 's|.*-\(.*\)$|\1|'`
 
 # This is for when there are several releases for the same kernel version
-rpmminor='.01'
+rpmminor='.02'
 rpmrelease=${rpmrelease}${rpmminor}
 
 echo "RPM ver='${rpmver}', release='${rpmrelease}'"
 #exit 1
+
+if [ `id -u` != 0 ]; then
+ echo "Must be root to build this one"
+	exit 0
+fi
+
 
 rpmname=eee_tarball
 rpmln=eee-setup
@@ -132,7 +138,7 @@ tar -tzf ${rpmname}-${rpmver}/eee-setup.tar.gz | sort | tee eee_tarball.listing
 echo "---GOING INTO THE TARBALL ----  END"
 rm -rf ${rpmdir}
 
-# Now adjust the spec file to match the version numbers :
+echo "Now adjust the spec file to match the version numbers"
 spec=${rpmname}-${rpmver}/${rpmname}.spec
 sed -i \
   -e 's|^Version\:.*$|Version: '${rpmver}'|' \
@@ -140,12 +146,17 @@ sed -i \
 		-e 's|^Source0\:.*$|Source0: '${rpmname}'-'${rpmver}'.tar.gz|' \
   ${spec}
 
-# Make the RPM build directory into an RPM
+echo "Make the RPM build directory into an RPM - tar up sources"
 tar -czf ${rpmname}-${rpmver}.tar.gz ${rpmname}-${rpmver}
+echo "Make the RPM build directory into an RPM - build rpm"
 rpmbuild -tb ${rpmname}-${rpmver}.tar.gz 
+
+echo "Cleanup"
 rm -f ${rpmname}-${rpmver}.tar.gz
 rm -rf ${rpmname}-${rpmver}
 
 cp /usr/src/redhat/RPMS/i386/${rpmname}-${rpmver}-${rpmrelease}.i386.rpm .
 cp /usr/src/redhat/RPMS/i386/${rpmname}-${rpmver}-${rpmrelease}.i386.rpm ../rpms-for-eee/i386/
-#rm -f ../yum-cache/  # actually, no need, since it doesn't seem to cache already-local files
+
+# actually, no need, since it doesn't seem to cache already-local files
+#rm -f ../yum-cache/  

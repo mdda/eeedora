@@ -162,6 +162,12 @@ gconftool-2 --direct --config-source=xml:readwrite:/etc/gconf/gconf.xml.defaults
 ShowProgress "Fix sound devices for pulseaudio"
 echo "chmod -R a+rwx /dev/snd" >> /etc/rc.local 
 
+ShowProgress "Create path for wicd to write log to"
+mkdir -p /var/log/wicd
+# Hopefully this is before wicd tries to start up for the first time
+
+
+
 #
 # Now do all the stuff for the special new eeedora user
 #
@@ -171,6 +177,9 @@ echo "chmod -R a+rwx /dev/snd" >> /etc/rc.local
 ShowProgress "Add '${liveuser}' user with no passwd"
 useradd -c "Eeedora Live" ${liveuser} 
 passwd -d ${liveuser} > /dev/null
+
+# In case this group doesn't exist already...
+groupadd --system fuse 
 
 # Enable this user to use 'fuse' (for encfs, etc)
 usermod -a -G fuse ${liveuser} 
