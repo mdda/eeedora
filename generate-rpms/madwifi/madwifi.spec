@@ -155,7 +155,7 @@ cd tools ; make install DESTDIR=%{buildroot} KERNELPATH=/lib/modules/%{mykversio
 # This applies to madwifi generally
 %post 
 
-mp=${RPM_BUILD_ROOT}/etc/modprobe.d/ath
+mp=${RPM_BUILD_ROOT}/etc/modprobe.d/ath_pci
 touch ${mp}
 echo "" >> ${mp}
 echo "# Added for EeeDora setup : ath" >> ${mp}
