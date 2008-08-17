@@ -34,7 +34,7 @@ scite:
 
 # INSTALLER - into RPM_BUILD_ROOT
 
-install: bash_install pulse_audio_fix
+install: bash_install pulse_audio_fix plugdev_fix
 	@echo "Installing eee-user-defaults ..." ; \
 	mkdir -p $${RPM_BUILD_ROOT} ; \
 	cp -R root/* $${RPM_BUILD_ROOT}/
@@ -42,12 +42,13 @@ install: bash_install pulse_audio_fix
 bash_install:
 	@echo "Installing bash_install script ..." ; \
 	mkdir -p $${RPM_BUILD_ROOT}/etc/skel ; \
-#	if [ -f $${RPM_BUILD_ROOT}/etc/skel/.bash_profile ]; then cat sources/xfce/autologin-appendto-dot-bash_profile >> $${RPM_BUILD_ROOT}/etc/skel/.bash_profile; fi; \
  cat sources/xfce/autologin-appendto-dot-bash_profile >> $${RPM_BUILD_ROOT}/etc/skel/.bash_profile_xfce; 
 
 pulse_audio_fix:
 	# NOP - have a look at eee-setup/misc/fix-pulseaudio if a fix is required
 
+plugdev_fix:
+	# NOP - have a look at eee-setup/services/automount-hal-volumes-fix if a fix is required
 
 
 # Make a tarball for distribution (good for RPM spec'ing)

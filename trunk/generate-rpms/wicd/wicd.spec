@@ -79,7 +79,10 @@ else
 	done
 fi
 
-mp=%{buildroot}/etc/rc.local
+# Creation of /var/log/wicd also done in eeedora-firstboot (due to tmpfs mounting)
+mkdir -p $RPM_BUILD_ROOT/var/log/wicd
+
+mp=$RPM_BUILD_ROOT/etc/rc.local
 touch ${mp}
 echo "" >> ${mp}
 echo "# Added so that wicd can write a log file harmlessly" >> ${mp}
