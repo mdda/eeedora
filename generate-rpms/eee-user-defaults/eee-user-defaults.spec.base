@@ -87,7 +87,7 @@ echo "" >> ${aa}
 %defattr(-,root,root)
 /etc/skel/.xinitrc
 /etc/skel/.xsession
-/etc/skel/.bash_profile_xfce
+%attr(0755,root,root) /etc/skel/.bash_profile_xfce
 /etc/skel/.mozilla/*
 /etc/skel/.SciTEUser.properties
 /etc/skel/.config/*
