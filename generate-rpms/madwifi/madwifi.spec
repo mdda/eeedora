@@ -157,13 +157,10 @@ cd tools ; make install DESTDIR=%{buildroot} KERNELPATH=/lib/modules/%{mykversio
 
 mp=${RPM_BUILD_ROOT}/etc/modprobe.d/ath_pci
 touch ${mp}
-echo "" >> ${mp}
-echo "# Added for EeeDora setup : ath" >> ${mp}
+echo "# Added by EeeDora setup : ath" >> ${mp}
 echo "alias wifi0 ath_pci" >> ${mp}
 echo "alias ath0 ath_pci" >> ${mp}
 echo "options ath_pci autocreate=sta" >> ${mp}
-echo "# Added after ath setup " >> ${mp}
-echo "" >> ${mp}
 
 #mp=${RPM_BUILD_ROOT}/etc/modprobe.conf
 #touch ${mp}
