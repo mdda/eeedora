@@ -47,7 +47,8 @@ fi
 
 # Build lucview
 if [ -e luvcview-20070512.tar.gz ]; then 
-	yum install SDL SDL-devel
+	# No need - if we've run the 'ahead.... .pl' in the main directory
+	# yum install SDL SDL-devel
  
 	pushd .
  tar -xzf luvcview-20070512.tar.gz

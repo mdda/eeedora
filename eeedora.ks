@@ -69,8 +69,9 @@ rootpw eeedora
 #repo --name=releases  --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?arch=$basearch&repo=fedora-$releasever
 #repo --name=updates   --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?arch=$basearch&repo=updates-released-f$releasever
 
-repo --name=releases  --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?arch=i386&repo=fedora-9
-repo --name=updates   --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?arch=i386&repo=updates-released-f9
+repo --name=releases         --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?arch=i386&repo=fedora-9
+repo --name=updates          --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?arch=i386&repo=updates-released-f9
+repo --name=updates-newkey   --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?repo=updates-released-f9.newkey&arch=i386
 
 #repo --name=atrpms   --baseurl=http://dl.atrpms.net/f$releasever-$basearch/atrpms/stable
 #repo --name=atrpms   --baseurl=http://dl.atrpms.net/f$releasever-$basearch/atrpms/stable
