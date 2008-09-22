@@ -76,6 +76,10 @@ repo --name=updates-newkey   --mirrorlist=http://mirrors.fedoraproject.org/mirro
 #repo --name=atrpms   --baseurl=http://dl.atrpms.net/f$releasever-$basearch/atrpms/stable
 #repo --name=atrpms   --baseurl=http://dl.atrpms.net/f$releasever-$basearch/atrpms/stable
 
+# If this was updated quickly enough... then we would use it...
+#repo --name=livna-testing    --baseurl=http://rpm.livna.org/fedora/testing/9/i386/
+
+
 # This repo file location is created as a link in the build-eeedora script
 repo --name=eee-specific --baseurl=file:///mnt/eee-specific
 	
@@ -91,8 +95,12 @@ kernel
 
 bash
 sudo
+
 anaconda
 anaconda-runtime
+# This is needed by anaconda / liveinst
+cracklib-python
+
 syslinux
 isomd5sum
 
@@ -410,6 +418,10 @@ eee-acpi
 eee-user-defaults
 scitepm
 wicd
+#wifi-radar
+
+# Should be from livna-testing ??
+# madwifi
 
 # Include for now - may get replaced by pure encfs
 truecrypt
@@ -447,8 +459,19 @@ ShowProgress "Unwrapped into ${setup_temp} to ${setup}"
 ShowProgress "Turn off SELINUX on the Eee"
 ${setup}/misc/selinux-off ${setup}
 
-# ShowProgress "Install the ath kernel module"
+ShowProgress "Install the ath kernel module"
 # ${setup}/ath/install-ath ${setup}
+/sbin/modprobe ath_pci
+/sbin/modprobe wlan_scan_sta
+
+ShowProgress "Adjust wicd startup script to make log directory on tmpfs"
+sed -i -e 's|daemon|mkdir -p /var/log/wicd; &|' /etc/init.d/wicd
+
+# This is on-demand for the moment (not in tray)
+# It wouldn't work in rc.local anyway, since the GUI needs X11 *up*
+# ShowProgress "Start wicd startup"
+# echo "#\n# Start wicd on startup" >> /etc/rc.local 
+# echo "wicd-client &" >> /etc/rc.local 
 
 # ShowProgress "Fix up wifi-radar config"
 # mkdir -p /etc/wifi-radar/
