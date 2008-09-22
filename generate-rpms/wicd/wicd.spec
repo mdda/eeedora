@@ -17,8 +17,11 @@ BuildRequires: python-devel
 # BuildRequires: rpm-pythonprov
 # BuildRequires: rpmbuild(macros) >= 1.228
 Requires(post,preun):  /sbin/chkconfig
-Requires: python, dbus, dhclient
+Requires: python
+Requires: dbus
+Requires: dhclient
 Requires: dbus-python
+Requires: python-devel
 #Requires: python-pygobject
 #Requires: python-pygtk-glade
 Requires: pygtk2-libglade
