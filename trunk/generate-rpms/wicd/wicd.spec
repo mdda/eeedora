@@ -82,15 +82,17 @@ else
 	done
 fi
 
-# Creation of /var/log/wicd also done in eeedora-firstboot (due to tmpfs mounting)
+# Creation of /var/log/wicd also done in wicd init.d script (due to tmpfs mounting)
 mkdir -p $RPM_BUILD_ROOT/var/log/wicd
 
-mp=$RPM_BUILD_ROOT/etc/rc.local
-touch ${mp}
-echo "" >> ${mp}
-echo "# Added so that wicd can write a log file harmlessly" >> ${mp}
-echo "mkdir -p /var/log/wicd" >> ${mp}
-echo "" >> ${mp}
+#mp=$RPM_BUILD_ROOT/etc/rc.local
+#touch ${mp}
+#echo "" >> ${mp}
+#echo "# Added so that wicd can write a log file harmlessly" >> ${mp}
+#echo "mkdir -p /var/log/wicd" >> ${mp}
+#echo "" >> ${mp}
+
+
 
 /sbin/restorecon /var/log/wicd.log
 

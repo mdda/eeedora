@@ -1,7 +1,7 @@
 diff -uNr wicd_1.4.2-orig/etc/init.d/wicd wicd_1.4.2/etc/init.d/wicd
 --- wicd_1.4.2-orig/etc/init.d/wicd	2008-02-11 03:25:21.000000000 -0500
 +++ wicd_1.4.2/etc/init.d/wicd	2008-07-06 14:38:43.000000000 -0400
-@@ -1,15 +1,66 @@
+@@ -1,15 +1,67 @@
 -#!/bin/bash
 +#!/bin/sh
 +#
@@ -42,6 +42,7 @@ diff -uNr wicd_1.4.2-orig/etc/init.d/wicd wicd_1.4.2/etc/init.d/wicd
 +{
 +
 +        echo -n $"Starting wicd: "
++        mkdir -p /var/log/wicd
 +        daemon /opt/wicd/daemon.py -P/var/run/wicd.pid 2>/dev/null
 +
 +	touch /var/lock/subsys/wicd
