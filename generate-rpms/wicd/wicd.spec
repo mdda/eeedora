@@ -121,7 +121,6 @@ fi
 /usr/lib/python2.5/site-packages/wicd/*
 /etc/dbus-1/system.d/wicd.conf
 /usr/share/applications/wicd.desktop
-/var/log/wicd/
 /usr/share/icons/hicolor/*/apps/wicd-client.svg
 /usr/share/icons/hicolor/*/apps/wicd-client.png
 /usr/share/pixmaps/wicd/*
