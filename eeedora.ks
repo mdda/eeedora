@@ -470,8 +470,13 @@ sed -i -e 's|daemon|mkdir -p /var/log/wicd; &|' /etc/init.d/wicd
 # This is on-demand for the moment (not in tray)
 # It wouldn't work in rc.local anyway, since the GUI needs X11 *up*
 # ShowProgress "Start wicd startup"
-# echo "#\n# Start wicd on startup" >> /etc/rc.local 
+# echo "" >> /etc/rc.local 
+# echo "# Start wicd on startup" >> /etc/rc.local 
 # echo "wicd-client &" >> /etc/rc.local 
+
+echo "" >> /etc/rc.local 
+echo "# Set authmode on ath0 (seems to help wicd)" >> /etc/rc.local 
+echo "/sbin/iwpriv ath0 authmode 1" >> /etc/rc.local 
 
 # ShowProgress "Fix up wifi-radar config"
 # mkdir -p /etc/wifi-radar/
@@ -487,12 +492,14 @@ sed -i -e 's|daemon|mkdir -p /var/log/wicd; &|' /etc/init.d/wicd
 
 # ShowProgress "Force asus_acpi to be loaded"
 # aa=/etc/sysconfig/modules/asus_acpi_eee.modules
-# echo "#\n# Force asus_acpi_eee to load" >> ${aa} 
+# echo "" >> ${aa} 
+# echo "# Force asus_acpi_eee to load" >> ${aa} 
 # echo "/sbin/modprobe asus_acpi_eee" >> ${aa}
 # chmod 755 ${aa}
 
 # Old version : Not necessary now
-#echo "#\n# Force asus_acpi to load" >> /etc/rc.local 
+#echo "" >> /etc/rc.local 
+#echo "# Force asus_acpi to load" >> /etc/rc.local 
 #echo "/sbin/modprobe asus_acpi" >> /etc/rc.local 
 #echo "install battery /sbin/modprobe asus_acpi && /sbin/modprobe --ignore-install battery" >> /etc/rc.local 
 #echo "/etc/init.d/acpid restart" >> /etc/rc.local 
@@ -506,7 +513,8 @@ sed -i -e 's|daemon|mkdir -p /var/log/wicd; &|' /etc/init.d/wicd
 # ${setup}/uvc/install-uvc ${setup}
 
 ShowProgress "Start camera on startup"
-echo "#\n# Start Camera on startup" >> /etc/rc.local 
+echo "" >> /etc/rc.local 
+echo "# Start Camera on startup" >> /etc/rc.local 
 echo "echo 1 > /proc/acpi/asus/camera" >> /etc/rc.local 
 
 # ShowProgress "Install the truecrypt kernel module - and main function"

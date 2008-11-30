@@ -6,6 +6,7 @@ $rpms .= qq(
  # Basic build tools
  make  gcc 
  rpm-build
+ createrepo
  
  # Downloader (handy)
  curl 
