@@ -77,7 +77,7 @@ rootpw eeedora
 # Fedora 10
 repo --name=releases         --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?arch=i386&repo=fedora-10
 repo --name=updates          --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?arch=i386&repo=updates-released-f10
-repo --name=updates-newkey   --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?repo=updates-released-f10.newkey&arch=i386
+#repo --name=updates-newkey   --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?repo=updates-released-f10.newkey&arch=i386
 
 #repo --name=atrpms   --baseurl=http://dl.atrpms.net/f$releasever-$basearch/atrpms/stable
 #repo --name=atrpms   --baseurl=http://dl.atrpms.net/f$releasever-$basearch/atrpms/stable
@@ -236,11 +236,15 @@ alsa-utils
 #paprefs
 
 # This is for the luvcview program
-SDL
+### Renable if we get this program back...
+#SDL
 
 # Not necessary once xcfe is reliable - we have 'Terminal'
 -xterm
 
+###############################################
+#  Include the Desktop system you want here   #
+###############################################
 # %include eeedora.xfce.ks.include
 %include eeedora.lxde.ks.include
 
