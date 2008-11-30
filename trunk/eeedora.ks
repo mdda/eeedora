@@ -69,14 +69,20 @@ rootpw eeedora
 #repo --name=releases  --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?arch=$basearch&repo=fedora-$releasever
 #repo --name=updates   --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?arch=$basearch&repo=updates-released-f$releasever
 
-repo --name=releases         --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?arch=i386&repo=fedora-9
-repo --name=updates          --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?arch=i386&repo=updates-released-f9
-repo --name=updates-newkey   --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?repo=updates-released-f9.newkey&arch=i386
+## Fedora 9
+#repo --name=releases         --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?arch=i386&repo=fedora-9
+#repo --name=updates          --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?arch=i386&repo=updates-released-f9
+#repo --name=updates-newkey   --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?repo=updates-released-f9.newkey&arch=i386
+
+# Fedora 10
+repo --name=releases         --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?arch=i386&repo=fedora-10
+repo --name=updates          --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?arch=i386&repo=updates-released-f10
+repo --name=updates-newkey   --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?repo=updates-released-f10.newkey&arch=i386
 
 #repo --name=atrpms   --baseurl=http://dl.atrpms.net/f$releasever-$basearch/atrpms/stable
 #repo --name=atrpms   --baseurl=http://dl.atrpms.net/f$releasever-$basearch/atrpms/stable
 
-# If this was updated quickly enough... then we would use it...
+# If this was updated quickly enough... then we would use it...  for madwifi
 #repo --name=livna-testing    --baseurl=http://rpm.livna.org/fedora/testing/9/i386/
 
 
@@ -235,85 +241,8 @@ SDL
 # Not necessary once xcfe is reliable - we have 'Terminal'
 -xterm
 
-# xfce packages
-@ xfce-desktop
--mousepad
-xfwm4-themes
-gtk-xfce-engine
-
-# This is needed only for XFCE programs (like mousepad which we don't want) to print
--xfprint
-# But ...  xfce4-panel requires mousepad - which in turn requires xfprint - which pulls in the whole of tetex
-
-# New stuff to compensate for xfprint's strange login-disabling behaviour :
-#libpciaccess
-#libgomp
-#dialog
-#libgsf
-#tmpwatch
-#libcroco
-gdbm
-# End of xfprint antidote
-
-# Don't need this - pulseaudio has the goodies
--xfce4-mixer
-
-# Here are some of the pretty xfce4 plugins
-
-# Good for the Eee
-xfce4-battery-plugin
--xfce4-clipman-plugin
-# Use datetime instead - but maybe this is built in, since I can't remove it
-# -xfce4-clock-plugin
-xfce4-cpugraph-plugin
-# This is better than the simple clock
-xfce4-datetime-plugin
--xfce4-dict-plugin
-# Monitors disk performance
--xfce4-diskperf-plugin
--xfce4-eyes-plugin
-# Monitors free space
--xfce4-fsguard-plugin
-# This monitors a general script
--xfce4-genmon-plugin
--xfce4-mailwatch-plugin
--xfce4-minicmd-plugin
-xfce4-mount-plugin
-xfce4-netload-plugin
--xfce4-notes-plugin
-xfce4-places-plugin
--xfce4-quicklauncher-plugin
-# This may just be useful for now
-xfce4-screenshooter-plugin
--xfce4-sensors-plugin
-# This may be mandatory, though
--xfce4-session
--xfce4-smartbookmark-plugin
-# I like this 
-xfce4-systemload-plugin
-# Nice-to-have only
--xfce4-timer-plugin
-# No need for this command line plugin
--xfce4-verve-plugin
-# This allows media to be ejected easily
-xfce4-volstatus-icon
-# For wireless devices
-xfce4-wavelan-plugin
-# Nice-to-have, but not essential really
-xfce4-weather-plugin
-# We've got Firefox already
--xfce4-websearch-plugin
-# No need to switch keyboard layouts constantly
--xfce4-xkb-plugin
-# Needed to use gnome panel applets - but why do I care?
--xfce4-xfapplet-plugin
-
-# some more stuff for xfce
-orage
-
-thunar-archive-plugin
-thunar-media-tags-plugin
-thunar-volman
+# %include eeedora.xfce.ks.include
+%include eeedora.lxde.ks.include
 
 #xarchiver
 
@@ -388,20 +317,6 @@ xdg-user-dirs
 -festival*
 -gnome-speech
 
-# more things we don't need in Xfce
--evolution
--evolution-webcal
--evolution-data-server
-
--gnome-panel
--gnome-desktop
--gnome-user-docs
--gnome-backgrounds
--gnome-games
--gnome-netstatus
--gnome-python2-applet
--gnome-applets
-
 # make sure no debuginfo doesn't end up on the live image
 -*debuginfo
 
@@ -413,7 +328,7 @@ eee_tarball
 eee_splash
 
 # And now our new stuff
-eee-madwifi
+#eee-madwifi
 eee-acpi
 eee-user-defaults
 scitepm
@@ -424,7 +339,7 @@ wicd
 # madwifi
 
 # Include for now - may get replaced by pure encfs
-truecrypt
+#truecrypt
 
 
 

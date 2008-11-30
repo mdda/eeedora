@@ -1,0 +1,13 @@
+# %include eeedora.ks.include-xorg-tidy
+
+openbox
+obconfig
+
+lxde-common
+roxterm
+lxpanel
+
+lxappearance
+lxtask
+lxpanel
+lxsession-lite
