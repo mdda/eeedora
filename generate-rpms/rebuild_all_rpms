@@ -1,10 +1,17 @@
 #! /bin/bash
 
 ./build_generic_rpm wicd
-./build_generic_rpm madwifi
+
+# Don't need (?) in FC10
+## ./build_generic_rpm madwifi
+
 ./build_generic_rpm scitepm
+
 ./build_generic_rpm eee-acpi
-./build_generic_rpm truecrypt
+
+# Doesn't build without error just yet:
+#./build_generic_rpm truecrypt
+
 ./build_generic_rpm eee-user-defaults
 
 # Elsewhere

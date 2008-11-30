@@ -1,11 +1,14 @@
 <root>
 	<file>./TODO-Fedora9</file>
+	<file>./TODO-Fedora10</file>
 	<group name='ISO-builder' expanded='TRUE'>
 		<file>./ahead-of-building-check-machine.pl</file>
 		<file>./build-eeedora.bash</file>
 		<file>./eeedora.ks</file>
-		<file>./eee-setup/services/eeedora-firstboot</file>
+		<file>./eeedora.xfce.ks.include</file>
+		<file>./eeedora.lxde.ks.include</file>
 		<file>./eeedora.ks.include-xorg-tidy</file>
+		<file>./eee-setup/services/eeedora-firstboot</file>
 		<file>./copy-to-usb.bash</file>
 	</group>
 	<group name='Setup-old' expanded='TRUE'>
@@ -24,16 +27,16 @@
 			<file>./generate-rpms/wicd/README</file>
 			<file>./generate-rpms/wicd/rpmbuild.log</file>
 		</group>
-		<group name='madwifi-eee' expanded='TRUE'>
+		<group name='madwifi-eee' expanded='FALSE'>
 			<file>./generate-rpms/madwifi/madwifi.spec</file>
 			<file>./generate-rpms/madwifi/README</file>
 			<file>./generate-rpms/madwifi/rpmbuild.log</file>
 		</group>
-		<group name='truecrypt' expanded='FALSE'>
+		<group name='truecrypt' expanded='TRUE'>
 			<file>./generate-rpms/truecrypt/truecrypt.spec</file>
 			<file>./generate-rpms/truecrypt/README</file>
 		</group>
-		<group name='eee-acpi' expanded='TRUE'>
+		<group name='eee-acpi' expanded='FALSE'>
 			<file>./generate-rpms/eee-acpi/eee-acpi.spec.base</file>
 			<file>./generate-rpms/eee-acpi/Makefile</file>
 			<file>./generate-rpms/eee-acpi/rpmbuild.log</file>
