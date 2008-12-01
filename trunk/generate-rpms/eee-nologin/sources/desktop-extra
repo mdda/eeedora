@@ -1,0 +1,40 @@
+# To have a selector with user:password boxes
+
+number_of_users=`ls /home | wc -l`
+has_displaymanager=`which gdm 2>/dev/null;which kdm 2>/dev/null;which wdm 2>/dev/null;which xdm 2>/dev/null`
+
+# This is just to force a single-user login
+#if [ "1" -eq "1" ]; then
+
+# This is good for the eeedora-like environment
+if [ "$has_displaymanager" -eq "" ] && [ "$number_of_users" -eq "1" ]; then
+
+ # Login as this user:
+ autouser=`ls /home`
+ echo "Logging in ${autouser} user automatically"
+ exec /sbin/mingetty --autologin ${autouser} tty7 
+
+ # Can only get here if user does Cntrl-Alt-Backspace ???
+
+ # Since xfce4-session handles shutdown and restart
+ # if we've updated sudoers file by appending :
+ # myuser myhost=/usr/libexec/xfsm-shutdown-helper
+
+ # TODO
+ # Since lxde-session handles shutdown and restart
+ # if we've updated sudoers file by appending :
+ # myuser myhost=/usr/libexec/???
+
+ exit 1; # Then prefdm should, but doesn't respawn to restart this... 
+else 
+
+ echo "Starting display manager"
+# # To go directly into XFCE :
+# DESKTOP=XFCE
+
+ # To go directly into LXDE :
+ DESKTOP=LXDE
+ 
+ #PREFERRED="$(which startxfce4 2>/dev/null)"
+fi
+
