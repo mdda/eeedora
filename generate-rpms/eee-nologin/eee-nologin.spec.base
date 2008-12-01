@@ -1,5 +1,5 @@
 #
-# spec file for package eee-user-defaults
+# spec file for package eee-nologin
 #
 # Copyright  (c)  2007-2008 - Martin Andrews
 # This file and all modifications and additions to the pristine
@@ -43,8 +43,8 @@
 # %define _lib lib%distlibsuffix
 %define packer %(finger -lp `echo "$USER"` | head -n 1 | cut -d: -f 3)
 
-Name:      eee-user-defaults
-Summary:   Basic user defaults into /etc/skel
+Name:      eee-nologin
+Summary:   Add special one-user auto-login configuration to /etc/sysconfig/desktop
 Version:   @@VERSION@@
 Release:   1.%{disttag}%{distver}
 License:   GPL
@@ -53,14 +53,14 @@ Packager:  %packer
 Group:     System
 Source0:  	%{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
-Requires: 	bash, firefox, scite
-Provides:	 eee-user-defaults
+#Requires: 	bash, firefox, scite
+Provides:	 eee-nologin
 
 # This is ensured by dependency on bash
 #Requires:  /etc/skel/.bash_profile
 
 %description
-This package creates the /etc/skel structure to make things start up nicely.
+This package adds script to /etc/sysconfig/desktop to allow one-user detection and autologin
  
 %prep
 echo Building %{name}-%{version}-%{release}
@@ -77,26 +77,19 @@ make install
 [ "${RPM_BUILD_ROOT}" != "/" ] && rm -rf ${RPM_BUILD_ROOT}
 
 %post
-aa=${RPM_BUILD_ROOT}/etc/skel/.bash_profile
-echo "" >> ${aa} 
-echo "# This was added by eee-user-defaults RPM %post" >> ${aa} 
-#echo "./.bash_profile_xfce" >> ${aa} 
-echo "./.bash_profile_lxde" >> ${aa} 
-echo "" >> ${aa} 
+# aa=${RPM_BUILD_ROOT}/etc/sysconfig
+# echo "" >> ${aa}/desktop 
+# echo "# This was added by eee-nologin RPM %post" >> ${aa}/desktop 
+# cat $${aa}/desktop-extra >> ${aa}/desktop
 
 %postun
 
 %files
 %defattr(-,root,root)
-/etc/skel/.xinitrc
-/etc/skel/.xsession
-%attr(0755,root,root) /etc/skel/.bash_profile_xfce
-/etc/skel/.mozilla/*
-/etc/skel/.SciTEUser.properties
-/etc/skel/.config/*
+# /etc/sysconfig/desktop-extra
 
 
 
 %changelog
-* Thu Jul 8 2008 - EeeDora_at_ PLATFORMedia.com
+* Mon Dec 1 2008 - EeeDora_at_ PLATFORMedia.com
 - Created spec.base file, and updated 'make tarball'

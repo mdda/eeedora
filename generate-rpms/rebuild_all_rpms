@@ -14,8 +14,7 @@
 
 ./build_generic_rpm eee-user-defaults
 
-# Elsewhere
-#  - /etc/sysconfig/desktop
+./build_generic_rpm eee-nologin
 
 # boost 
 #  - (needs bjam?) - maybe just let Fedora team do this one

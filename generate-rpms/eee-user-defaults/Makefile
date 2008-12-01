@@ -52,7 +52,7 @@ install: bash_install pulse_audio_fix plugdev_fix
 bash_install:
 	@echo "Installing bash_install script ..." ; \
 	mkdir -p $${RPM_BUILD_ROOT}/etc/skel ; \
- cat sources/xfce/autologin-appendto-dot-bash_profile >> $${RPM_BUILD_ROOT}/etc/skel/.bash_profile_xfce; 
+	cat sources/xfce/autologin-appendto-dot-bash_profile >> $${RPM_BUILD_ROOT}/etc/skel/.bash_profile_xfce; 
 
 pulse_audio_fix:
 	# NOP - have a look at eee-setup/misc/fix-pulseaudio if a fix is required
