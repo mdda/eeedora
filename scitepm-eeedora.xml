@@ -11,7 +11,7 @@
 		<file>./eee-setup/services/eeedora-firstboot</file>
 		<file>./copy-to-usb.bash</file>
 	</group>
-	<group name='Setup-old' expanded='TRUE'>
+	<group name='Setup-old' expanded='FALSE'>
 		<file>./eee-setup/build-eee_tarball_RPM</file>
 		<file>./eee-setup/create-eee_splash_RPM</file>
 		<file>./eee-setup/eee_splash.spec</file>
@@ -32,7 +32,7 @@
 			<file>./generate-rpms/madwifi/README</file>
 			<file>./generate-rpms/madwifi/rpmbuild.log</file>
 		</group>
-		<group name='truecrypt' expanded='TRUE'>
+		<group name='truecrypt' expanded='FALSE'>
 			<file>./generate-rpms/truecrypt/truecrypt.spec</file>
 			<file>./generate-rpms/truecrypt/README</file>
 		</group>
@@ -45,10 +45,15 @@
 			<file>./generate-rpms/scitepm/scitepm.spec</file>
 			<file>./generate-rpms/scitepm/rpmbuild.log</file>
 		</group>
-		<group name='eee-user-defaults' expanded='FALSE'>
+		<group name='eee-user-defaults' expanded='TRUE'>
 			<file>./generate-rpms/eee-user-defaults/eee-user-defaults.spec.base</file>
 			<file>./generate-rpms/eee-user-defaults/Makefile</file>
 			<file>./generate-rpms/eee-user-defaults/VERSION</file>
+		</group>
+		<group name='eee-nologin' expanded='TRUE'>
+			<file>./generate-rpms/eee-nologin/Makefile</file>
+			<file>./generate-rpms/eee-nologin/eee-nologin.spec.base</file>
+			<file>./generate-rpms/eee-nologin/sources/desktop-extra</file>
 		</group>
 	</group>
 </root>
