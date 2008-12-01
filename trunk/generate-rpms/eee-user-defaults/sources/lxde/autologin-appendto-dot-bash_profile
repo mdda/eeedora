@@ -1,0 +1,22 @@
+# This is appended when there's no display-manager
+# Normally, gdm or xdm would take care of this
+
+#if [ `tty` = "/dev/tty1" ]; then
+# startx
+#fi
+
+#AT CONSOLE
+
+if [ -z "$DISPLAY" ] && [ $(tty) == /dev/tty7 ]; then
+ #AT CONSOLE BEFORE LXDE
+
+ #xsetroot -solid steelblue
+ xinit
+
+ # This seems to use fewer resources - at least for xfce (needs testing)
+ #startlxde
+
+ #AT CONSOLE AFTER LXDE
+
+ /usr/bin/poweroff
+fi
