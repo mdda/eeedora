@@ -1,7 +1,7 @@
 #SHELL=/bin/bash
 
-# Source files
-all:	bash xfce firefox scite 
+# Source files (replace lxde with xfce if required)
+all:	bash lxde firefox scite 
 	@echo "Built '$${RPM_BUILD_ROOT}'" ;
 
 bash:
@@ -16,6 +16,16 @@ xfce:
 	tar -xzf sources/xfce/dot-config.tar.gz -C root/etc/skel/
 
 # NB : Create beautiful XFCE settings dump with :
+# tar -czf dot-config.tar.gz /home/eeedora/.config
+
+lxde:
+	@echo "Building /etc/skel/.lxde etc" ; \
+	cp sources/lxde/dot-xsession root/etc/skel/.xsession ; \
+	cp sources/lxde/dot-xinitrc root/etc/skel/.xinitrc ; \
+	chmod a+x root/etc/skel/.x{session,initrc} ; \
+	tar -xzf sources/lxde/dot-config.tar.gz -C root/etc/skel/
+
+# NB : Create beautiful LXDE/Openbox settings dump with :
 # tar -czf dot-config.tar.gz /home/eeedora/.config
 
 
