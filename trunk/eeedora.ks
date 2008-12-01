@@ -332,14 +332,17 @@ eee_tarball
 eee_splash
 
 # And now our new stuff
-#eee-madwifi
+
 eee-acpi
 eee-user-defaults
+eee-nologin
 scitepm
 wicd
-#wifi-radar
 
-# Should be from livna-testing ??
+# wifi-radar # No need now that wicd works in Fedora 10
+
+# No need in Fedora 10 !!  Phew
+# eee-madwifi  
 # madwifi
 
 # Include for now - may get replaced by pure encfs
