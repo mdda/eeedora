@@ -6,26 +6,13 @@ all:	desktop
 desktop:
 	@echo "Building /etc/sysconfig/desktop precursors" ; 
 
-# \
-#	mkdir -p root/etc/sysconfig ; \
-#	cp sources/desktop-extra root/etc/sysconfig/desktop-extra
 
 # INSTALLER - into RPM_BUILD_ROOT
 
-# install: desktop_install
 install:
 	@echo "Installing eee-nologin ..." ; \
 	mkdir -p $${RPM_BUILD_ROOT}/etc/sysconfig ; \
-	cat sources/desktop-extra >> $${RPM_BUILD_ROOT}/etc/sysconfig/desktop ; 
-
-#	cp -R root/* $${RPM_BUILD_ROOT}/
-
-#pulse_audio_fix:
-#	# NOP - have a look at eee-setup/misc/fix-pulseaudio if a fix is required
-
-#plugdev_fix:
-#	# NOP - have a look at eee-setup/services/automount-hal-volumes-fix if a fix is required
-
+	cp sources/desktop-extra $${RPM_BUILD_ROOT}/etc/sysconfig/desktop-extra ; 
 
 # Make a tarball for distribution (good for RPM spec'ing)
 tarball:
