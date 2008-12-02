@@ -53,11 +53,9 @@ Packager:  %packer
 Group:     System
 Source0:  	%{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
-#Requires: 	bash, firefox, scite
+Requires: 	bash
 Provides:	 eee-nologin
 
-# This is ensured by dependency on bash
-#Requires:  /etc/skel/.bash_profile
 
 %description
 This package adds script to /etc/sysconfig/desktop to allow one-user detection and autologin
@@ -76,17 +74,18 @@ make install
 %clean
 [ "${RPM_BUILD_ROOT}" != "/" ] && rm -rf ${RPM_BUILD_ROOT}
 
+
 %post
-# aa=${RPM_BUILD_ROOT}/etc/sysconfig
-# echo "" >> ${aa}/desktop 
-# echo "# This was added by eee-nologin RPM %post" >> ${aa}/desktop 
-# cat $${aa}/desktop-extra >> ${aa}/desktop
+aa=${RPM_BUILD_ROOT}/etc/sysconfig
+echo "" >> ${aa}/desktop 
+echo "# This was added by eee-nologin RPM %post" >> ${aa}/desktop 
+cat ${aa}/desktop-extra >> ${aa}/desktop
 
 %postun
 
 %files
 %defattr(-,root,root)
-# /etc/sysconfig/desktop-extra
+/etc/sysconfig/desktop-extra
 
 
 
