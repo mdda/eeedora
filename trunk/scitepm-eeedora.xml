@@ -50,7 +50,7 @@
 			<file>./generate-rpms/eee-user-defaults/Makefile</file>
 			<file>./generate-rpms/eee-user-defaults/VERSION</file>
 		</group>
-		<group name='eee-nologin' expanded='TRUE'>
+		<group name='eee-nologin' expanded='FALSE'>
 			<file>./generate-rpms/eee-nologin/Makefile</file>
 			<file>./generate-rpms/eee-nologin/eee-nologin.spec.base</file>
 			<file>./generate-rpms/eee-nologin/sources/desktop-extra</file>
