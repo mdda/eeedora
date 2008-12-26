@@ -22,6 +22,9 @@ setup=/root/eee-setup
 # exit 0
 #fi
 
+# Need to start NetworkManager to get anaconda working...
+/etc/init.d/NetworkManager restart
+
 # The clever bit here is that /usr/bin/liveinst gets the root password (if needed)
 # before executing the /usr/sbin/liveinst script
 /usr/bin/liveinst "--kickstart=file:${setup}/live-install/eee-live-install.ks"
