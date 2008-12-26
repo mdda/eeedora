@@ -7,8 +7,8 @@ RPM_PACKAGE=`echo $RPM_PACKAGE | sed -e 's|/$||'`
 
 # If there's a Makefile, build the tarball and spec file automatically
 if [ -f ${RPM_PACKAGE}/Makefile ]; then 
- pushd .
- cd ${RPM_PACKAGE}
+	pushd .
+	cd ${RPM_PACKAGE}
 	make tarball
 	popd
 fi

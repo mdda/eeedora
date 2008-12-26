@@ -56,12 +56,10 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 Requires: 	bash, firefox, scite
 Provides:	 eee-user-defaults
 
-# This is ensured by dependency on bash
-#Requires:  /etc/skel/.bash_profile
 
 %description
 This package creates the /etc/skel structure to make things start up nicely.
- 
+
 %prep
 echo Building %{name}-%{version}-%{release}
 
@@ -98,5 +96,5 @@ echo "" >> ${aa}
 
 
 %changelog
-* Thu Jul 8 2008 - EeeDora_at_ PLATFORMedia.com
+* Thu Jul 8 2008 - EeeDora _at_ PLATFORMedia.com
 - Created spec.base file, and updated 'make tarball'

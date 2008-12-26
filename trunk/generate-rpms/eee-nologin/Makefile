@@ -4,15 +4,23 @@ all:	desktop
 	@echo "Built '$${RPM_BUILD_ROOT}'" ;
 
 desktop:
-	@echo "Building /etc/sysconfig/desktop precursors" ; 
+	@echo "Building /etc/sysconfig/desktop precursors" ; \
+	mkdir -p root/etc/sysconfig ; \
+	cp sources/desktop-extra root/etc/sysconfig/desktop-extra ; 
 
 
 # INSTALLER - into RPM_BUILD_ROOT
 
-install:
+install: desktop_install
 	@echo "Installing eee-nologin ..." ; \
-	mkdir -p $${RPM_BUILD_ROOT}/etc/sysconfig ; \
-	cp sources/desktop-extra $${RPM_BUILD_ROOT}/etc/sysconfig/desktop-extra ; 
+	mkdir -p $${RPM_BUILD_ROOT} ; \
+	cp -R root/* $${RPM_BUILD_ROOT}/
+
+desktop_install:
+	@echo "Installing desktop-extra..." ;
+
+# cat sources/xfce/autologin-appendto-dot-bash_profile >> $${RPM_BUILD_ROOT}/etc/skel/.bash_profile_xfce; 
+
 
 # Make a tarball for distribution (good for RPM spec'ing)
 tarball:

@@ -59,7 +59,7 @@ Provides:	 eee-nologin
 
 %description
 This package adds script to /etc/sysconfig/desktop to allow one-user detection and autologin
- 
+
 %prep
 echo Building %{name}-%{version}-%{release}
 
@@ -73,7 +73,6 @@ make install
 
 %clean
 [ "${RPM_BUILD_ROOT}" != "/" ] && rm -rf ${RPM_BUILD_ROOT}
-
 
 %post
 aa=${RPM_BUILD_ROOT}/etc/sysconfig
@@ -90,5 +89,5 @@ cat ${aa}/desktop-extra >> ${aa}/desktop
 
 
 %changelog
-* Mon Dec 1 2008 - EeeDora_at_ PLATFORMedia.com
+* Mon Dec 1 2008 - EeeDora _at_ PLATFORMedia.com
 - Created spec.base file, and updated 'make tarball'
