@@ -7,7 +7,7 @@ all:	bash lxde firefox scite
 bash:
 	@echo "Building /etc/skel/.bash_profile etc -- append in bash_install" ; \
 	mkdir -p root/etc/skel ; 
-	
+
 xfce:
 	@echo "Building /etc/skel/.xfce etc" ; \
 	cp sources/xfce/dot-xsession root/etc/skel/.xsession ; \
