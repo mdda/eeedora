@@ -78,8 +78,7 @@ make install
 aa=${RPM_BUILD_ROOT}/etc/skel/.bash_profile
 echo "" >> ${aa} 
 echo "# This was added by eee-user-defaults RPM %post" >> ${aa} 
-#echo "./.bash_profile_xfce" >> ${aa} 
-echo "./.bash_profile_lxde" >> ${aa} 
+echo "./.bash_profile_wm" >> ${aa} 
 echo "" >> ${aa} 
 
 %postun
@@ -88,7 +87,8 @@ echo "" >> ${aa}
 %defattr(-,root,root)
 /etc/skel/.xinitrc
 /etc/skel/.xsession
-%attr(0755,root,root) /etc/skel/.bash_profile_xfce
+/etc/skel/.toprc
+%attr(0755,root,root) /etc/skel/.bash_profile_wm
 /etc/skel/.mozilla/*
 /etc/skel/.SciTEUser.properties
 /etc/skel/.config/*
