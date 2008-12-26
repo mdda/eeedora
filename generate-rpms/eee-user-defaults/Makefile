@@ -1,7 +1,7 @@
 #SHELL=/bin/bash
 
 # Source files (replace lxde with xfce if required)
-all:	bash lxde firefox scite 
+all:	bash lxde firefox scite toprc
 	@echo "Built '$${RPM_BUILD_ROOT}'" ;
 
 bash:
@@ -25,13 +25,18 @@ lxde:
 	chmod a+x root/etc/skel/.x{session,initrc} ; \
 	tar -xzf sources/lxde/dot-config.tar.gz -C root/etc/skel/
 
+toprc:
+	@echo "Building /etc/skel/.toprc" ; \
+	cp sources/bash/dot-toprc root/etc/skel/.toprc;
+ 
+
 # NB : Create beautiful LXDE/Openbox settings dump with :
 # tar -czf dot-config.tar.gz /home/eeedora/.config
 
 
 firefox:
 	@echo "Building /etc/skel/.mozilla" ; \
-	tar -xzf sources/firefox/firefox.tar.gz -C root/etc/skel/ ; 
+	tar -xzf sources/firefox/firefox.tar.gz --no-same-owner -C root/etc/skel/ ; 
 
 # NB : Create beautiful Firefox settings dump with :
 # tar -czf firefox.tar.gz /home/eeedora/.mozilla
@@ -44,15 +49,22 @@ scite:
 
 # INSTALLER - into RPM_BUILD_ROOT
 
-install: bash_install pulse_audio_fix plugdev_fix
+#install: bash_install xfce_install pulse_audio_fix plugdev_fix
+install: bash_install lxde_install pulse_audio_fix plugdev_fix
 	@echo "Installing eee-user-defaults ..." ; \
 	mkdir -p $${RPM_BUILD_ROOT} ; \
 	cp -R root/* $${RPM_BUILD_ROOT}/
 
 bash_install:
 	@echo "Installing bash_install script ..." ; \
-	mkdir -p $${RPM_BUILD_ROOT}/etc/skel ; \
-	cat sources/xfce/autologin-appendto-dot-bash_profile >> $${RPM_BUILD_ROOT}/etc/skel/.bash_profile_xfce; 
+	mkdir -p $${RPM_BUILD_ROOT}/etc/skel ; 
+
+xfce_install:
+	cat sources/xfce/autologin-appendto-dot-bash_profile >> $${RPM_BUILD_ROOT}/etc/skel/.bash_profile_wm 
+
+lxde_install:
+	cat sources/lxde/autologin-appendto-dot-bash_profile >> $${RPM_BUILD_ROOT}/etc/skel/.bash_profile_wm 
+
 
 pulse_audio_fix:
 	# NOP - have a look at eee-setup/misc/fix-pulseaudio if a fix is required

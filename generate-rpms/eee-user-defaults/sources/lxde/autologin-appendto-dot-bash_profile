@@ -10,7 +10,7 @@
 if [ -z "$DISPLAY" ] && [ $(tty) == /dev/tty7 ]; then
  #AT CONSOLE BEFORE LXDE
 
- #xsetroot -solid steelblue
+ xsetroot -solid steelblue
  xinit
 
  # This seems to use fewer resources - at least for xfce (needs testing)
