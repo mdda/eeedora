@@ -1,0 +1,17 @@
+## Introduction ##
+
+Fedora includes a tool called kickstart that makes building distributions 'easy'.
+
+However, because this is entirely driven by RPMs, it's very difficult to get all the customization done in the kickstart file itself (since a 'round trip' takes about 45 minutes).
+
+Also, since the Eee has non-standard drivers required for the wired ethernet (atl2) and wireless (Atheros), custom binaries also have to be 'shipped' within the ISO image.
+
+Rather than face RPM version hell (since each user will probably be building this on slightly different kernel versions), I decided to take the easy way out :  Build a since RPM that contains a tar-ball of everything that's needed on the Eee itself.
+
+## The RPM : eee\_tarball ##
+
+In the `eee-setup` directory, there's a script that builds an RPM of scripts and settings, ready to be untarred in the /root/ directory.
+
+From there, it's a simple matter for the kickstart file to untar in tar-ball, and run scripts within it.  This makes for a very extensible system, and makes each 'round-trip' incrementally more worthwhile.
+
+The build-eeedora.bash script creates a local repository for the _one_ RPM, and then builds the ISO for the whole system.  From there, everything is automatic.
