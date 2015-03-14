@@ -36,7 +36,7 @@ This is now somewhat obsolete, simply because the required updates were adopted 
 
 ## Where the EeeDora setup stands now
 
-== What it Does Do ==
+### What it Does Do
 
   * Boots Fedora 8 on a Live USB or Live CD, connected to the Eee PC USB ports
   * Goes into a nice-looking XFCE windowing environment
@@ -51,22 +51,22 @@ This is now somewhat obsolete, simply because the required updates were adopted 
   * The ACPI lets the Blue Function keys work, as well as the external VGA switching
   * ...
 
-== What it Doesn't Do (yet) ==
+### What it Doesn't Do (yet)
 
   * Ultra-clean suspend/resume for the wifi
   * Otherwise : Let me know
   * ...
 
-== What it Doesn't Do Generally ==
+### What it Doesn't Do Generally
 
   * Include a lot of bloat (let the user choose what they need)
   * Anything half as nice as the default Xandros UI
   * Give any protection from Microsoft patent FUD (ouch!)
 
 
-# Creation of an Installable Live USB
+## Creation of an Installable Live USB
 
-== Quick version ==
+### Quick version 
 
   * Check out the SVN anonymously
   * If you want to build a USB image, make sure the key is on `/dev/sdb1/`
@@ -78,14 +78,14 @@ This is now somewhat obsolete, simply because the required updates were adopted 
     * this is a time-saver if you're making adjustments to the `.ks` file
     * empty it out when you're done
 
-== Longer Version ==
+### Longer Version 
 
 Over at http://wiki.eeeuser.com/eeedora:issues .
 
 
-#summary How this whole thing works
+## How this whole thing works
 
-== Introduction ==
+### Introduction 
 
 Fedora includes a tool called kickstart that makes building distributions 'easy'.
 
@@ -95,7 +95,7 @@ Also, since the Eee has non-standard drivers required for the wired ethernet (at
 
 Rather than face RPM version hell (since each user will probably be building this on slightly different kernel versions), I decided to take the easy way out :  Build a since RPM that contains a tar-ball of everything that's needed on the Eee itself.
 
-== The RPM : eee_tarball ==
+### The RPM : eee_tarball
 
 In the `eee-setup` directory, there's a script that builds an RPM of scripts and settings, ready to be untarred in the /root/ directory.
 
@@ -105,18 +105,18 @@ The build-eeedora.bash script creates a local repository for the _one_ RPM, and 
 
 
 
-#summary How to compile up the atl2 driver
+## How to compile up the atl2 driver
 
-== Introduction ==
+### Introduction 
 
 There have been changes in the files `<linux/etherdevice.h>` and `<linux/ethtool.h>`, which stopped the ASUS/Atheros distributed `atl2-1.0.40.4.tar.gz` compiling and installing correctly.
 
 After some digging around with a kernel cross-reference tool (I only just found out these cool tools)...  Looks much better now.  I've uploaded the kernel module `atl2.ko` compiled for `2.6.23.1-49.fc8`.
 
-== Details - for updating a standard tar-ball ==
+### Details - for updating a standard tar-ball
 Insert the following into the file `kcompat.h` just before the final `#endif` :
 
-{{{
+```
 #if ( LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,23) )
 // this used to be in <linux/etherdevice.h> - disappeared in 2.6.23
 // See : http://lxr.free-electrons.com/diff/include/linux/etherdevice.h?v=2.6.22;diffval=2.6.23;diffvar=v
@@ -131,11 +131,11 @@ static inline void eth_copy_and_sum (struct sk_buff *dest,
 // See : http://lxr.free-electrons.com/diff/include/linux/ethtool.h?v=2.6.22;diffval=2.6.23;diffvar=v
 #undef ETHTOOL_GPERMADDR
 #endif /* >= 2.6.23 */
-}}}
+```
 
-== Installing the module ==
+### Installing the module 
 As root :
-{{{
+```
 mkdir /lib/modules/`uname -r`/kernel/drivers/net/atl2
 cp atl2.ko /lib/modules/`uname -r`/kernel/drivers/net/atl2/
 /sbin/depmod -a
@@ -143,9 +143,9 @@ cp atl2.ko /lib/modules/`uname -r`/kernel/drivers/net/atl2/
 # Do this as a force since this was compiled against 2.6.23.1-49.fc8,
 # and your kernel may be different (should be no big deal, as long as it's Fedora 8)
 /sbin/modprobe -f atl2
-}}}
+```
 
-== To Do ... ==
+### To Do ... 
    * Upload the full (updated) source ASAP
    * Email the Atheros tech guy (xiong.huang 'at' atheros.com) to help him out
 
